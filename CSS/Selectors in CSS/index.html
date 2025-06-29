@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Selectors</title>
+    <style>
+        /* Element selector */
+        div {
+            background-color: rgba(219, 217, 204, 0.856);
+            color: rgb(49, 145, 145);
+        }
+
+        /* class selector and types */
+        .nigga {
+            background-color: black;
+            color: red;
+        }
+
+        .giga1 {
+            background-color: blueviolet;
+            color: rgb(0, 0, 0);
+        }
+
+        /* ID selector */
+        #whiterice {
+            background-color: bisque;
+            color: darkgreen;
+        }
+
+        /* Child selector  */
+        div>p {
+            background-color: indigo;
+            color: darkorange;
+        }
+
+        /* Desendent Selector */
+        div article {
+            background-color: rgb(8, 33, 66);
+            color: aquamarine;
+
+        }
+
+        /* Universal Selector */
+        * {
+            padding: 5px;
+            margin: 5px;
+            border: 5px;
+        }
+
+        /* Pseudo Selector */
+        a:visited {
+            background-color: fuchsia;
+            color: black;
+        }
+
+        a:link {
+            background-color: rgba(255, 0, 0, 0.644);
+            color: rgb(55, 248, 255);
+        }
+
+        a:active {
+            background-color: darkslategray;
+            color: cornsilk;
+
+        }
+
+        a:hover {
+            background-color: midnightblue;
+            color: crimson;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Types of CSS Selectors</h1>
+    <div>I am a element selected text</div>
+    <div class="nigga">I am a Class selected Text</div>
+    <div class="nigga giga1">I am also a Class selected Text[but different]</div>
+    <div id="whiterice">I am an ID selected text</div>
+    <div>
+        <p>I am text inside a para tag inside div tag i need Child Selector</p>
+    </div>
+    <div>
+        <main>
+            <article>I need desendent selector to be colored </article>
+        </main>
+    </div>
+    <a href="https://www.google.com" action="_blank">Goggle</a>
+</body>
+
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Styling lists</title>
+
+    <style>
+        nav ul li {
+            background-color: blueviolet;
+            list-style: inside;
+            list-style-image: url(dog-face.webp);
+            border: 2px solid black;
+            /* wer can wite it as this  */
+        }
+
+        div ul li {
+            list-style: inside image url(dog-face.webp  );
+            background-color: cyan;
+            border: 1px solid black;
+            border-radius: 10px;
+
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <ul>
+            <li>Home</li>
+            <li>About</li>
+            <li>Contacts</li>
+        </ul>
+    </nav>
+    <div>
+        <ul>
+            <li>Home</li>
+            <li>About</li>
+            <li>Contacts</li>
+        </ul>
+    </div>
+</body>
+
+</html>

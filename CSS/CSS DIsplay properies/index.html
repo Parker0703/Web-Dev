@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Display Properties</title>
+</head>
+<style>
+    div.box.box1 {
+        padding: 15px;
+        border: 2px solid black;
+        display: inline-block;
+        background-color: blueviolet;
+        /* with this it acts as an inline element despite being a block elementbut with this padding n margin on top wont be shown we can use display: inline-block; to solve that  */
+    }
+
+    div.box.box2 {
+        padding: 100px;
+        width: 80vh;
+        border: 2px solid black;
+        display: none;
+        /* removes everthing */
+    }
+     div.box.box3 {
+        padding: 100px;
+        width: 80vh;
+        border: 2px solid black;
+      visibility: hidden;
+    
+      /* hides it but space stays  */
+    }
+    div.box.box4{
+        padding: 15px;
+        border: 2px solid black;
+        width: 50vh;
+        height: 20vw;
+        background-color: blueviolet;
+    }
+</style>
+
+<body>
+    <div class="box box1">I am a Box</div>
+    <div class="box box2">I am a Box</div>
+    <div class="box box3">I am a Box</div>
+    <div class="box box4">I am a Box</div>
+</body>
+
+</html>
