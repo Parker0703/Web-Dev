@@ -1,0 +1,1 @@
+ffmpeg -v error -y -i voice.mp3 -i music.wav -i sfx.wav -i amb.wav -filter_complex "[0:a]aresample=44100,asplit=2[v][vk];[1:a][vk]sidechaincompress=threshold=0.03:ratio=6:attack=20:release=300[m];[v][m][2:a][3:a]amix=inputs=4:normalize=0:weights='1 0.6 0.9 0.8',alimiter=limit=0.95,loudnorm=I=-14:TP=-1.5:LRA=11,afade=t=out:st=72.2:d=1.4[o]" -map "[o]" -t 73.6 -ar 44100 mix.wav
