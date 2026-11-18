@@ -38,6 +38,9 @@ Word-by-word, synced to the MP3, TOP of screen, small all-caps, wide letter spac
 ## 4. Characters, props, camera (all styles)
 - Arms come out of the shoulders; relaxed arms hang down naturally (no wide loops).
 - **No hand, prop, stamp or overlay ever covers a face** (or the body).
+- **Arms must never look deformed or point opposite ways.** Both arms bend the same natural way, matching the direction the character faces (standing, sitting, walking, running, seen from behind). Default: both arms relaxed, hanging down. Only ONE arm does an action (holding, pointing, presenting); the other stays relaxed. Never pose both arms unless the action truly needs two hands, and then check the elbows bend symmetrically.
+- **Props are used the real way**: books/papers/phones are held and read naturally (book open toward the reader, we see its back cover), never held up flat like a sign. Nothing held covers the face.
+- **Screens must stay visible**: in over-the-shoulder shots at a TV/monitor, keep the character small enough that the screen is clearly readable.
 - **FRONT view by default.** Use 3/4 ONLY when the character does something in a direction (walking/running, handing something over, rushing to someone). Never full side profiles.
 - **3/4 face rule** (StoryBit C, `turnFace()` in `projects/ko/style5.js`): features wrap around the round head toward the facing side — near eye full size, far eye narrower near the far edge, mouth shifted; hair/hats shift too and never cover the eyes. Mirrors for left-facing.
 - **Seated people actually sit** behind the table edge; nobody stands inside furniture. Tables with both sides: far side faces camera behind the table, near side seen from behind low chair backs. Nobody cut at the frame edge.
