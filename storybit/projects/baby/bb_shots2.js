@@ -49,6 +49,16 @@ function hippo(c,k,t,o={}){if(k<=0)return;c.save();c.lineCap='round';c.lineJoin=
 function album(c,x,y,s,rot,photos){c.save();c.translate(x,y);c.rotate(rot);c.lineJoin='round';c.fillStyle='#7a3a2a';c.strokeStyle=K2;c.lineWidth=5*s;rr(c,-120*s,-78*s,240*s,156*s,10*s);c.fill();c.stroke();
   for(const sd of [-1,1]){c.fillStyle='#f6f0e2';rr(c,sd>0?4*s:-112*s,-70*s,108*s,140*s,6*s);c.fill();c.stroke();for(const [px,py] of [[-36,-36],[36,-36],[-36,30],[36,30]]){const cx=sd*58*s+px*0.62*s,cy=py*s;c.strokeStyle='rgba(120,100,80,0.55)';c.lineWidth=2.4*s;c.setLineDash([6*s,5*s]);c.strokeRect(cx-22*s,cy-26*s,44*s,44*s);c.setLineDash([]);}}
   c.strokeStyle=K2;c.lineWidth=4*s;seg(c,0,-72*s,0,72*s);c.restore();}
+function bookRead(c,x,y,s,t){c.save();c.translate(x,y);c.lineJoin='round';c.strokeStyle=K2;c.lineWidth=5*s;const sw=Math.sin(t*1.3)*2*s;
+  // page block peeking over the covers (pages face the reader, we see their top edges)
+  c.fillStyle='#f6f0e2';c.beginPath();c.moveTo(-108*s,-34*s);c.quadraticCurveTo(-54*s,-58*s,0,-44*s);c.quadraticCurveTo(54*s,-58*s,108*s,-34*s);c.lineTo(100*s,-20*s);c.lineTo(-100*s,-20*s);c.closePath();c.fill();c.stroke();
+  c.strokeStyle='rgba(120,100,80,0.45)';c.lineWidth=2*s;for(let i=1;i<4;i++){c.beginPath();c.moveTo(-100*s,(-34+i*4)*s);c.quadraticCurveTo(-54*s,(-56+i*4)*s,0,(-44+i*4)*s);c.quadraticCurveTo(54*s,(-56+i*4)*s,100*s,(-34+i*4)*s);c.stroke();}
+  // two back covers angled toward us
+  for(const sd of [-1,1]){const g=c.createLinearGradient(0,0,sd*120*s,0);g.addColorStop(0,'#5a2a1c');g.addColorStop(1,sd>0?'#8a4a30':'#6a3424');c.fillStyle=g;c.strokeStyle=K2;c.lineWidth=5*s;
+    c.beginPath();c.moveTo(0,-40*s);c.lineTo(sd*112*s,(-30+sw*sd*0.3)*s);c.lineTo(sd*104*s,62*s);c.lineTo(0,70*s);c.closePath();c.fill();c.stroke();
+    c.strokeStyle='rgba(255,220,170,0.35)';c.lineWidth=3*s;c.beginPath();c.moveTo(sd*20*s,-30*s);c.lineTo(sd*96*s,-22*s);c.stroke();}
+  c.fillStyle='#3a1a10';c.strokeStyle=K2;c.lineWidth=4*s;rr(c,-9*s,-44*s,18*s,116*s,6*s);c.fill();c.stroke();
+  c.restore();}
 function chest(c,x,y,s,t,glow){c.save();c.translate(x,y);c.lineJoin='round';const gw=glow*(0.85+Math.sin(t*5)*0.15);
   if(gw>0){c.save();c.globalCompositeOperation='lighter';const g=c.createRadialGradient(0,-40*s,0,0,-40*s,420*s);g.addColorStop(0,`rgba(255,200,110,${0.45*gw})`);g.addColorStop(1,'rgba(255,150,60,0)');c.fillStyle=g;c.fillRect(-500*s,-500*s,1000*s,900*s);c.restore();}
   c.fillStyle='rgba(0,0,0,0.4)';c.beginPath();c.ellipse(0,120*s,260*s,36*s,0,0,TAU);c.fill();
@@ -104,10 +114,10 @@ BV.purpose=(c,t,u,d)=>{richBG(c,t,'30,12,40');const t0=BV.purpose.t0,tp=wb('purp
   bbCine(c,t,{v:0.6});};
 // 2 · "Give me 60 seconds, and I'll show you where those memories went." grown-up you, in your old nursery, holding an empty album
 BV.give=(c,t,u,d)=>{camAt(c,'nu_wide',[0.0,1.3,-0.9],K3(u,d,1.05,1.15),{oy:-420});
-  const tw=wb('memories',8.6);const P=[-0.8,0,-2.0];const r=who(c,'dad',P,BF(t>tw?'wide':'dot',t>tw?'up':'worried',t>tw?'o':'flat',{hf:[28,74],hb:[-28,74],seed:3,look:[0,4]}));
-  const mx=(r.hf.x+r.hb.x)/2,my=(r.hf.y+r.hb.y)/2+10;const ps=pp(P).s;album(c,mx,my+30*ps,ps*0.6,0.04,[]);
+  const tw=wb('memories',8.6);const ts=W_.find(w=>w.x==='60').t,wk=sgB(t,ts+0.45,ts+1.35);const P=[lerp(-2.2,-0.8,EZ.out(wk)),0,-2.0];const walking=wk>0&&wk<1;const r=who(c,'dad',P,BF(t>tw?'wide':'dot',t>tw?'up':'worried',t>tw?'o':'flat',walking?{walk:1,ph:t*9,view:'3q',f:1,hf:[40,46],hb:[-40,46],seed:3}:{hf:[42,44],hb:[-42,44],seed:3,look:[0,7]}));
+  const mx=(r.hf.x+r.hb.x)/2,my=(r.hf.y+r.hb.y)/2;const ps=pp(P).s;bookRead(c,mx,my-8*ps,ps*0.62,t);
   // the photos fly out of the album and turn to dust
-  if(t>tw-0.3)for(let i=0;i<5;i++){const k=sgB(t,tw-0.3+i*0.1,tw+0.9+i*0.1);if(k<=0||k>=1)continue;const x=mx+(i-2)*60*ps*0.3+k*(i-2)*280,y=my-k*700-Math.sin(k*3)*40;c.save();c.globalAlpha=1-k*k;c.translate(x,y);c.rotate(k*4*(i%2?1:-1));c.fillStyle='#fbf8f0';c.strokeStyle=K2;c.lineWidth=4;c.fillRect(-40,-48,80,96);c.strokeRect(-40,-48,80,96);c.fillStyle=['#f2b4c4','#9ccbe8','#f6dcc0','#c8e0a8','#f8d4dc'][i];c.fillRect(-32,-40,64,64);c.restore();
+  if(t>tw-0.3)for(let i=0;i<5;i++){const k=sgB(t,tw-0.3+i*0.1,tw+0.9+i*0.1);if(k<=0||k>=1)continue;const sd=i%2?1:-1,x=mx+sd*(90+EZ.out(k)*(260+i*60)),y=my-60-k*(500+i*60);c.save();c.globalAlpha=1-k*k;c.translate(x,y);c.rotate(k*4*(i%2?1:-1));c.fillStyle='#fbf8f0';c.strokeStyle=K2;c.lineWidth=4;c.fillRect(-40,-48,80,96);c.strokeRect(-40,-48,80,96);c.fillStyle=['#f2b4c4','#9ccbe8','#f6dcc0','#c8e0a8','#f8d4dc'][i];c.fillRect(-32,-40,64,64);c.restore();
     for(let j=0;j<8;j++){c.fillStyle=`rgba(255,230,200,${0.7*(1-k)})`;c.beginPath();c.arc(x+(hash(i*9+j)-0.5)*160*k,y+(hash(i*7+j)-0.5)*160*k+60*k,3+hash(j)*4,0,TAU);c.fill();}}
   c.restore();bbCine(c,t,{v:0.45});};
 // 4 · "Your first steps." the baby wobbles from the crib toward dad's open hands
