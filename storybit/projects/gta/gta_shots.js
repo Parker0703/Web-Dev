@@ -22,10 +22,9 @@ GV.tvots=(c,t,u,d)=>{camAt(c,'ht_ots',[0.5,1.25,-2.3],K3(u,d,1.03,1.1),{oy:60});
   who(c,'hacker',[0.4,0,-1.55],BF('focus','flat','flat',{back:1,seed:3,hf:[10,90],hb:[-10,90]}));
   c.restore();lens(c,t);};
 // 2 · "Give me 60 seconds…" the vault: the GTA VI box under lasers
-GV.vault=(c,t,u,d)=>{camAt(c,'v_wide',[0,1.1,-1.6],K3(u,d,1.5,1.75),{oy:120});const p=pp([0,0.87,-1.6]);
-  glowAt(c,p.x,p.y-80,260,'255,120,200',0.4);gtaBox(c,p.x,p.y-p.s*30,p.s*0.17,0,{});
-  c.save();c.globalCompositeOperation='lighter';for(let i=0;i<7;i++){const y=p.y-p.s*(10+i*8)+Math.sin(t*2+i)*6;c.strokeStyle='rgba(255,40,40,0.75)';c.lineWidth=3;c.beginPath();c.moveTo(-200,y+(i-3)*30);c.lineTo(W+200,y-(i-3)*30);c.stroke();}c.restore();
-  c.restore();lens(c,t,{v:0.6});};
+GV.vault=(c,t,u,d)=>{camAt(c,'v_wide',[0,1.0,-1.6],K3(u,d,1.2,1.35),{oy:160});c.restore();vaultSec(c,t);
+  lens(c,t,{v:0.6});};
+function vaultSec(c,t){c.fillStyle='rgba(8,4,12,0.45)';c.fillRect(0,0,W,H);securityDisplay(c,540,1640,1.15,t);secCam(c,90,560,1.2,0.55,t,0);c.save();c.translate(W,0);c.scale(-1,1);secCam(c,90,560,1.2,0.55,t,0.5);c.restore();beacon(c,250,500,1.2,t);beacon(c,830,500,1.2,t+0.4);}
 // 3 · "…and what it cost him." the secure hospital corridor, a heavy door swings shut
 GV.costhim=(c,t,u,d)=>{camAt(c,'hp_hall',[0,1.2,-6],K3(u,d,1.15,1.35),{oy:0});c.restore();const k=EZ.in(sgB(t,LT(3)+0.6,LT(3)+1.2));if(k>0){c.save();c.fillStyle=`rgba(0,0,0,${k*0.85})`;c.fillRect(0,0,W*k*0.5,H);c.fillRect(W-W*k*0.5,0,W*k*0.5,H);c.restore();}lens(c,t,{v:0.7});};
 // 4 · "September 2022." calendar slam over a dark city
@@ -36,15 +35,16 @@ GV.sept=(c,t,u,d)=>{darkStage(c,t,'16,20,40');const k=popK(t,LT(4)-0.05,0.35);if
 GV.studio=(c,t,u,d)=>{const tg=wb('most',16.1)-0.05;if(t>=tg){GV.vaultLock(c,t,t-tg,d-(tg-GV.studio.t0));return;}camAt(c,'st_wide',[0.6,1.3,-1.6],K3(u,d,1.15,1.3),{oy:-60});
   who(c,'dev1',[0.7,0,-0.9],BF('happy','up','smile',{seed:4,view:'3q',f:1,hf:[60,24],hb:[-10,90]}));who(c,'dev2',[1.6,0,-0.6],BF('dot','up','smile',{seed:5,hf:[10,90],hb:[-10,90]}));
   c.restore();lens(c,t);};
-GV.vaultLock=(c,t,u,d)=>{camAt(c,'v_wide',[0,1.1,-1.6],1.55+u*0.06,{oy:120});const p=pp([0,0.87,-1.6]);glowAt(c,p.x,p.y-80,260,'255,120,200',0.4);gtaBox(c,p.x,p.y-p.s*30,p.s*0.17,0,{});c.restore();
+GV.vaultLock=(c,t,u,d)=>{camAt(c,'v_wide',[0,1.0,-1.6],1.35+u*0.05,{oy:160});c.restore();vaultSec(c,t);
   // lock icons + bars slam in
-  for(let i=0;i<3;i++){const k=popK(t,GV.studio.t0+(wb('most',16.1)-GV.studio.t0)+0.15+i*0.18,0.3);if(k<=0)continue;c.save();c.translate(270+i*270,560);c.scale(k,k);c.fillStyle='#f6c21a';c.strokeStyle=K2;c.lineWidth=7;rr(c,-60,-20,120,100,14);c.fill();c.stroke();c.lineWidth=16;c.strokeStyle=K2;c.beginPath();c.arc(0,-20,38,Math.PI,0);c.stroke();c.lineWidth=8;c.strokeStyle='#c8ccd4';c.stroke();c.fillStyle=K2;c.beginPath();c.arc(0,22,12,0,TAU);c.fill();c.fillRect(-5,22,10,30);c.restore();}
+  for(let i=0;i<3;i++){const k=popK(t,GV.studio.t0+(wb('most',16.1)-GV.studio.t0)+0.15+i*0.18,0.3);if(k<=0)continue;c.save();c.translate(270+i*270,760);c.scale(k*0.8,k*0.8);c.fillStyle='#f6c21a';c.strokeStyle=K2;c.lineWidth=7;rr(c,-60,-20,120,100,14);c.fill();c.stroke();c.lineWidth=16;c.strokeStyle=K2;c.beginPath();c.arc(0,-20,38,Math.PI,0);c.stroke();c.lineWidth=8;c.strokeStyle='#c8ccd4';c.stroke();c.fillStyle=K2;c.beginPath();c.arc(0,22,12,0,TAU);c.fill();c.fillRect(-5,22,10,30);c.restore();}
   lens(c,t,{v:0.6});};
 // 6 · "The hacker is a British teenager." spotlight intro + flag
 GV.intro=(c,t,u,d)=>{darkStage(c,t,'20,22,40');c.save();const z=1+u*0.05;c.translate(540,1300);c.scale(z,z);c.translate(-540,-1300);L2={dx:1,rim:'#9ab0ff',amb:'#4a4a7a',key:'rgba(255,205,150,'};
+  flagWave(c,640,1720,1180,380,t,sgB(t,wb('british',18.9)-0.5,wb('british',18.9)+0.4),jackDraw);
   c.fillStyle='rgba(255,255,255,0.07)';c.beginPath();c.moveTo(380,0);c.lineTo(700,0);c.lineTo(860,1720);c.lineTo(220,1720);c.closePath();c.fill();c.fillStyle='rgba(255,255,255,0.1)';c.beginPath();c.ellipse(540,1720,330,60,0,0,TAU);c.fill();
-  const r=who(c,'hacker',[0,0,0],Object.assign(BF('sly','flat','smirk',{seed:3,hf:[10,90],hb:[-10,90]}),{abs:{x:540,y:1720,s:2.6}}));c.restore();
-  unionJack(c,840,700,200,popK(t,wb('british',18.9)-0.05,0.35));lens(c,t);};
+  const r=who(c,'hacker',[0,0,0],Object.assign(BF('sly','flat','smirk',{seed:3,hf:[10,90],hb:[-10,90]}),{abs:{x:430,y:1720,s:2.6}}));c.restore();
+  lens(c,t);};
 // 7 · "He's already on bail for hacking other giant companies." three giant towers, each screen turns red
 GV.bail=(c,t,u,d)=>{darkStage(c,t,'14,16,30');const t0=GV.bail.t0;c.save();const z=1.05+u*0.04;c.translate(540,1000);c.scale(z,z);c.translate(-540,-1000);
   for(let i=0;i<3;i++){const x=220+i*320,h=900+(i===1?220:0),y=1720-h;c.fillStyle='#22263a';c.strokeStyle=K2;c.lineWidth=7;c.fillRect(x-110,y,220,h);c.strokeRect(x-110,y,220,h);
