@@ -43,7 +43,7 @@ BV.mice=(c,t,u,d)=>{const M=[0.02,0.94,-0.55];camAt(c,'ml_arena',[0.02,1.02,-0.5
 BV.key=(c,t,u,d)=>{const G0=[0.04,0.02,-0.3];CP=PM.al_drain;const g0=pp(G0);
   // the drop: falls in, bounces once on the bars, tips toward the slot
   const td=76.85,fall=clamp((t-td)/0.32),bnc=clamp((t-td-0.32)/0.45);let ky,ang,kx=0;
-  if(t<td+0.32){ky=-900*(1-fall*fall);ang=-0.6+fall*0.9;}else{ky=-Math.sin(bnc*Math.PI)*170*(1-bnc*0.3);ang=0.3+bnc*0.5;kx=bnc*30;}
+  if(t<td+0.32){ky=-900*(1-fall*fall);ang=-0.6+fall*0.9;}else{ky=-Math.sin(bnc*Math.PI)*170*(1-bnc*0.3);ang=0.3+bnc*0.5;kx=bnc*6;}
   const sink=clamp((t-77.85)/0.5);
   cam(c,'al_drain',{z:K3(u,d,2.2,2.45),x:g0.x+40,y:g0.y-160,r:-0.04});c.save();c.setTransform(SS,0,0,SS,0,0);tiltBlur(c,700,1120,9);c.restore();
   {c.save();c.globalCompositeOperation='lighter';const lp=c.createRadialGradient(g0.x+260,g0.y-40,0,g0.x+260,g0.y-40,520);lp.addColorStop(0,'rgba(255,170,80,0.32)');lp.addColorStop(1,'rgba(255,140,60,0)');c.fillStyle=lp;c.fillRect(g0.x-600,g0.y-600,1400,1200);
@@ -55,10 +55,5 @@ BV.key=(c,t,u,d)=>{const G0=[0.04,0.02,-0.3];CP=PM.al_drain;const g0=pp(G0);
   c.save();if(sink>0){c.beginPath();c.rect(0,0,W,g0.y+10*s);c.clip();}
   charm(c,kxp+Math.cos(ang)*(-30)*s,kyp+Math.sin(ang)*(-30)*s,s*1.0,Math.sin(t*9)*0.4*(1-bnc)+0.2,1,t);
   keyProp(c,kxp,kyp,s,ang,{});c.restore();
-  glowAt(c,kxp,kyp,160*s,'255,200,120',0.3);
+  glowAt(c,kxp,kyp,160*s,'255,200,120',0.3*(1-sink));if(sink>0)glowAt(c,kxp,g0.y+10*s,300*s,'255,190,100',0.9*(1-sgB(t,78.3,79.1)));
   c.restore();rain(c,t,{n:200,ang:0.08,ground:[1150,1780]});bbCine(c,t,{v:0.6});};
-const VSEQ=[['bday',10.32],['mice',70.8],['key',76.79]];
-SHOTS.push([0,(c,t)=>{c.fillStyle='#111';c.fillRect(0,0,W,H);}]);
-VSEQ.forEach(([k,t0])=>{BV[k].t0=t0;SHOTS.push([t0,(c,t,u,d)=>BV[k](c,t,u,d)]);});
-SHOTS.push([11.8,(c,t)=>{c.fillStyle='#111';c.fillRect(0,0,W,H);}],[74.6,(c,t)=>{c.fillStyle='#111';c.fillRect(0,0,W,H);}]);
-SHOTS.sort((a,b)=>a[0]-b[0]);
