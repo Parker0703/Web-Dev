@@ -168,3 +168,6 @@ function charm(c,x,y,s,swing,glow,t){c.save();c.translate(x,y);c.rotate(swing);c
   c.restore();}
 
 {const _hb=hairLayer;hairLayer=function(c,R,s,f,o,K){if(K&&K.hair4==='babyNone')return;return _hb(c,R,s,f,o,K);};}
+// fuller, lighter trousers on this video's grown-ups (thin dark legs read as "no legs" at wide sizes)
+Object.assign(KIND2.dad,{pants:'#4a6a9a',legW:1.65});Object.assign(KIND2.mom,{pants:'#5a5070',legW:1.6});Object.assign(KIND2.sci,{pants:'#5a6478',legW:1.6});Object.assign(KIND2.sci2,{pants:'#6a5a48',legW:1.65});
+{const _l2=limb2;limb2=function(c,a,e,b,w,col,s){if(w===15&&_KK&&_KK.legW)w=15*_KK.legW;return _l2(c,a,e,b,w,col,s);};}

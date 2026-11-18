@@ -1,7 +1,7 @@
 'use strict';
 // ===================== Baby memories · full shot list =====================
 const sgB=(t,a,b)=>clamp((t-a)/(b-a));
-const wb=(word,after=0)=>{const w=W_.find(q=>q.t>=after-0.01&&q.x.toLowerCase().replace(/[^a-z0-9'-]/g,'').startsWith(word));return w?w.t:after;};
+const wb=(word,near=0)=>{let best=null;for(const q of W_){if(!q.x.toLowerCase().replace(/[^a-z0-9'-]/g,'').startsWith(word))continue;if(!best||Math.abs(q.t-near)<Math.abs(best.t-near))best=q;}return best?best.t:near;};
 // ---------- shared graphics ----------
 function heartP(c,x,y,r){c.beginPath();c.moveTo(x,y+r*0.9);c.bezierCurveTo(x-r*1.4,y,x-r*0.8,y-r*1.1,x,y-r*0.45);c.bezierCurveTo(x+r*0.8,y-r*1.1,x+r*1.4,y,x,y+r*0.9);c.closePath();}
 function redX(c,x,y,r,k){if(k<=0)return;c.save();c.translate(x,y);c.scale(k,k);c.fillStyle='#e8342a';c.strokeStyle=K2;c.lineWidth=r*0.12;c.beginPath();c.arc(0,0,r,0,TAU);c.fill();c.stroke();c.strokeStyle='#fff';c.lineWidth=r*0.22;c.lineCap='round';c.beginPath();c.moveTo(-r*0.4,-r*0.4);c.lineTo(r*0.4,r*0.4);c.moveTo(r*0.4,-r*0.4);c.lineTo(-r*0.4,r*0.4);c.stroke();c.restore();}
@@ -300,10 +300,12 @@ BV.notgone=(c,t,u,d)=>{richBG(c,t,'26,14,40');const t0=BV.notgone.t0;const z=ler
   for(let i=0;i<24;i++){const p=(t*0.25+hash(i))%1;c.fillStyle=`rgba(255,220,150,${0.6*Math.sin(p*Math.PI)})`;c.beginPath();c.arc(540+(hash(i*3)-0.5)*600,1200-p*700,2+hash(i*5)*4,0,TAU);c.fill();}
   c.restore();bbCine(c,t,{v:0.6});};
 // end: the key shot gets a fade to black after the last word
-{const _k=BV.key;BV.key=(c,t,u,d)=>{_k(c,t,u,d);const f=sgB(t,78.35,79.3);if(f>0){c.save();c.setTransform(SS,0,0,SS,0,0);c.fillStyle=`rgba(0,0,0,${f})`;c.fillRect(0,0,W,H);c.restore();}};}
+{const _k=BV.key;BV.key=(c,t,u,d)=>{_k(c,t,u,d);const f=sgB(t,wb('key',77.5)+0.75,79.3);if(f>0){c.save();c.setTransform(SS,0,0,SS,0,0);c.fillStyle=`rgba(0,0,0,${f})`;c.fillRect(0,0,W,H);c.restore();}};}
 KIND2.kid7=Object.assign(mkK({coat:'#e8743a',trim:'#fff3e6',skin:SK[2],pants:'#34445e'}),{robe:false,long:false,hair4:'swoop',hair:'#3a2418'});
 // ---------- the edit ----------
-const BSEQ=[['hook',0],['purpose',3.5],['give',4.98],['bday',10.32],['steps',11.84],['word',12.55],['gone',13.72],['amnesia',14.79],['everyone',17.6],['weird',19.45],['fine',21.25],['toy',23.47],['scan',26.35],['wrong',31.75],
-  ['site',33.44],['million',36.0],['newn',39.49],['wire',42.71],['scramble',44.74],['road',47.1],['nowords',50.25],['file',52.24],['seven',55.29],['think',58.93],['four',61.27],['madeup',65.32],['twist',68.49],['inmice',69.97],['mice',70.8],['notgone',74.61],['key',76.79]];
+const LN=i=>L[i].a-0.05;
+const BSEQ=[['hook',0],['purpose',LN(1)],['give',LN(2)],['bday',LN(4)],['steps',LN(5)],['word',wb('your',12.5)-0.05],['gone',LN(6)],['amnesia',LN(7)],['everyone',LN(8)],['weird',LN(9)],['fine',LN(10)],['toy',LN(11)],['scan',LN(12)],['wrong',LN(13)],
+  ['site',LN(14)],['million',LN(15)],['newn',LN(16)],['wire',LN(17)],['scramble',LN(18)],['road',LN(19)],['nowords',LN(20)],['file',LN(21)],['seven',LN(22)],['think',LN(23)],['four',LN(24)],['madeup',LN(25)],['twist',LN(26)],['inmice',LN(27)],['mice',LN(28)],['notgone',LN(29)],['key',LN(30)]];
 SHOTS.length=0;BSEQ.forEach(([k,t0])=>{BV[k].t0=t0;SHOTS.push([t0,(c,t,u,d)=>BV[k](c,t,u,d)]);});SHOTS.sort((a,b)=>a[0]-b[0]);
 KEY.clear();['DELETED','PURPOSE','60','GONE','AMNESIA','HIPPOCAMPUS','MILLION','SCRAMBLE','SEVEN','MADE','TWIST','KEY'].forEach(w=>KEY.add(w));
+Object.assign(KIND2.kid7,{pants:'#4a6a9a',legW:1.5});

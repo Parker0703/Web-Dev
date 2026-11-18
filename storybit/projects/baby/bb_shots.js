@@ -26,9 +26,9 @@ BV.bday=(c,t,u,d)=>{const B=[0.35,0,-0.5];camAt(c,'nu_low',[0.35,0.3,-0.45],K3(u
   c.restore();bbCine(c,t,{v:0.45});};
 // TEST B · "In mice, scientists switched forgotten baby memories back on." blue light through the fiber, a memory lights up
 BV.mice=(c,t,u,d)=>{const M=[0.02,0.94,-0.55];camAt(c,'ml_arena',[0.02,1.02,-0.55],K3(u,d,2.3,2.5),{oy:20});
-  const pm=pp(M);const on=clamp((t-71.7)/0.25);const r=mouse(c,{x:pm.x,y:pm.y,s:pm.s*0.16,f:1,eyes:on>0.5?'wide':'dot',fiber:on,seed:0.3,look:-0.3,cable:900});
+  const pm=pp(M);const on=clamp((t-wb('switched',71.5))/0.25);const r=mouse(c,{x:pm.x,y:pm.y,s:pm.s*0.16,f:1,eyes:on>0.5?'wide':'dot',fiber:on,seed:0.3,look:-0.3,cable:900});
   // memory orb rising from the mouse's head: inside, the baby mouse snuggled against its mother
-  const k=EZ.out(clamp((t-71.9)/0.6));if(k>0){const s=pm.s*0.16,R=52*s*(0.6+0.4*k),ox=r.head.x-50*s,oy=r.head.y-(30+36*k)*s;c.save();c.globalAlpha=k;
+  const k=EZ.out(clamp((t-wb('switched',71.5)-0.2)/0.6));if(k>0){const s=pm.s*0.16,R=52*s*(0.6+0.4*k),ox=r.head.x-50*s,oy=r.head.y-(30+36*k)*s;c.save();c.globalAlpha=k;
     // light threads from the implant into the orb
     c.save();c.globalCompositeOperation='lighter';c.strokeStyle='rgba(120,190,255,0.6)';c.lineWidth=2*s;for(let i=0;i<5;i++){c.beginPath();c.moveTo(r.head.x,r.head.y);c.quadraticCurveTo(r.head.x+(i-2)*14*s,r.head.y-30*s,ox+(i-2)*12*s,oy+R*0.9);c.stroke();}c.restore();
     const g=c.createRadialGradient(ox,oy,0,ox,oy,R*1.5);g.addColorStop(0,'rgba(140,200,255,0.35)');g.addColorStop(0.7,'rgba(90,150,255,0.18)');g.addColorStop(1,'rgba(90,150,255,0)');c.fillStyle=g;c.beginPath();c.arc(ox,oy,R*1.5,0,TAU);c.fill();
@@ -42,9 +42,9 @@ BV.mice=(c,t,u,d)=>{const M=[0.02,0.94,-0.55];camAt(c,'ml_arena',[0.02,1.02,-0.5
 // TEST C · "You just lost the key." rain at night, the brass key with its memory locket bounces on the drain grate
 BV.key=(c,t,u,d)=>{const G0=[0.04,0.02,-0.3];CP=PM.al_drain;const g0=pp(G0);
   // the drop: falls in, bounces once on the bars, tips toward the slot
-  const td=76.85,fall=clamp((t-td)/0.32),bnc=clamp((t-td-0.32)/0.45);let ky,ang,kx=0;
+  const td=wb('lost',77.1)-0.32,fall=clamp((t-td)/0.32),bnc=clamp((t-td-0.32)/0.45);let ky,ang,kx=0;
   if(t<td+0.32){ky=-900*(1-fall*fall);ang=-0.6+fall*0.9;}else{ky=-Math.sin(bnc*Math.PI)*170*(1-bnc*0.3);ang=0.3+bnc*0.5;kx=bnc*6;}
-  const sink=clamp((t-77.85)/0.5);
+  const sink=clamp((t-wb('key',77.5)-0.3)/0.5);
   cam(c,'al_drain',{z:K3(u,d,2.2,2.45),x:g0.x+40,y:g0.y-160,r:-0.04});c.save();c.setTransform(SS,0,0,SS,0,0);tiltBlur(c,700,1120,9);c.restore();
   {c.save();c.globalCompositeOperation='lighter';const lp=c.createRadialGradient(g0.x+260,g0.y-40,0,g0.x+260,g0.y-40,520);lp.addColorStop(0,'rgba(255,170,80,0.32)');lp.addColorStop(1,'rgba(255,140,60,0)');c.fillStyle=lp;c.fillRect(g0.x-600,g0.y-600,1400,1200);
     for(let i=0;i<4;i++){const x=g0.x+120+i*90+Math.sin(t*2+i)*6;const sg2=c.createLinearGradient(0,g0.y-200,0,g0.y+500);sg2.addColorStop(0,'rgba(255,190,110,0)');sg2.addColorStop(0.4,`rgba(255,190,110,${0.18-i*0.03})`);sg2.addColorStop(1,'rgba(255,190,110,0)');c.fillStyle=sg2;c.fillRect(x-10-i*3,g0.y-200,20+i*6,700);}c.restore();}
@@ -55,5 +55,5 @@ BV.key=(c,t,u,d)=>{const G0=[0.04,0.02,-0.3];CP=PM.al_drain;const g0=pp(G0);
   c.save();if(sink>0){c.beginPath();c.rect(0,0,W,g0.y+10*s);c.clip();}
   charm(c,kxp+Math.cos(ang)*(-30)*s,kyp+Math.sin(ang)*(-30)*s,s*1.0,Math.sin(t*9)*0.4*(1-bnc)+0.2,1,t);
   keyProp(c,kxp,kyp,s,ang,{});c.restore();
-  glowAt(c,kxp,kyp,160*s,'255,200,120',0.3*(1-sink));if(sink>0)glowAt(c,kxp,g0.y+10*s,300*s,'255,190,100',0.9*(1-sgB(t,78.3,79.1)));
+  glowAt(c,kxp,kyp,160*s,'255,200,120',0.3*(1-sink));if(sink>0)glowAt(c,kxp,g0.y+10*s,300*s,'255,190,100',0.9*(1-sgB(t,wb('key',77.5)+0.75,79.1)));
   c.restore();rain(c,t,{n:200,ang:0.08,ground:[1150,1780]});bbCine(c,t,{v:0.6});};
