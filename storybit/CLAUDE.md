@@ -18,6 +18,12 @@ First time in a new environment: follow `SETUP.md`, then render one test still i
    - Raw, casual, a bit funny, short, fast; every fact TRUE and checked.
    - **[pause]** markers (lowercase, square brackets) where a pause helps — the only brackets allowed.
    - No "Follow for more" — end on a strong closing line.
+   - **Script structure (every script, no exceptions):**
+     1. **Spark a question** in the first line: a visual, verbal or text hook that makes the viewer ask "wait, how/why?".
+     2. **Build-up** strengthens that same question with stakes and surprising details. Never drag it out.
+     3. **Re-hook every few seconds**: a new twist, reveal, number or mini-question keeps them watching.
+     4. **Payoff** answers the question, educates, entertains and moves the viewer, and lands at the very END of the video, not earlier.
+     Before sending a script, check: question in line 1, a re-hook every few seconds, no slow patch, and the real answer saved for the end.
    - **If the user sends their own script: keep it word for word.** Only the opening line may change.
 3. **WAIT for the MP3.** Never storyboard, build or render before the user sends the voice MP3.
 4. **Storyboard first:** align, build all shots, render one still per shot, send **numbered** contact sheets. For a new setting, first agree the look on 2–3 test frames.
