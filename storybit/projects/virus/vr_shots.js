@@ -89,11 +89,21 @@ XV.years=(c,t,u,d)=>{richBG(c,t,'30,22,12');const t3=wb('3,500',49.8);const v=Ma
   // hourglass sand
   c.save();c.translate(540,1500);c.rotate(Math.sin(t*2)*0.05);c.strokeStyle=K2;c.lineWidth=8;c.fillStyle='rgba(220,240,255,0.25)';c.beginPath();c.moveTo(-90,-130);c.lineTo(90,-130);c.lineTo(10,0);c.lineTo(90,130);c.lineTo(-90,130);c.lineTo(-10,0);c.closePath();c.fill();c.stroke();const sf=(u/d);c.fillStyle='#e8c060';c.beginPath();c.moveTo(-70*(1-sf),-120+sf*100);c.lineTo(70*(1-sf),-120+sf*100);c.lineTo(0,-6);c.closePath();c.fill();c.beginPath();c.moveTo(-80*sf,124);c.lineTo(80*sf,124);c.lineTo(0,124-sf*100);c.closePath();c.fill();c.restore();lens(c,t);};
 // 18 · "The oldest traces come from sheep teeth on the Eurasian steppe." an archaeologist kneels at the trench, brushing a sheep skull; cut in on the teeth
-XV.dig=(c,t,u,d)=>{const tt=wb('teeth',54.0)-0.15;if(t<tt){camAt(c,'st_wide',[0.4,0.6,-1.6],K3(u,d,1.45,1.6),{oy:-80});const sk=pp([0.3,0.01,-1.45]);skull(c,sk.x,sk.y,sk.s*0.26,-0.1);
-    const P=[0.4,0,-1.95];const hf=reach(P,[0.32,0.06,-1.45],{crouch:56});sitAt(c,'arch',P,BF('focus','flat','flat',{seed:6,hf:[hf[0]+Math.sin(t*10)*4,hf[1]],hb:[-10,80],look:[0,7]}));
-    const r2=pp([0.32,0.05,-1.45]);for(let i=0;i<6;i++){const p=((t*1.5+i/6)%1);c.fillStyle=`rgba(180,140,90,${0.5*(1-p)})`;c.beginPath();c.arc(r2.x+(hash(i)-0.5)*80*p+20,r2.y-60*p,4+p*6,0,TAU);c.fill();}c.restore();lens(c,t,{v:0.45});return;}
-  camAt(c,'st_dig',[0,0.05,-1.0],K3(t-tt,d-(tt-XV.dig.t0),1.2,1.35),{oy:-40});const sk=pp([0.0,0.01,-1.0]);skull(c,sk.x,sk.y,sk.s*0.32,-0.1);lightPool(c,sk.x+20*sk.s*0.32,sk.y+24*sk.s*0.32,260,'255,230,170',0.35);c.restore();
-  const k=popK(t,tt+0.4,0.3);if(k>0){c.save();c.translate(780,700);c.scale(k,k);c.fillStyle='rgba(10,20,12,0.9)';c.strokeStyle='#7ae06a';c.lineWidth=6;c.beginPath();c.arc(0,0,110,0,TAU);c.fill();c.stroke();helix(c,0,0,170,44,t,{});c.restore();}lens(c,t,{v:0.45});};
+XV.dig=(c,t,u,d)=>{const tt=wb('teeth',54.0)-0.15;
+  if(t<tt){// close shot: his sleeve and hand come in from the side, the brush sweeps soil off the half-buried skull
+    camAt(c,'st_dig',[0,0.05,-1.0],K3(u,d,1.05,1.12),{oy:-40});const sk=pp([0.0,0.01,-1.0]);const ss=sk.s*0.3;const prog=sgB(t,XV.dig.t0,tt);skull(c,sk.x,sk.y+30,ss,-0.06,{dig:prog});
+    const sw=Math.sin(t*9),hx=sk.x+(60+sw*60)*ss,hy=sk.y+30-40*ss;
+    // sleeve + glove (deliberate close-up crop of the arm from the frame edge)
+    c.save();c.lineJoin='round';c.lineCap='round';c.strokeStyle=K2;c.lineWidth=118;c.beginPath();c.moveTo(1200,260);c.quadraticCurveTo(980,520,hx+120,hy-90);c.stroke();c.strokeStyle='#8a7a52';c.lineWidth=104;c.stroke();c.strokeStyle='rgba(255,240,200,0.25)';c.lineWidth=22;c.beginPath();c.moveTo(1180,250);c.quadraticCurveTo(960,500,hx+110,hy-110);c.stroke();
+    c.fillStyle='#d8c090';c.strokeStyle=K2;c.lineWidth=8;c.beginPath();c.ellipse(hx+120,hy-90,58,48,0.5,0,TAU);c.fill();c.stroke();c.restore();
+    digBrush(c,hx+120,hy-90,2.4,Math.PI-0.62+sw*0.06);
+    // the brush head always lands on the jaw; soil flicks off
+    for(let k=0;k<14;k++){const p=((t*2.6+k/14)%1);c.fillStyle=`rgba(140,100,60,${0.7*(1-p)})`;c.beginPath();c.arc(hx-40-sw*80*p-(hash(k)*120)*p,hy+30-120*p+200*p*p,(4+p*8),0,TAU);c.fill();}
+    lightPool(c,sk.x,sk.y,320,'255,230,170',0.2);c.restore();lens(c,t,{v:0.45});return;}
+  // close-up: the skull fills the frame, the cheek teeth light up, the virus DNA comes out of them
+  camAt(c,'st_dig',[0,0.05,-1.0],K3(t-tt,d-(tt-XV.dig.t0),1.15,1.3),{oy:-40});const sk=pp([0.0,0.01,-1.0]);const ss=sk.s*0.42;skull(c,sk.x+20,sk.y,ss,-0.06,{dig:1});
+  const tg=popK(t,tt+0.25,0.4);if(tg>0){lightPool(c,sk.x+20+20*ss,sk.y+12*ss,260,'140,255,150',0.45*tg);}c.restore();
+  const k=popK(t,tt+0.5,0.3);if(k>0){c.save();c.translate(800,640);c.scale(k,k);c.fillStyle='rgba(10,20,12,0.9)';c.strokeStyle='#7ae06a';c.lineWidth=6;c.beginPath();c.arc(0,0,120,0,TAU);c.fill();c.stroke();c.save();c.beginPath();c.arc(0,0,114,0,TAU);c.clip();helix(c,0,0,260,46,t,{glowOn:0});c.restore();c.restore();}lens(c,t,{v:0.45});};
 XV.howQ=(c,t,u,d)=>bookQ(c,t,u,d,LT(19)+0.2);
 // 20 · "Because the book is the animal." the closed book turns into the animal it came from
 XV.reveal=(c,t,u,d)=>{richBG(c,t,'40,26,16');const k=EZ.io(sgB(t,wb('animal',60.4)-0.5,wb('animal',60.4)+0.3));lightPool(c,540,1100,600,'255,200,120',0.25+0.2*k);

@@ -148,3 +148,36 @@ function uvTorch(c,x,y,ang,s,beamLen=700){c.save();c.translate(x,y);c.rotate(ang
   c.fillStyle='#2a2c34';rr(c,-150*s,-26*s,24*s,52*s,6*s);c.fill();c.strokeStyle=K2;c.lineWidth=4*s;c.stroke();
   const lg=c.createRadialGradient(0,0,0,0,0,40*s);lg.addColorStop(0,'#ffffff');lg.addColorStop(0.4,'#c89aff');lg.addColorStop(1,'#6a3ac8');c.fillStyle=lg;c.beginPath();c.ellipse(-4*s,0,10*s,32*s,0,0,TAU);c.fill();c.strokeStyle=K2;c.lineWidth=4*s;c.stroke();
   lightPool(c,0,0,90*s,'190,140,255',0.6);c.restore();}
+// ===================== detailed sheep skull (side view, half buried) =====================
+// length ~ 300 units at s=1; origin at the middle of the jaw line
+skull=function(c,x,y,s,rot=0,o={}){c.save();c.translate(x,y);c.rotate(rot);c.lineJoin='round';c.lineCap='round';const OLw=5*s;
+  const bone=(x0,x1)=>{const g=c.createLinearGradient(0,-90*s,0,40*s);g.addColorStop(0,'#f4ead2');g.addColorStop(0.55,'#e2d2ae');g.addColorStop(1,'#b8a07a');return g;};
+  // horn core curling back from the top of the cranium
+  c.fillStyle='#d8c6a0';c.strokeStyle=K2;c.lineWidth=OLw;c.beginPath();c.moveTo(-70*s,-78*s);c.bezierCurveTo(-150*s,-140*s,-215*s,-70*s,-175*s,-20*s);c.bezierCurveTo(-160*s,-2*s,-130*s,-12*s,-140*s,-34*s);c.bezierCurveTo(-155*s,-66*s,-112*s,-92*s,-60*s,-58*s);c.closePath();c.fill();c.stroke();
+  c.strokeStyle='rgba(120,90,50,0.45)';c.lineWidth=2.4*s;for(let i=0;i<7;i++){c.beginPath();c.arc(-150*s,-60*s,(22+i*9)*s,-2.4,-0.9);c.stroke();}
+  // mandible (lower jaw) with its cheek-tooth row
+  c.fillStyle=bone();c.strokeStyle=K2;c.lineWidth=OLw;c.beginPath();c.moveTo(-95*s,-10*s);c.quadraticCurveTo(-110*s,40*s,-70*s,52*s);c.lineTo(90*s,40*s);c.quadraticCurveTo(140*s,34*s,150*s,22*s);c.lineTo(140*s,12*s);c.lineTo(-40*s,22*s);c.quadraticCurveTo(-70*s,20*s,-74*s,-6*s);c.closePath();c.fill();c.stroke();
+  for(let i=0;i<6;i++){const tx=(-36+i*20)*s;c.fillStyle=i<3?'#fff6dc':'#f6ecd0';c.strokeStyle=K2;c.lineWidth=3*s;rr(c,tx,10*s,17*s,14*s,3*s);c.fill();c.stroke();c.strokeStyle='rgba(140,110,60,0.6)';c.lineWidth=1.6*s;seg(c,tx+8*s,12*s,tx+8*s,22*s);}
+  // cranium + face (upper skull)
+  c.fillStyle=bone();c.strokeStyle=K2;c.lineWidth=OLw;c.beginPath();c.moveTo(-110*s,-20*s);c.bezierCurveTo(-118*s,-80*s,-60*s,-104*s,-10*s,-96*s);c.bezierCurveTo(40*s,-90*s,110*s,-60*s,168*s,-28*s);c.quadraticCurveTo(182*s,-16*s,170*s,-4*s);c.lineTo(150*s,4*s);c.lineTo(-30*s,8*s);c.quadraticCurveTo(-96*s,8*s,-110*s,-20*s);c.closePath();c.fill();c.stroke();
+  // upper cheek-tooth row
+  for(let i=0;i<6;i++){const tx=(-36+i*20)*s;c.fillStyle='#fff8e2';c.strokeStyle=K2;c.lineWidth=3*s;rr(c,tx,-2*s,17*s,14*s,3*s);c.fill();c.stroke();c.strokeStyle='rgba(140,110,60,0.6)';c.lineWidth=1.6*s;seg(c,tx+8*s,0,tx+8*s,10*s);}
+  // big round eye socket (orbit) with depth
+  const og=c.createRadialGradient(-38*s,-50*s,2*s,-40*s,-46*s,30*s);og.addColorStop(0,'#1a120a');og.addColorStop(1,'#5a4026');c.fillStyle=og;c.strokeStyle=K2;c.lineWidth=OLw;c.beginPath();c.ellipse(-40*s,-48*s,26*s,24*s,-0.2,0,TAU);c.fill();c.stroke();
+  c.strokeStyle='rgba(255,250,230,0.7)';c.lineWidth=3*s;c.beginPath();c.ellipse(-40*s,-48*s,30*s,28*s,-0.2,-2.6,-1.2);c.stroke();
+  // zygomatic arch, nasal bone, nostril opening, sutures, foramina
+  c.strokeStyle='rgba(110,80,45,0.7)';c.lineWidth=3*s;c.beginPath();c.moveTo(-66*s,-22*s);c.quadraticCurveTo(-10*s,-12*s,40*s,-18*s);c.stroke();
+  c.beginPath();c.moveTo(-10*s,-92*s);c.quadraticCurveTo(80*s,-70*s,160*s,-30*s);c.stroke();
+  c.fillStyle='#3a2816';c.beginPath();c.moveTo(150*s,-22*s);c.quadraticCurveTo(168*s,-20*s,166*s,-8*s);c.quadraticCurveTo(150*s,-8*s,150*s,-22*s);c.fill();
+  c.strokeStyle='rgba(90,60,30,0.6)';c.lineWidth=2*s;c.beginPath();c.moveTo(-80*s,-80*s);for(let i=0;i<8;i++)c.lineTo((-72+i*6)*s,(-88+(i%2)*6)*s);c.stroke();c.beginPath();c.moveTo(20*s,-70*s);for(let i=0;i<6;i++)c.lineTo((24+i*6)*s,(-66+(i%2)*5)*s);c.stroke();
+  c.fillStyle='#3a2816';for(const [fx,fy] of [[40*s,-34*s],[70*s,-30*s]]){c.beginPath();c.ellipse(fx,fy,4*s,3*s,0,0,TAU);c.fill();}
+  // weathering: cracks + soil stains
+  c.strokeStyle='rgba(80,55,30,0.55)';c.lineWidth=1.8*s;c.beginPath();c.moveTo(10*s,-94*s);c.lineTo(22*s,-74*s);c.lineTo(14*s,-58*s);c.stroke();c.beginPath();c.moveTo(-100*s,10*s);c.lineTo(-84*s,26*s);c.stroke();
+  for(let i=0;i<10;i++){c.fillStyle=`rgba(120,85,45,${0.15+hash(i)*0.2})`;c.beginPath();c.ellipse((-90+hash(i*3)*240)*s,(-70+hash(i*5)*110)*s,(6+hash(i*7)*16)*s,(3+hash(i*9)*6)*s,hash(i)*3,0,TAU);c.fill();}
+  // soil still covering the lower edge
+  if(o.buried!==0){c.fillStyle='#7a5a3a';c.strokeStyle=K2;c.lineWidth=4*s;c.beginPath();c.moveTo(-200*s,36*s);for(let i=0;i<=20;i++)c.lineTo((-200+i*20)*s,(36+Math.sin(i*1.7)*6-(o.dig||0)*(i>6&&i<14?14:0))*s);c.lineTo(200*s,80*s);c.lineTo(-200*s,80*s);c.closePath();c.fill();
+    c.fillStyle='rgba(60,40,20,0.5)';for(let i=0;i<30;i++){c.beginPath();c.arc((-190+hash(i*2)*380)*s,(44+hash(i*4)*30)*s,(1.5+hash(i)*3)*s,0,TAU);c.fill();}}
+  c.restore();};
+// soft-bristle dig brush, held at the handle end (x,y = hand), pointing along ang
+function digBrush(c,x,y,s,ang){c.save();c.translate(x,y);c.rotate(ang);c.lineJoin='round';c.strokeStyle=K2;c.lineWidth=5*s;c.fillStyle='#a8743a';rr(c,-8*s,-6*s,110*s,12*s,6*s);c.fill();c.stroke();c.fillStyle='#c8ccd4';c.fillRect(100*s,-9*s,18*s,18*s);c.strokeRect(100*s,-9*s,18*s,18*s);
+  c.fillStyle='#e8d090';c.beginPath();c.moveTo(118*s,-11*s);c.lineTo(150*s,-15*s);c.lineTo(150*s,15*s);c.lineTo(118*s,11*s);c.closePath();c.fill();c.stroke();c.strokeStyle='rgba(120,90,40,0.6)';c.lineWidth=1.5*s;for(let i=-3;i<=3;i++)seg(c,120*s,i*3*s,150*s,i*4*s);c.restore();}
