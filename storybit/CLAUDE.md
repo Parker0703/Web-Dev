@@ -47,6 +47,13 @@ Word-by-word, synced to the MP3, TOP of screen, small all-caps, wide letter spac
 - **Arms must never look deformed or point opposite ways.** Both arms bend the same natural way, matching the direction the character faces (standing, sitting, walking, running, seen from behind). Default: both arms relaxed, hanging down. Only ONE arm does an action (holding, pointing, presenting); the other stays relaxed. Never pose both arms unless the action truly needs two hands, and then check the elbows bend symmetrically.
 - **Props are used the real way**: books/papers/phones are held and read naturally (book open toward the reader, we see its back cover), never held up flat like a sign. Nothing held covers the face.
 - **Screens must stay visible**: in over-the-shoulder shots at a TV/monitor, keep the character small enough that the screen is clearly readable.
+- **2D characters must truly live in the 3D set** (never look pasted on):
+  1. Grounding: feet exactly on plate ground via `pp()`, contact shadow + cast shadow matching the plate's light direction.
+  2. Depth/occlusion: furniture or objects in front of a character are redrawn over them (`occluder()`): desk edges, benches, door frames, shelves. People sit on real seats, stand behind real tables.
+  3. Real touch: hands go to projected 3D points of real objects (hand on desk, pulling a book from a shelf, turning a page, opening a door). Objects a character picks up or moves are NOT baked into the plate; draw them in 2D at their 3D spot so they can move.
+  4. Matching light: per-plate mood rim/ambient, local light sources (candle, screen, window) warm or tint the facing side of the character; one colour grade over both layers.
+  5. Camera: characters pinned to world coordinates so pans/push-ins move them correctly; perspective scale; distant characters get the same depth-of-field blur as the plate.
+  6. The world reacts: dust in light beams, flicker on characters, pages lifting, footprints, reflections on shiny floors.
 - **FRONT view by default.** Use 3/4 ONLY when the character does something in a direction (walking/running, handing something over, rushing to someone). Never full side profiles.
 - **3/4 face rule** (StoryBit C, `turnFace()` in `projects/ko/style5.js`): features wrap around the round head toward the facing side — near eye full size, far eye narrower near the far edge, mouth shifted; hair/hats shift too and never cover the eyes. Mirrors for left-facing.
 - **Seated people actually sit** behind the table edge; nobody stands inside furniture. Tables with both sides: far side faces camera behind the table, near side seen from behind low chair backs. Nobody cut at the frame edge.
