@@ -8,10 +8,7 @@ function deskFront(c){occluder(c,[[-0.7,0.78,-0.85],[0.7,0.78,-0.85],[0.7,0,-0.8
 function candles(c,t,a=1){for(const [i,p] of CANDLES.entries()){const q=pp(p);const fl=0.85+0.15*Math.sin(t*17+i*3)+0.08*Math.sin(t*31+i);lightPool(c,q.x,q.y-0.05*q.s*160,q.s*230,'255,170,80',0.22*fl*a);}}
 function libBeam(c,t){const a=pp([0,2.6,-4.85]),b=pp([0.2,0,-1.4]);dustBeam(c,t,a.x,a.y,b.x,b.y,140,46,'190,210,255');}
 // an open book lying on the desk at its 3D spot (so hands can touch it and pages can move)
-function deskBook(c,t,o={}){onQuad(c,[-0.3,0.905,-1.36],[0.3,0.905,-1.36],[-0.3,0.86,-0.95],600,400,(g,w,h)=>{g.fillStyle='#4a2a18';g.fillRect(0,0,w,h);g.fillStyle='#f0e2c0';g.fillRect(12,10,w/2-14,h-20);g.fillRect(w/2+2,10,w/2-14,h-20);
-  g.strokeStyle='rgba(60,40,20,0.55)';g.lineWidth=5;for(let i=0;i<10;i++){const y=40+i*32;g.beginPath();g.moveTo(40,y);g.lineTo(w/2-40-hash(i)*60,y);g.stroke();g.beginPath();g.moveTo(w/2+30,y);g.lineTo(w-40-hash(i*3)*60,y);g.stroke();}
-  g.fillStyle='#a8281e';g.fillRect(40,30,40,44);g.strokeStyle='#2a1a10';g.lineWidth=4;g.beginPath();g.moveTo(w/2,8);g.lineTo(w/2,h-8);g.stroke();
-  if(o.glow>0){g.save();g.globalCompositeOperation='lighter';const gg=g.createRadialGradient(w/2,h/2,0,w/2,h/2,w*0.6);gg.addColorStop(0,`rgba(120,255,140,${0.7*o.glow})`);gg.addColorStop(1,'rgba(120,255,140,0)');g.fillStyle=gg;g.fillRect(0,0,w,h);g.restore();}});
+function deskBook(c,t,o={}){onQuad(c,[-0.34,0.91,-1.4],[0.34,0.91,-1.4],[-0.34,0.86,-0.93],680,460,(g,w,h)=>openBook(g,w,h,{glow:o.glow||0,seed:3}));
   if(o.turn>0&&o.turn<1){const p=pp([0,0.92,-1.15]);c.save();c.translate(p.x,p.y);c.scale(1,0.35);c.rotate(-Math.PI*o.turn);c.fillStyle='#f6ead0';c.strokeStyle=K2;c.lineWidth=4;c.fillRect(0,-60,p.s*28,120);c.strokeRect(0,-60,p.s*28,120);c.restore();}}
 function floatViruses(c,t,x,y,k,n=7,sc=1){for(let i=0;i<n;i++){const kk=clamp(k*1.3-i*0.08);if(kk<=0)continue;const a=(i%2?0:Math.PI)+(i%2?-1:1)*(0.15+hash(i*3)*0.5),d=(80+hash(i*5)*320)*kk;virusP(c,x+Math.cos(a)*d+Math.sin(t*2+i)*10,y+Math.sin(a)*d*0.6+20,(10+hash(i*7)*12)*sc,t+i,{rot:i});}}
 // 0 · "Scientists just found a virus hiding inside a 1,000-year-old book." the scientist opens the old book; green light pours out
@@ -42,21 +39,19 @@ XV.tested=(c,t,u,d)=>{camAt(c,'ml_wide',[0,1.0,-0.9],K3(u,d,1.15,1.25),{oy:-40})
   for(const [x,col,w,fn] of B){const q=pp([x,0.95,-0.5]);codex(c,q.x,q.y-q.s*14,q.s*0.11,-0.05+x*0.1,{col});const k=popK(t,wb(w,15.5)-0.05,0.3);if(k>0){c.save();c.translate(q.x,q.y-q.s*58);c.scale(k,k);fn(c,0,0,120);c.restore();}}
   c.restore();lens(c,t);};
 // 5 · "The pages looked perfectly clean." 6 · "No spots. No damage." a page under UV light, a magnifier sweeps it
-function pageClose(c,t){c.fillStyle='#d8c49a';c.fillRect(0,0,W,H);const g=c.createRadialGradient(540,1000,100,540,1000,1100);g.addColorStop(0,'#f4e6c6');g.addColorStop(1,'#b89a68');c.fillStyle=g;c.fillRect(0,0,W,H);
-  c.fillStyle='rgba(60,40,20,0.65)';for(let i=0;i<18;i++){const y=420+i*72;for(let k=0;k<9;k++){const w=40+hash(i*9+k)*70;c.fillRect(90+k*100,y,w*0.9,10);}}c.fillStyle='#a8281e';c.fillRect(90,420,90,110);c.fillStyle='#2a5aa8';c.fillRect(100,430,70,90);
-  c.strokeStyle='rgba(150,120,80,0.25)';c.lineWidth=3;for(let i=0;i<20;i++){c.beginPath();c.arc(hash(i)*W,hash(i*3)*H,30+hash(i*5)*80,0,1.4);c.stroke();}}
+function pageClose(c,t){c.fillStyle='#2a1a10';c.fillRect(0,0,W,H);c.save();c.translate(60,300);msPage(c,960,1480,11);c.restore();c.strokeStyle='rgba(60,40,20,0.5)';c.lineWidth=6;c.strokeRect(60,300,960,1480);}
 XV.clean=(c,t,u,d)=>{c.save();const z=1.05+u*0.06;c.translate(540,1000);c.scale(z,z);c.translate(-540,-1000);pageClose(c,t);c.restore();
-  // UV wand from the side, its violet light sweeping the page
-  const sx=lerp(-100,1200,EZ.io(u/d));c.save();c.globalCompositeOperation='lighter';const g=c.createRadialGradient(sx,1050,0,sx,1050,420);g.addColorStop(0,'rgba(150,80,255,0.45)');g.addColorStop(1,'rgba(150,80,255,0)');c.fillStyle=g;c.fillRect(0,0,W,H);c.restore();
-  c.save();c.translate(sx+60,560);c.rotate(0.5);c.fillStyle='#2a2c34';c.strokeStyle=K2;c.lineWidth=6;rr(c,-30,-260,60,300,14);c.fill();c.stroke();c.fillStyle='#b68aff';rr(c,-26,30,52,20,6);c.fill();c.stroke();c.restore();lens(c,t);};
+  const sx=lerp(120,980,EZ.io(u/d));c.save();c.globalCompositeOperation='lighter';const g=c.createRadialGradient(sx,1150,0,sx,1150,360);g.addColorStop(0,'rgba(170,100,255,0.5)');g.addColorStop(1,'rgba(150,80,255,0)');c.fillStyle=g;c.fillRect(0,0,W,H);c.restore();
+  uvTorch(c,sx+260,520,Math.atan2(1150-520,sx-(sx+260)),1.3,600);lens(c,t);};
 XV.nospots=(c,t,u,d)=>{pageClose(c,t);const mx=lerp(330,760,EZ.io(u/d)),my=1050+Math.sin(u*3)*120;c.save();c.beginPath();c.arc(mx,my,190,0,TAU);c.clip();c.translate(mx,my);c.scale(1.6,1.6);c.translate(-mx,-my);pageClose(c,t);c.restore();
   c.strokeStyle=K2;c.lineWidth=12;c.beginPath();c.arc(mx,my,190,0,TAU);c.stroke();c.strokeStyle='#c8a868';c.lineWidth=6;c.stroke();c.strokeStyle=K2;c.lineWidth=36;c.lineCap='round';seg(c,mx+140,my+140,mx+300,my+300);c.strokeStyle='#5a3a22';c.lineWidth=24;seg(c,mx+140,my+140,mx+300,my+300);
   check(c,300,560,62,popK(t,wb('spots',20.8),0.3));check(c,780,560,62,popK(t,wb('damage',21.8),0.3));lens(c,t);};
 // 7 · "But the DNA told a different story." the lab's monitor wall: a helix, part of it turns red
-XV.dna=(c,t,u,d)=>{camAt(c,'ml_wide',[-0.1,1.6,-2.7],K3(u,d,1.3,1.6),{oy:0});const bad=t>wb('different',24.4);
-  onQuad(c,[-1.75,2.3,-2.72],[-0.15,2.3,-2.72],[-1.75,1.1,-2.72],600,450,(g,w,h)=>{g.fillStyle='#04121e';g.fillRect(0,0,w,h);helix(g,w/2,h/2,h*0.85,110,t,{bad:bad?[9,15]:null});});
-  onQuad(c,[0.05,2.3,-2.72],[1.65,2.3,-2.72],[0.05,1.1,-2.72],600,450,(g,w,h)=>{g.fillStyle='#050a18';g.fillRect(0,0,w,h);g.font='700 30px monospace';for(let i=0;i<11;i++){g.fillStyle=bad&&i>4&&i<8?'#ff5a5a':'#6ad8ff';g.fillText('ACGTTGCA'.split('').map((ch,k)=>'ACGT'.charAt(Math.floor(hash(i*8+k+Math.floor(t*3))*4))).join(' '),30,40+i*38);}});
-  c.restore();if(bad)warnTri(c,540,1500,90,popK(t,wb('different',24.4),0.3));lens(c,t,{v:0.6});};
+XV.dna=(c,t,u,d)=>{const td=wb('dna',23.6);if(t<td+0.35){camAt(c,'ml_wide',[-0.1,1.6,-2.7],K3(u,0.6,1.3,1.6),{oy:0});
+    onQuad(c,[-1.75,2.3,-2.72],[-0.15,2.3,-2.72],[-1.75,1.1,-2.72],600,450,(g,w,h)=>{g.fillStyle='#04121e';g.fillRect(0,0,w,h);helix(g,w/2,h/2,h*0.9,130,t,{glowOn:0});});c.restore();lens(c,t,{v:0.6});return;}
+  const bad=t>wb('different',24.4);richBG(c,t,'6,16,34');const z=1.0+0.08*sgB(t,td,td+2);c.save();c.translate(540,1080);c.scale(z,z);helix(c,0,0,1250,230,t,{bad:bad?[10,16]:null});c.restore();
+  if(bad){const k=popK(t,wb('different',24.4),0.3);c.save();c.translate(540,1080);c.scale(k,k);c.strokeStyle='#ff3a3a';c.lineWidth=10;c.setLineDash([24,14]);rr(c,-300,-110,600,230,30);c.stroke();c.setLineDash([]);c.restore();warnTri(c,860,1430,80,k);}
+  lens(c,t,{v:0.55});};
 // 8 · "It was sheeppox." the virus particle, huge, next to its victim
 XV.pox=(c,t,u,d)=>{richBG(c,t,'10,30,16');const k=popK(t,LT(8),0.4);c.save();c.translate(540,1000);c.scale(k,k);virusP(c,0,0,170,t,{rot:0.35,gc:'120,255,140'});c.restore();
   const s2=popK(t,wb('sheeppox',26.7),0.35);if(s2>0){c.save();c.translate(540,1560);c.scale(s2,s2);sheep(c,0,0,1.4,{t,pox:1});c.restore();}lens(c,t);};
@@ -105,7 +100,7 @@ XV.reveal=(c,t,u,d)=>{richBG(c,t,'40,26,16');const k=EZ.io(sgB(t,wb('animal',60.
   c.save();c.globalAlpha=1-k;codex(c,540,1100,2.4,-0.04,{col:'#6a2a1e'});c.restore();c.save();c.globalAlpha=k;sheep(c,540,1320,2.6,{t,f:1});c.restore();
   if(k>0&&k<1){for(let i=0;i<20;i++){const a=i/20*TAU;c.fillStyle=`rgba(255,230,170,${1-k})`;c.beginPath();c.arc(540+Math.cos(a)*300*k,1100+Math.sin(a)*300*k,6,0,TAU);c.fill();}}lens(c,t);};
 // 21 · "Every page was once a living creature…" pages fan out; each one carries the faint outline of an animal
-XV.pages=(c,t,u,d)=>{richBG(c,t,'30,20,14');const k=EZ.out(sgB(t,LT(21),LT(21)+1.4));for(let i=0;i<7;i++){const a=(i-3)*0.22*k,x=540+(i-3)*120*k,y=1150-Math.abs(i-3)*20*k;c.save();c.translate(x,y);c.rotate(a);c.fillStyle='#f0e2c0';c.strokeStyle=K2;c.lineWidth=5;rr(c,-130,-180,260,360,8);c.fill();c.stroke();
+XV.pages=(c,t,u,d)=>{richBG(c,t,'30,20,14');const k=EZ.out(sgB(t,LT(21),LT(21)+1.4));for(let i=0;i<7;i++){const a=(i-3)*0.22*k,x=540+(i-3)*120*k,y=1150-Math.abs(i-3)*20*k;c.save();c.translate(x,y);c.rotate(a);c.save();c.beginPath();c.moveTo(-130,-180);for(let k=0;k<=12;k++)c.lineTo(-130+k*260/12,-180+Math.sin(k*1.7+i)*4);for(let k=0;k<=16;k++)c.lineTo(130+Math.sin(k*1.3+i)*4,-180+k*360/16);for(let k=0;k<=12;k++)c.lineTo(130-k*260/12,180+Math.sin(k*2.1+i)*4);for(let k=0;k<=16;k++)c.lineTo(-130+Math.sin(k*1.9+i)*4,180-k*360/16);c.closePath();c.save();c.clip();c.translate(-130,-180);msPage(c,260,360,i*5);c.restore();c.strokeStyle=K2;c.lineWidth=5;c.stroke();c.restore();
     c.globalAlpha=0.28*k;sheep(c,0,90,0.9,{t,f:i%2?-1:1,seed:i});c.restore();}lightPool(c,540,1100,600,'255,210,150',0.2);lens(c,t);};
 // 22 · "and it never stopped telling its story." back in the library, the book glows softly; fade to black
 XV.outro=(c,t,u,d)=>{camAt(c,'lb_wide',[0,1.3,-1.6],K3(u,d,1.5,1.2),{oy:-40});deskBook(c,t,{glow:0.5});candles(c,t);libBeam(c,t);const bp=pp([0,0.95,-1.15]);lightPool(c,bp.x,bp.y-60,300,'255,220,150',0.3);c.restore();
