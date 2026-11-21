@@ -1,5 +1,5 @@
 import numpy as np, scipy.signal as sg, scipy.io.wavfile as wf
-SR=44100;rng=np.random.default_rng(11);END=67.91;N=int(END*SR)+SR
+SR=44100;rng=np.random.default_rng(11);END=71.0;N=int(END*SR)+SR
 bus=np.zeros(N);mus=np.zeros(N)
 def nz(d):return rng.standard_normal(int(d*SR))
 def tt(d):return np.arange(int(d*SR))/SR
@@ -97,8 +97,8 @@ section(0.0,5.3,dark,0.9,box=False)
 section(5.3,25.9,dark,1.0)
 section(25.9,43.6,dark,1.0)
 section(43.6,58.9,dark,1.1)
-section(58.9,67.91,warm,1.0)
-fadeN=int(1.3*SR);e=int(66.4*SR);mus[e:e+fadeN]*=np.linspace(1,0,fadeN);mus[e+fadeN:]=0
+section(58.9,71.0,warm,1.0)
+fadeN=int(1.8*SR);e=int(69.1*SR);mus[e:e+fadeN]*=np.linspace(1,0,fadeN);mus[e+fadeN:]=0
 for nm,x in [('sfx.wav',bus),('music.wav',mus)]:
     x=x/(np.max(np.abs(x))+1e-9)*0.8;wf.write(nm,SR,(x*32767).astype(np.int16))
 print('ok')

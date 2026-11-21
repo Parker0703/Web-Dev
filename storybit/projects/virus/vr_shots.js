@@ -114,7 +114,7 @@ XV.pages=(c,t,u,d)=>{richBG(c,t,'30,20,14');const k=EZ.out(sgB(t,LT(21),LT(21)+1
     c.globalAlpha=0.28*k;sheep(c,0,90,0.9,{t,f:i%2?-1:1,seed:i});c.restore();}lightPool(c,540,1100,600,'255,210,150',0.2);lens(c,t);};
 // 22 · "and it never stopped telling its story." back in the library, the book glows softly; fade to black
 XV.outro=(c,t,u,d)=>{camAt(c,'lb_wide',[0,1.3,-1.6],K3(u,d,1.5,1.2),{oy:-40});deskBook(c,t,{glow:0.5});candles(c,t);libBeam(c,t);const bp=pp([0,0.95,-1.15]);lightPool(c,bp.x,bp.y-60,300,'255,220,150',0.3);c.restore();
-  const f=sgB(t,L[L.length-1].b+0.25,END-0.15);lens(c,t,{v:0.6});if(f>0){c.fillStyle=`rgba(0,0,0,${f})`;c.fillRect(0,0,W,H);}};
+  const f=sgB(t,END-1.8,END-0.1);lens(c,t,{v:0.6});if(f>0){c.fillStyle=`rgba(0,0,0,${f})`;c.fillRect(0,0,W,H);}};
 // ---------- edit ----------
 const XSEQ=[['hook',0],['micro',LT(1)-0.05],['monk',LT(2)-0.05],['skin',LT(3)-0.05],['tested',LT(4)-0.05],['clean',LT(5)-0.05],['nospots',LT(6)-0.05],['dna',LT(7)-0.05],['pox',LT(8)-0.05],['flock',LT(9)-0.05],['panic',LT(10)-0.05],
   ['whyQ',LT(11)-0.05],['sick',LT(12)-0.05],['landed',LT(13)-0.05],['unsure',LT(14)-0.05],['twist',LT(15)-0.05],['tree',LT(16)-0.05],['years',LT(17)-0.05],['dig',LT(18)-0.05],['howQ',LT(19)-0.05],['reveal',LT(20)-0.05],['pages',LT(21)-0.05],['outro',LT(22)-0.05]];
