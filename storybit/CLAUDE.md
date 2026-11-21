@@ -47,7 +47,7 @@ Word-by-word, synced to the MP3, TOP of screen, small all-caps, wide letter spac
 - **Arms must never look deformed or point opposite ways.** Both arms bend the same natural way, matching the direction the character faces (standing, sitting, walking, running, seen from behind). Default: both arms relaxed, hanging down. Only ONE arm does an action (holding, pointing, presenting); the other stays relaxed. Never pose both arms unless the action truly needs two hands, and then check the elbows bend symmetrically.
 - **Props are used the real way**: books/papers/phones are held and read naturally (book open toward the reader, we see its back cover), never held up flat like a sign. Nothing held covers the face.
 - **Screens must stay visible**: in over-the-shoulder shots at a TV/monitor, keep the character small enough that the screen is clearly readable.
-- **2D characters must truly live in the 3D set** (never look pasted on):
+- **2D characters must truly live in the 3D set** (never look pasted on). Characters ALWAYS stay 2D (never 3D characters: it kills the style and render time); only backgrounds/plates are 3D:
   1. Grounding: feet exactly on plate ground via `pp()`, contact shadow + cast shadow matching the plate's light direction.
   2. Depth/occlusion: furniture or objects in front of a character are redrawn over them (`occluder()`): desk edges, benches, door frames, shelves. People sit on real seats, stand behind real tables.
   3. Real touch: hands go to projected 3D points of real objects (hand on desk, pulling a book from a shelf, turning a page, opening a door). Objects a character picks up or moves are NOT baked into the plate; draw them in 2D at their 3D spot so they can move.

@@ -1,0 +1,14 @@
+ch_*
+lk_*
+*.log
+st/
+vid.mp4
+list.txt
+mix.wav
+mix2.wav
+music.wav
+sfx.wav
+voice16.wav
+voice22.wav
+db.npy
+out/
