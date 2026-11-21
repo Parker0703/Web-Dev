@@ -84,7 +84,7 @@ XV.tree=(c,t,u,d)=>{richBG(c,t,'16,24,18');const k=EZ.out(sgB(t,LT(16),LT(16)+2.
     if(p>=1){if(dep===5||dep===3){c.save();c.translate(x2,y2);c.rotate(a+Math.PI/2);c.fillStyle='#f0e2c0';c.strokeStyle=K2;c.lineWidth=3;c.fillRect(-16,-20,32,40);c.strokeRect(-16,-20,32,40);c.restore();}else virusP(c,x2,y2,14,t+i,{glow:0});br(x2,y2,a-0.42,len*0.72,dep+1,i*2);br(x2,y2,a+0.42,len*0.72,dep+1,i*2+1);}};
   br(540,1700,-Math.PI/2,300,0,1);lens(c,t);};
 // 17 · "It goes back about 3,500 years." the years roll back
-XV.years=(c,t,u,d)=>{richBG(c,t,'30,22,12');const t3=wb('3,500',49.8);const v=Math.round(EZ.out(sgB(t,t3-0.5,t3+0.4))*3500);
+XV.years=(c,t,u,d)=>{richBG(c,t,'30,22,12');const t3=wb('3500',49.8);const v=Math.round(EZ.out(sgB(t,t3-0.5,t3+0.4))*3500);
   c.save();c.translate(540,1000);c.fillStyle='rgba(10,8,6,0.9)';c.strokeStyle='#e8c060';c.lineWidth=8;rr(c,-360,-130,720,260,34);c.fill();c.stroke();txt(c,v.toLocaleString('en-US'),0,-14,160,'#ffd060',{sw:16});txt(c,'YEARS',0,90,52,'#fff',{stroke:false,ls:8});c.restore();
   // hourglass sand
   c.save();c.translate(540,1500);c.rotate(Math.sin(t*2)*0.05);c.strokeStyle=K2;c.lineWidth=8;c.fillStyle='rgba(220,240,255,0.25)';c.beginPath();c.moveTo(-90,-130);c.lineTo(90,-130);c.lineTo(10,0);c.lineTo(90,130);c.lineTo(-90,130);c.lineTo(-10,0);c.closePath();c.fill();c.stroke();const sf=(u/d);c.fillStyle='#e8c060';c.beginPath();c.moveTo(-70*(1-sf),-120+sf*100);c.lineTo(70*(1-sf),-120+sf*100);c.lineTo(0,-6);c.closePath();c.fill();c.beginPath();c.moveTo(-80*sf,124);c.lineTo(80*sf,124);c.lineTo(0,124-sf*100);c.closePath();c.fill();c.restore();lens(c,t);};
