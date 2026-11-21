@@ -76,7 +76,7 @@ Word-by-word, synced to the MP3, TOP of screen, small all-caps, wide letter spac
 Shared: `projects/s4/engine.js` (WebGL engine used by B props and C backgrounds), `projects/tools` (aligners). Never invent other styles.
 
 ## 7. Thumbnails
-1080×1920 JPG. Big bold title (white + red/gold key words, thick dark outline, soft shadow); never claims what the video doesn't show. No bands, no flare, no logo/watermark. Examples: `projects/np/cov_np.js`.
+Deliver the thumbnail as a separate JPG only. **Do NOT add the thumbnail as a frame at the end of the video.** 1080×1920 JPG. Big bold title (white + red/gold key words, thick dark outline, soft shadow); never claims what the video doesn't show. No bands, no flare, no logo/watermark. Examples: `projects/np/cov_np.js`.
 
 ## 8. Build pipeline
 Copy the base project of the chosen style into `projects/<slug>` and work there.
