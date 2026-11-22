@@ -204,7 +204,7 @@ function raft(c,x,y,s,t){c.save();c.translate(x,y+Math.sin(t*1.5)*4*s);c.lineJoi
     c.strokeStyle=K2;c.lineWidth=4*s;seg(c,0,-440*s,0,-560*s);const wave=k=>Math.sin(t*6+k*0.8)*7*s;fl.forEach((col,i)=>{c.fillStyle=col;c.beginPath();c.moveTo(i*24*s,-558*s+wave(i));c.lineTo((i+1)*24*s,-558*s+wave(i+1));c.lineTo((i+1)*24*s,-508*s+wave(i+1));c.lineTo(i*24*s,-508*s+wave(i));c.closePath();c.fill();});
     c.lineWidth=3*s;c.beginPath();c.moveTo(0,-558*s+wave(0));for(let i=1;i<=3;i++)c.lineTo(i*24*s,-558*s+wave(i));for(let i=3;i>=0;i--)c.lineTo(i*24*s,-508*s+wave(i));c.closePath();c.stroke();
     c.restore();}
-  c.strokeStyle='#4a8a3a';c.lineWidth=7*s;c.beginPath();c.moveTo(-60*s,-300*s);c.quadraticCurveTo(0,-250*s,60*s,-300*s);c.stroke();
+  
   c.restore();}
 // ---------- 8. country cottage: thatched roof, timber frame, glowing windows, chimney smoke, fence, hutch ----------
 function cottage(c,x,y,s,t){c.save();c.translate(x,y);c.lineJoin='round';c.strokeStyle=K2;

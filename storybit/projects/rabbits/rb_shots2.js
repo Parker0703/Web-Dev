@@ -4,12 +4,19 @@ const COLS5=['white','grey','spot','brown','white'];
 const handheld=(t,a=6)=>({x:Math.sin(t*1.7)*a+Math.sin(t*3.1)*a*0.4,y:Math.cos(t*1.3)*a*0.6});
 // 6 · Tilsit: the two emperors actually shake hands (hands meet and pump together)
 SH.tilsit=function(c,t){LIT('#ffe0a8','#2a3a4a');const z=pushZ(t,A(5),TW('chief')-0.1,1.0,1.1);river(c,t,{x:540,y:1080,z,mm:50},{pyr:0,palms:0,sunX:780,GY:1150,world:(c2,GY)=>{raft(c2,540,GY+260,1.15,t);
-  const pump=Math.sin(t*9)*5,hy=60+pump;
-  NAP({c:c2,x:430,y:GY+230,s:1.6,f:1,t,eyes:'happy',brow:'up',mouth:'smile',hf:[69,hy+25],hb:[-10,92],seed:1,look:[1,0]});
-  fig2(c2,{kind:'tsar',view:'front',x:650,y:GY+230,s:1.6,f:-1,t,eyes:'happy',brow:'flat',mouth:'smile',hf:[-69,hy+25],hb:[10,92],seed:2,look:[-1,0]});
-  const hx=540,hy2=GY+230-(TH2+TOR2)*1.6+(hy+25)*1.6;c2.save();c2.strokeStyle='rgba(255,255,255,0.8)';c2.lineWidth=4;c2.lineCap='round';for(const d of [-1,1]){c2.beginPath();c2.arc(hx,hy2,26+Math.abs(pump)*1.5,d>0?-0.6:Math.PI-0.6,d>0?0.6:Math.PI+0.6);c2.stroke();}c2.restore();}});
+  const pump=Math.sin(t*9)*4,hy=50+pump,S=1.6,xN=376,xT=682;
+  NAP({c:c2,x:xN,y:GY+230,s:S,f:1,t,eyes:'happy',brow:'up',mouth:'smile',hf:[(540-xN)/S,hy],hb:[-12,92],seed:1});
+  fig2(c2,{kind:'tsar',x:xT,y:GY+230,s:S,f:-1,t,eyes:'happy',brow:'flat',mouth:'smile',hf:[(540-xT)/S,hy],hb:[12,92],seed:2});
+  clasp(c2,540,GY+230-(TH2+TOR2)*S+hy*S,S);}});
   statTag(c,540,640,'TREATY OF TILSIT',GOLD_C,clamp((t-TW('diplomatic'))/0.3));vignette(c,0.4);};
 const TH2=116,TOR2=84;
+// two gloved hands gripping: right hand from the left person, right hand from the right person, thumbs over the top
+function clasp(c,x,y,s){c.save();c.lineJoin='round';c.strokeStyle=K2;c.lineWidth=3.4*s;
+  const hand=(dx,dy,rot,col)=>{c.save();c.translate(x+dx*s,y+dy*s);c.rotate(rot);const g=c.createLinearGradient(0,-8*s,0,8*s);g.addColorStop(0,'#ffffff');g.addColorStop(1,col);c.fillStyle=g;c.beginPath();c.roundRect(-12*s,-7.5*s,24*s,15*s,7*s);c.fill();c.stroke();
+    c.strokeStyle='rgba(0,0,0,0.35)';c.lineWidth=1.4*s;for(const k of [-4,1,6]){c.beginPath();c.moveTo(k*s,-6*s);c.lineTo(k*s,5*s);c.stroke();}c.restore();};
+  hand(-5,1.5,0.12,'#d8d4cc');hand(5,-1.5,0.12+Math.PI,'#cfcac2');
+  c.fillStyle='#f2f0ea';c.strokeStyle=K2;c.lineWidth=3*s;c.beginPath();c.ellipse(x-1*s,y-8.5*s,7*s,3.6*s,-0.25,0,TAU);c.fill();c.stroke();c.beginPath();c.ellipse(x+2*s,y+8*s,6*s,3.2*s,-0.25,0,TAU);c.fill();c.stroke();
+  c.restore();}
 // 3 · "...because of a thousand rabbits." they pour over the hill crest toward camera instead of popping in
 SH.reveal=function(c,t){LIT();const t0=A(2);const GYv=1300,z=pushZ(t,t0,B(2)+0.6,1.0,1.1);field(c,t,{x:540,y:1080,z,mm:35},{sky:'sun',troops:0,smoke:0,world:(c2,GY)=>{const P=PSP(GY,GY+900,2.4);
   const prog=i=>clamp((t-t0-hash(i*9.1)*1.3)/1.1);
