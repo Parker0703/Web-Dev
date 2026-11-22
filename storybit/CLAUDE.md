@@ -56,6 +56,11 @@ Word-by-word, synced to the MP3, TOP of screen, small all-caps, wide letter spac
   6. The world reacts: dust in light beams, flicker on characters, pages lifting, footprints, reflections on shiny floors.
 - **Never change a style's face design.** StoryBit B faces keep their dot eyes, brows, mouth expressions and nose/face shading; always give characters a full expression (brow + mouth), not just eyes.
 - Animals and creatures may be 3D models rendered to sprites (e.g. `projects/rabbits/rb3d.js` → `rbrun.js` → `rkey.py`), animated in 2D. People stay 2D.
+- **Crowds and characters share one ground:** one perspective rule for everyone (scale grows with ground row), depth-sort characters INSIDE crowds (some animals in front of legs, some behind), push crowd members out of characters' feet and out of objects (nothing passes through anything, nobody stands on top of animals).
+- Things never just pop in: animals come out of their cages/doors, over a hill or in from the side. Characters react to what touches them (look down, step, flinch).
+- Contact actions are real: a handshake means both hands meet and pump together; getting into a vehicle means walking to the door, stepping up, disappearing inside, door closing.
+- Vehicles at real scale (a coach roof is taller than a man) and built as 3D sprites with moving parts (wheels, horses gallop frames).
+- Use camera moves and lenses that suit the beat: push-ins, pans that follow, handheld shake in chaos, 85mm low close-ups, tracking shots for chases.
 - Backgrounds should feel alive: trees, flowers, swaying grass, birds, floating dust/pollen, flickering light.
 - **FRONT view by default.** Use 3/4 ONLY when the character does something in a direction (walking/running, handing something over, rushing to someone). Never full side profiles.
 - **3/4 face rule** (StoryBit C, `turnFace()` in `projects/ko/style5.js`): features wrap around the round head toward the facing side — near eye full size, far eye narrower near the far edge, mouth shifted; hair/hats shift too and never cover the eyes. Mirrors for left-facing.

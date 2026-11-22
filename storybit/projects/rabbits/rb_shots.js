@@ -142,5 +142,5 @@ SH.lunchEnd=function(c,t){LIT();field(c,t,{x:540,y:1150,z:pushZ(t,A(28),END,1.1,
   const f=clamp((t-(END-1.8))/1.7);vignette(c,0.45);if(f>0){c.fillStyle=`rgba(0,0,0,${f})`;c.fillRect(0,0,W,H);}};
 var SHOTS=[[0,'hook'],[TW('nearly')-0.1,'europe'],[A(1)-0.05,'retreat'],[A(2)-0.05,'reveal'],[A(3)-0.05,'bullied'],[A(4)-0.05,'year'],[A(5)-0.05,'tilsit'],[TW('chief')-0.1,'berthier'],[A(6)-0.05,'hunt'],[A(7)-0.05,'cages'],[A(8)-0.05,'simple'],[A(9)-0.05,'mistake'],[A(10)-0.05,'tame'],
   [A(11)-0.05,'open'],[A(12)-0.05,'opposite'],[A(13)-0.05,'charge'],[A(14)-0.05,'why'],[A(15)-0.05,'cute'],[A(16)-0.05,'fed'],[A(17)-0.05,'lunch'],[A(18)-0.05,'sticks'],[A(19)-0.05,'kept'],[A(20)-0.05,'swarmed'],[A(21)-0.05,'enough'],[A(22)-0.05,'flee'],[A(23)-0.05,'catch'],[A(24)-0.05,'memoirs'],[A(25)-0.05,'confirm'],[A(26)-0.05,'account'],[A(27)-0.05,'opponents'],[A(28)-0.05,'lunchEnd']];
-var IMPACTS=[[A(2)+0.2,6,0.3],[A(13)+0.1,10,0.5],[A(21),8,0.3,'#ff9a70',0.2],[A(23),12,0.3,'#ffffff',0.4]];
+var IMPACTS=[[A(22)-0.43,9,0.35],[A(2)+0.2,6,0.3],[A(13)+0.1,10,0.5],[A(21),8,0.3,'#ff9a70',0.2],[A(23),12,0.3,'#ffffff',0.4]];
 {const TS=TW('60'),TE=L[L.length-1].b;const src=timer.toString().replace(/T_SLAM/g,'TS').replace(/T_END/g,'TE').replace(/^function timer/,'function');timer=eval('('+src+')');}

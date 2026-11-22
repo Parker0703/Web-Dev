@@ -298,3 +298,41 @@ function cage(c,x,y,s,open=0,o={}){const t=o.t??0,sd=o.seed??Math.round(x*7+y),W
   c.strokeStyle=K2;c.lineWidth=6.5*s;seg(c,-W2+16*s,bh*0.5,W2-16*s,bh*0.5);c.strokeStyle='#a0a4ac';c.lineWidth=4*s;seg(c,-W2+16*s,bh*0.5,W2-16*s,bh*0.5);
   c.fillStyle='#c8a040';c.strokeStyle=K2;c.lineWidth=2*s;c.fillRect(-8*s,bh-14*s,16*s,14*s);c.strokeRect(-8*s,bh-14*s,16*s,14*s);c.restore();
   c.restore();}
+// ---------- 11. perspective + depth: one ground rule for everyone, actors sorted with the crowd, nobody passes through anybody ----------
+// persp: char scale S(y)=k*(y-yH) on world ground row y. A rabbit is ~0.42 of a character's scale.
+const PSP=(GY,yRef,sRef)=>({yH:GY-90,k:sRef/(yRef-GY+90)});
+const pS=(P,y)=>Math.max(0.05,P.k*(y-P.yH));
+// actor: {x,y,rx(px),draw()} ; block: {x0,x1,y0,y1}
+function swarm(c,t,o){const n=o.n||40,res=[],P=o.persp,A=o.actors||[],B=o.blocks||[];
+  for(let i=0;i<n;i++){const u=hash(i*3.7+(o.seed||0)),v=hash(i*5.3+(o.seed||0));let x=lerp(o.x0,o.x1,u),y=lerp(o.y0,o.y1,v);if(o.flow){const r=o.flow(x,y,i,t);if(!r)continue;({x,y}=r);}
+    for(const a of A){const ry=a.ry||a.rx*0.32,dx=(x-a.x)/a.rx,dy=(y-a.y)/ry,d=Math.hypot(dx,dy);if(d<1){const k=d<1e-3?1:1/d;x=a.x+dx*k*a.rx;y=a.y+dy*k*ry;}}
+    for(const b of B){if(x>b.x0&&x<b.x1&&y>b.y0&&y<b.y1){const dt=y-b.y0,db=b.y1-y;y=dt<db?b.y0-2:b.y1+2;}}
+    res.push({y,x,i});}
+  for(const a of A)res.push({y:a.y,a});for(const b of B)if(b.draw)res.push({y:b.y1,a:b});
+  res.sort((p,q)=>p.y-q.y);const cols=['white','white','grey','spot','brown','white'];
+  for(const r of res){if(r.a){r.a.draw();continue;}const k=P?pS(P,r.y)*0.42*(o.big||1):lerp(o.s0,o.s1,(r.y-o.y0)/Math.max(1,o.y1-o.y0));
+    const pose=typeof o.pose==='function'?o.pose(r.i,r.x,r.y):(o.pose||'front');const f=typeof o.f==='function'?o.f(r.i,r.x,r.y):(o.f??(hash(r.i)>0.5?1:-1));
+    rabbit(c,r.x,r.y,k,{pose,f,t,seed:r.i,col:cols[r.i%cols.length],spd:o.spd});}}
+// ---------- 12. the coach + horses (3D sprites), with model-space → screen helper for doors/windows ----------
+function cProj(cm,P){const ev=cm.eye.map(v=>v/Math.hypot(...cm.eye)),fv=Math.tan(9*Math.PI/180),dist=cm.r/fv/(1080/1920)*1.05,E=cm.c.map((v,i)=>v+ev[i]*dist);
+  const F=cm.c.map((v,i)=>v-E[i]),fl=Math.hypot(...F);F.forEach((v,i)=>F[i]=v/fl);let R=[F[1]*0-F[2]*1,F[2]*0-F[0]*0,F[0]*1-F[1]*0];const rl=Math.hypot(...R);R=R.map(v=>v/rl);
+  const U=[R[1]*F[2]-R[2]*F[1],R[2]*F[0]-R[0]*F[2],R[0]*F[1]-R[1]*F[0]];const d=P.map((v,i)=>v-E[i]);const x=d[0]*R[0]+d[1]*R[1]+d[2]*R[2],y=d[0]*U[0]+d[1]*U[1]+d[2]*U[2],z=d[0]*F[0]+d[1]*F[1]+d[2]*F[2];const fp=960/fv;return [540+x/z*fp,960-y/z*fp];}
+const CO_CAM={side:{c:[0.85,1.45,0],r:2.75,eye:[0,0.12,1]},q3:{c:[0.85,1.45,0],r:2.75,eye:[0.55,0.16,0.82]}};
+function spr(c,name,x,y,ppu,f=1){const m=RMETA[name],im=RIMG[name];if(!m||!im)return;const k=ppu/m.ppu;c.save();c.translate(x,y);c.scale(f*k,k);c.drawImage(im,-m.ax,-m.ay,m.w,m.h);c.restore();}
+function coach(c,x,y,ppu,t,o={}){const vw=o.view||'side',mv=o.moving?1:0,f=o.f||1;const bob=mv?Math.sin(t*17)*0.025*ppu:0;
+  const o0=cProj(CO_CAM[vw],[0,0,0]),m0=RMETA[`co_${vw}_w0`],k=ppu/m0.ppu;const pt=(X,Y,Z)=>{const p=cProj(CO_CAM[vw],[X,Y,Z]);return {x:x+f*(p[0]-o0[0])*k,y:y+(p[1]-o0[1])*k+bob};};
+  c.save();c.fillStyle='rgba(0,0,0,0.32)';c.beginPath();c.ellipse(x+f*(o.horses===false?0:1.9)*ppu,y+0.05*ppu,(o.horses===false?2.0:4.2)*ppu,0.22*ppu,0,0,TAU);c.fill();c.restore();
+  if(mv)for(let i=0;i<10;i++){const p=((t*2.2+i/10)%1);c.fillStyle=`rgba(200,170,130,${0.35*(1-p)})`;c.beginPath();c.arc(x-f*(1.4+p*2.6)*ppu,y-(0.1+p*0.5)*ppu+Math.sin(i*7)*0.1*ppu,(0.15+p*0.5)*ppu,0,TAU);c.fill();}
+  const hn=`ho_${vw}_${mv?'g'+(Math.floor(t*10)%4):'stand'}`,cn=`co_${vw}_${o.door!=null?(o.door>0.7?'open':o.door>0.2?'half':'w0'):'w'+(mv?Math.floor(t*14)%4:0)}`;
+  const hb=mv?Math.sin(t*20)*0.03*ppu:0;
+  if(o.horses!==false&&vw==='side')spr(c,hn,x,y+hb,ppu,f);
+  spr(c,cn,x,y+bob,ppu,f);
+  if(o.horses!==false&&vw!=='side')spr(c,hn,x,y+hb,ppu,f);
+  return {pt,door:{a:pt(-0.36,2.45,0.72),b:pt(0.36,1.05,0.72)},win:{a:pt(-0.23,2.32,0.76),b:pt(0.23,1.88,0.76)},step:pt(0,0.95,0.9)};}
+// face in the coach window
+function inWindow(c,w,t,o){const x0=Math.min(w.a.x,w.b.x),x1=Math.max(w.a.x,w.b.x),y0=Math.min(w.a.y,w.b.y),y1=Math.max(w.a.y,w.b.y),wd=x1-x0;
+  c.save();c.beginPath();c.rect(x0,y0,wd,y1-y0);c.clip();c.fillStyle='#1a1418';c.fillRect(x0,y0,wd,y1-y0);
+  NAP({c,x:(x0+x1)/2+(o.dx||0)*wd,y:y1+wd*1.45,s:wd/62,f:o.f||1,t,eyes:o.eyes||'wide',brow:o.brow||'worried',mouth:o.mouth||'o',hf:[10,92],hb:[-10,92]});
+  const g=c.createLinearGradient(x0,y0,x1,y1);g.addColorStop(0,'rgba(180,210,255,0.28)');g.addColorStop(0.4,'rgba(180,210,255,0.05)');g.addColorStop(1,'rgba(180,210,255,0.18)');c.fillStyle=g;c.fillRect(x0,y0,wd,y1-y0);c.restore();}
+// steam puffs from a head
+function steam(c,x,y,s,t){for(let i=0;i<8;i++){const p=((t*1.5+i/8)%1);for(const d of [-1,1]){c.fillStyle=`rgba(240,240,240,${0.6*(1-p)})`;c.beginPath();c.arc(x+d*(34+p*40)*s,y-p*80*s,(5+p*12)*s,0,TAU);c.fill();}}}
