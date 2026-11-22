@@ -36,7 +36,7 @@ SH.tilsit=function(c,t){LIT('#ffe0a8','#2a3a4a');river(c,t,{x:540,y:1080,z:pushZ
   statTag(c,540,640,'TREATY OF TILSIT',GOLD_C,clamp((t-TW('diplomatic'))/0.3));vignette(c,0.4);};
 SH.berthier=function(c,t){LIT('#ffd8a8','#2a2018');salon(c,t,{x:540,y:1150,z:pushZ(t,TW('chief')-0.1,A(6),1.0,1.08),mm:50},{world:(c2,GY)=>{
   const idea=t>TW('organize');BERT({c:c2,x:540,y:GY+700,s:2.7,f:1,t,eyes:idea?'happy':'dot',brow:'up',mouth:idea?'grin':'smile',hf:idea?[40,-60]:[10,92],hb:[-10,92]});}});
-  popup(c,t,TW('alexandre'),'ALEXANDRE BERTHIER','CHIEF OF STAFF',GOLD_C,{y:640});
+  popup(c,t,TW('alexandre'),'ALEXANDRE BERTHIER','CHIEF OF STAFF',GOLD_C,{y:640,size:50,w:900});
   if(t>TW('special')-0.1){const k=back(clamp((t-TW('special')+0.1)/0.35));c.save();c.translate(780,560);c.scale(k,k);c.fillStyle='#ffe066';c.strokeStyle=K2;c.lineWidth=6;c.beginPath();c.arc(0,0,46,0,TAU);c.fill();c.stroke();c.fillStyle='#c8ccd4';c.fillRect(-18,40,36,26);c.strokeRect(-18,40,36,26);c.restore();}
   vignette(c,0.4);};
 // 6 · "A rabbit hunt." hunting horn sounds, muskets ready, a rabbit pops up in the grass
