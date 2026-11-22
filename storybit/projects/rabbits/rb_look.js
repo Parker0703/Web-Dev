@@ -262,3 +262,39 @@ function motes(c,t,n,col,seed=0){c.save();c.globalCompositeOperation='lighter';f
   if(o.env!==0&&(day||dusk))motes(c,t,26,dusk?'rgba(255,190,120,A)':'rgba(255,250,210,A)',3);};}
 {const _sal=salon;salon=function(c,t,v={},o={}){_sal(c,t,v,o);motes(c,t,30,o.night?'rgba(255,200,130,A)':'rgba(255,245,215,A)',7);};}
 {const _rv=river;river=function(c,t,v={},o={}){const w=o.world;_rv(c,t,v,{...o,world:(c2,GY)=>{for(let i=0;i<6;i++){const p=((t*0.05+hash(i*3.3))%1);bird(c2,-500+p*2200,GY-700+hash(i*5.7)*300,1+hash(i)*0.5,t,i);}if(w)w(c2,GY);}});motes(c,t,18,'rgba(255,220,170,A)',5);};}
+// ---------- 10. rabbit crate: 2.5D wooden box (front, top, side), planks + grain, iron bars, latch, straw, a rabbit inside ----------
+function plank(c,x,y,w,h,col,s,sd){const g=c.createLinearGradient(x,y,x,y+h);g.addColorStop(0,shd(col,0.12));g.addColorStop(1,shd(col,-0.12));c.fillStyle=g;c.fillRect(x,y,w,h);
+  c.strokeStyle='rgba(60,30,10,0.35)';c.lineWidth=1.2*s;for(let i=1;i<3;i++){const yy=y+h*i/3+Math.sin(sd+i)*1.5*s;c.beginPath();c.moveTo(x+2*s,yy);c.quadraticCurveTo(x+w*0.5,yy+Math.sin(sd*3+i)*3*s,x+w-2*s,yy);c.stroke();}
+  c.fillStyle='rgba(50,25,8,0.5)';c.beginPath();c.ellipse(x+w*(0.2+hash(sd)*0.6),y+h*0.5,2.4*s,1.4*s,0,0,TAU);c.fill();c.strokeStyle=K2;c.lineWidth=2.6*s;c.strokeRect(x,y,w,h);}
+function cage(c,x,y,s,open=0,o={}){const t=o.t??0,sd=o.seed??Math.round(x*7+y),W2=86*s,Hf=112*s,dx=38*s,dy=-28*s,wood='#b07a42',col=o.col||['white','grey','brown','spot'][Math.abs(sd)%4];
+  c.save();c.translate(x,y);c.lineJoin='round';
+  c.fillStyle='rgba(0,0,0,0.32)';c.beginPath();c.moveTo(-W2-6*s,0);c.lineTo(W2+6*s,0);c.lineTo(W2+dx+16*s,dy*0.4);c.lineTo(-W2+dx,dy*0.4);c.closePath();c.fill();
+  // interior: dark back, straw floor, the rabbit
+  c.fillStyle='#24160c';c.fillRect(-W2+12*s,-Hf+12*s,2*W2-24*s,Hf-24*s);
+  c.save();c.beginPath();c.rect(-W2+12*s,-Hf+12*s,2*W2-24*s,Hf-24*s);c.clip();
+  const lg=c.createLinearGradient(0,-Hf,0,0);lg.addColorStop(0,'rgba(0,0,0,0.55)');lg.addColorStop(1,'rgba(0,0,0,0)');
+  if(open<0.9||o.keep){const peek=open>0?Math.min(1,open*1.5):0;rabbit(c,(hash(sd)-0.5)*30*s,-14*s+peek*0*s,0.52*s,{pose:'front',t,col,seed:sd});}
+  c.fillStyle=lg;c.fillRect(-W2,-Hf,2*W2,Hf*0.5);
+  c.strokeStyle='#e8c060';c.lineWidth=2*s;for(let i=0;i<26;i++){const sx=-W2+14*s+hash(sd+i*1.3)*(2*W2-28*s),sy=-14*s-hash(i*2.7+sd)*8*s;c.beginPath();c.moveTo(sx,sy);c.lineTo(sx+(hash(i*5.1)-0.5)*26*s,sy+6*s);c.stroke();}
+  c.restore();
+  // side face (right) with slats and gaps
+  c.save();c.beginPath();c.moveTo(W2,-Hf);c.lineTo(W2+dx,-Hf+dy);c.lineTo(W2+dx,dy);c.lineTo(W2,0);c.closePath();c.fillStyle='#1a1008';c.fill();c.clip();
+  for(let i=0;i<4;i++){const y0=-Hf+i*Hf/4+3*s;c.fillStyle=shd(wood,-0.32);c.beginPath();c.moveTo(W2,y0);c.lineTo(W2+dx,y0+dy);c.lineTo(W2+dx,y0+dy+Hf/4-7*s);c.lineTo(W2,y0+Hf/4-7*s);c.closePath();c.fill();c.strokeStyle=K2;c.lineWidth=2*s;c.stroke();}c.restore();
+  c.strokeStyle=K2;c.lineWidth=4*s;c.beginPath();c.moveTo(W2,-Hf);c.lineTo(W2+dx,-Hf+dy);c.lineTo(W2+dx,dy);c.lineTo(W2,0);c.stroke();
+  // top face: planks running back
+  c.save();c.beginPath();c.moveTo(-W2,-Hf);c.lineTo(W2,-Hf);c.lineTo(W2+dx,-Hf+dy);c.lineTo(-W2+dx,-Hf+dy);c.closePath();c.fillStyle=shd(wood,0.18);c.fill();c.clip();
+  c.strokeStyle='rgba(60,30,10,0.55)';c.lineWidth=2*s;for(let i=1;i<6;i++){const xx=-W2+i*2*W2/6;seg(c,xx,-Hf,xx+dx,-Hf+dy);}c.restore();c.strokeStyle=K2;c.lineWidth=4*s;c.beginPath();c.moveTo(-W2,-Hf);c.lineTo(W2,-Hf);c.lineTo(W2+dx,-Hf+dy);c.lineTo(-W2+dx,-Hf+dy);c.closePath();c.stroke();
+  // rope handle on top
+  c.strokeStyle='#c8a870';c.lineWidth=4*s;c.beginPath();c.moveTo(-20*s+dx*0.5,-Hf+dy*0.5);c.quadraticCurveTo(dx*0.5,-Hf+dy*0.5-26*s,20*s+dx*0.5,-Hf+dy*0.5);c.stroke();
+  // front frame planks + corner posts + brand
+  plank(c,-W2,-Hf,2*W2,14*s,wood,s,sd+1);plank(c,-W2,-14*s,2*W2,14*s,wood,s,sd+2);
+  for(const px of [-W2,W2-14*s]){const g=c.createLinearGradient(px,0,px+14*s,0);g.addColorStop(0,shd(wood,0.2));g.addColorStop(1,shd(wood,-0.2));c.fillStyle=g;c.fillRect(px,-Hf,14*s,Hf);c.strokeStyle=K2;c.lineWidth=2.6*s;c.strokeRect(px,-Hf,14*s,Hf);
+    for(const ny of [-Hf+7*s,-7*s]){c.fillStyle='#3a3a40';c.beginPath();c.arc(px+7*s,ny,2.2*s,0,TAU);c.fill();}}
+  c.fillStyle='rgba(40,20,8,0.7)';c.font=`900 ${11*s}px serif`;c.textAlign='center';c.textBaseline='middle';c.fillText('★ N ★',0,-7*s);
+  // iron bar door: hinged at the top, swings up and out when opened
+  const barG=xx=>{const g=c.createLinearGradient(xx-2.5*s,0,xx+2.5*s,0);g.addColorStop(0,'#4a4e56');g.addColorStop(0.5,'#d8dce4');g.addColorStop(1,'#4a4e56');return g;};
+  c.save();c.translate(0,-Hf+14*s);c.scale(1,Math.cos(open*Math.PI*0.62));const bh=Hf-28*s;
+  for(let i=0;i<8;i++){const xx=-W2+24*s+i*(2*W2-48*s)/7;c.strokeStyle=K2;c.lineWidth=6.5*s;seg(c,xx,0,xx,bh);c.strokeStyle=barG(xx);c.lineWidth=4*s;seg(c,xx,0,xx,bh);}
+  c.strokeStyle=K2;c.lineWidth=6.5*s;seg(c,-W2+16*s,bh*0.5,W2-16*s,bh*0.5);c.strokeStyle='#a0a4ac';c.lineWidth=4*s;seg(c,-W2+16*s,bh*0.5,W2-16*s,bh*0.5);
+  c.fillStyle='#c8a040';c.strokeStyle=K2;c.lineWidth=2*s;c.fillRect(-8*s,bh-14*s,16*s,14*s);c.strokeRect(-8*s,bh-14*s,16*s,14*s);c.restore();
+  c.restore();}

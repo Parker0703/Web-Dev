@@ -19,7 +19,7 @@ SH.retreat=function(c,t){LIT('#ffc890','#2a1a20');const q=inv(A(1),A(2),t);field
   for(let i=0;i<6;i++){const p=((t*2+i/6)%1);c2.fillStyle=`rgba(200,180,150,${0.5*(1-p)})`;c2.beginPath();c2.arc(x-120-p*160,GY+630-p*40,20+p*40,0,TAU);c2.fill();}}});FX.speed=0.6;FX.speedDir=0;vignette(c,0.45);};
 // 2 · "because of a thousand rabbits." over the hill: a flood of rabbits, a counter rolls to 1,000
 SH.reveal=function(c,t){LIT();const t0=A(2);field(c,t,{x:540,y:1080,z:pushZ(t,t0,B(2)+0.6,1.0,1.1),mm:35},{sky:'sun',troops:0,smoke:0,world:(c2,GY)=>{
-  const k=eo(clamp((t-t0)/1.4));swarm(c2,t,{n:70,x0:-150,x1:1230,y0:GY+40,y1:GY+40+k*1000,s0:0.5,s1:1.7,pose:'front',spd:10,seed:1});}});
+  const k=eo(clamp((t-t0)/1.4));swarm(c2,t,{n:160,x0:-150,x1:1230,y0:GY+40,y1:GY+40+k*1000,s0:0.5,s1:1.7,pose:'front',spd:10,seed:1});}});
   const v=Math.round(eo(clamp((t-TW('thousand')+0.2)/0.9))*1000);if(t>TW('thousand')-0.2){c.save();c.translate(540,560);c.fillStyle='rgba(10,8,14,0.85)';c.beginPath();c.roundRect(-250,-90,500,180,30);c.fill();c.strokeStyle=GOLD_C;c.lineWidth=6;c.stroke();txt(c,v.toLocaleString('en-US'),0,4,120,'#fff',{sw:14});c.restore();}
   vignette(c,0.4);};
 // 3 · "Give me 60 seconds…bullied by fluffy little animals." a rabbit sits on Napoleon's hat; he glares
@@ -40,13 +40,13 @@ SH.berthier=function(c,t){LIT('#ffd8a8','#2a2018');salon(c,t,{x:540,y:1150,z:pus
   if(t>TW('special')-0.1){const k=back(clamp((t-TW('special')+0.1)/0.35));c.save();c.translate(780,560);c.scale(k,k);c.fillStyle='#ffe066';c.strokeStyle=K2;c.lineWidth=6;c.beginPath();c.arc(0,0,46,0,TAU);c.fill();c.stroke();c.fillStyle='#c8ccd4';c.fillRect(-18,40,36,26);c.strokeRect(-18,40,36,26);c.restore();}
   vignette(c,0.4);};
 // 6 · "A rabbit hunt." hunting horn sounds, muskets ready, a rabbit pops up in the grass
-SH.hunt=function(c,t){LIT();field(c,t,{x:540,y:1100,z:pushZ(t,A(6),A(7),1.05,1.12),mm:50},{sky:'sun',troops:0,smoke:0,world:(c2,GY)=>{
+SH.hunt=function(c,t){LIT();field(c,t,{x:540,y:1100,z:pushZ(t,A(6),A(7),1.05,1.12),mm:50},{sky:'sun',troops:0,smoke:0,world:(c2,GY)=>{swarm(c2,t,{n:40,x0:-100,x1:1180,y0:GY+30,y1:GY+260,s0:0.3,s1:0.55,pose:'sit',seed:31});
   NAP({c:c2,x:380,y:GY+700,s:2.4,f:1,t,eyes:'happy',brow:'up',mouth:'smirk',propF:mUp(),hf:[24,60],hb:[-10,92]});
   BERT({c:c2,x:760,y:GY+640,s:2.2,f:-1,t,eyes:'happy',brow:'up',mouth:'grin',hf:[10,92],hb:[-10,92]});
   const k=back(clamp((t-TW('hunt')+0.05)/0.3));if(k>0)rabbit(c2,600,GY+820,0.9*k,{pose:'sit',f:-1,t,col:'brown',seed:2});}});vignette(c,0.4);};
 // 7 · "He ordered around 1,000 rabbits to be brought to a nearby hunting ground." carts of cages roll in, stacks of cages
 SH.cages=function(c,t){LIT();const q=inv(A(7),B(7),t);field(c,t,{x:540,y:1100,z:1.0,mm:35},{sky:'sun',troops:0,smoke:0,world:(c2,GY)=>{
-  for(let r=0;r<3;r++)for(let i=0;i<6;i++){const k=clamp(q*3-(r*6+i)*0.14);if(k<=0)continue;cage(c2,110+i*170+(r%2)*60,GY+260+r*220-(1-eo(k))*400,0.9+r*0.15,0);}}});
+  for(let r=0;r<4;r++)for(let i=0;i<6;i++){const k=clamp(q*3-(r*6+i)*0.11);if(k<=0)continue;cage(c2,90+i*180+(r%2)*70,GY+170+r*200-(1-eo(k))*400,0.9+r*0.15,0,{t,seed:r*6+i});}}});
   const v=Math.round(eo(clamp((t-TW('1,000')+0.1)/1.0))*1000);if(t>TW('1,000')-0.1){c.save();c.translate(540,620);c.fillStyle='rgba(10,8,14,0.85)';c.beginPath();c.roundRect(-260,-80,520,160,28);c.fill();c.strokeStyle=GOLD_C;c.lineWidth=6;c.stroke();txt(c,'~'+v.toLocaleString('en-US'),0,0,96,'#fff',{sw:12});c.restore();}vignette(c,0.4);};
 // 8 · "Sounds simple, right?" Napoleon smug with his musket
 SH.simple=function(c,t){LIT();field(c,t,{x:540,y:1150,z:1.1,mm:85},{sky:'sun',troops:0,smoke:0,world:(c2,GY)=>{NAP({c:c2,x:540,y:GY+900,s:3.0,f:1,t,eyes:'half',brow:'flat',mouth:'smirk',propF:mUp(),hf:[24,60],hb:[-10,92]});}});
@@ -62,17 +62,18 @@ SH.tame=function(c,t){c.fillStyle='#101420';c.fillRect(0,0,W,H);const t0=A(10);
   if(t>TW('wild')+0.3)bigX(c,790,1050,90,clamp((t-TW('wild')-0.3)/0.3)*0.9);vignette(c,0.5);};
 // 11 · "And when the cages opened, Napoleon expected the rabbits to run away." soldiers lift the doors; Napoleon aims, confident
 SH.open=function(c,t){LIT();const to=TW('opened');field(c,t,{x:540,y:1100,z:1.0,mm:50},{sky:'sun',troops:0,smoke:0,world:(c2,GY)=>{
-  for(let i=0;i<4;i++){cage(c2,170+i*240,GY+330,1.0,eo(clamp((t-to+0.2-i*0.08)/0.5)));}
+  for(let i=0;i<4;i++){cage(c2,170+i*240,GY+330,1.0,eo(clamp((t-to+0.2-i*0.08)/0.5)),{t,seed:i});}
   fig2(c2,{kind:'french',view:'front',x:120,y:GY+380,s:1.3,f:1,t,seed:3,hf:[40,40],hb:[-10,92]});
   NAP({c:c2,x:600,y:GY+820,s:2.6,f:1,t,eyes:'focus',brow:'flat',mouth:'smirk',propF:mCharge(),hf:[44,40],hb:[-10,92]});
-  if(t>to)for(let i=0;i<4;i++){const p=clamp((t-to-0.3-i*0.1)/1.5);rabbit(c2,170+i*240+p*0,GY+330+p*30,0.7,{pose:'sit',f:i%2?1:-1,t,seed:i,col:['white','grey','spot','white'][i]});}}});
+  if(t>to){const L=[];for(let i=0;i<4;i++)for(let j=0;j<7;j++){const p=clamp((t-to-0.25-i*0.08-j*0.22)/1.6);if(p<=0)continue;const ang=(hash(i*7+j)-0.5)*1.4;L.push([GY+300+p*(260+hash(j*3+i)*260),170+i*240+Math.sin(ang)*p*320,i*7+j,ang]);}
+    L.sort((a,b)=>a[0]-b[0]).forEach(([y,x,k,ang])=>rabbit(c2,x,y,0.62+(y-GY-300)/900,{pose:'hop',f:ang>0?1:-1,t,seed:k,spd:11,col:['white','grey','spot','brown','white'][k%5]}));}}});
   if(t>TW('run')-0.1){const k=clamp((t-TW('run')+0.1)/0.4);c.save();c.globalAlpha=k;c.translate(540,600);c.strokeStyle=GRN_C;c.lineWidth=14;c.lineCap='round';for(const d of [-1,1]){c.beginPath();c.moveTo(0,0);c.lineTo(d*260,-60);c.stroke();c.beginPath();c.moveTo(d*260,-60);c.lineTo(d*210,-100);c.moveTo(d*260,-60);c.lineTo(d*220,-10);c.stroke();}c.restore();}vignette(c,0.4);};
 // 12 · "But they did the exact opposite." the arrows flip around and point at him
-SH.opposite=function(c,t){LIT();field(c,t,{x:540,y:1100,z:1.05,mm:50},{sky:'sun',troops:0,smoke:0,world:(c2,GY)=>{swarm(c2,t,{n:24,x0:80,x1:1000,y0:GY+300,y1:GY+500,s0:0.6,s1:0.9,pose:'front',spd:0.0001,seed:4});NAP({c:c2,x:540,y:GY+900,s:2.6,f:1,t,back:true,hf:[44,40],hb:[-10,92]});}});
+SH.opposite=function(c,t){LIT();field(c,t,{x:540,y:1100,z:1.05,mm:50},{sky:'sun',troops:0,smoke:0,world:(c2,GY)=>{swarm(c2,t,{n:70,x0:80,x1:1000,y0:GY+300,y1:GY+500,s0:0.6,s1:0.9,pose:'front',spd:0.0001,seed:4});NAP({c:c2,x:540,y:GY+900,s:2.6,f:1,t,back:true,hf:[44,40],hb:[-10,92]});}});
   const k=eo(clamp((t-TW('opposite')+0.3)/0.5));c.save();c.translate(540,720);c.strokeStyle=RED_C;c.lineWidth=14;c.lineCap='round';for(const d of [-1,1]){const a=lerp(-0.25,Math.PI*0.5,k);c.save();c.rotate(d*a);c.beginPath();c.moveTo(0,0);c.lineTo(0,-200);c.moveTo(0,-200);c.lineTo(-40,-150);c.moveTo(0,-200);c.lineTo(40,-150);c.stroke();c.restore();}c.restore();vignette(c,0.4);};
 // 13 · "Instead of escaping, the rabbits charged straight toward him." the stampede, Napoleon's face
 SH.charge=function(c,t){LIT();const t0=A(13);field(c,t,{x:540,y:1100,z:pushZ(t,t0,B(13),1.0,1.12),mm:35},{sky:'sun',troops:0,smoke:0,world:(c2,GY)=>{
-  const q=clamp((t-t0)/2.8);swarm(c2,t,{n:60,x0:-100,x1:1180,y0:GY+80,y1:GY+500,s0:0.6,s1:1.0,pose:'front',spd:12,seed:7,flow:(x,y,i,tt)=>({x:lerp(x,540+(x-540)*0.5,q),y:y+q*(500+hash(i)*300)})});
+  const q=clamp((t-t0)/2.8);swarm(c2,t,{n:140,x0:-100,x1:1180,y0:GY+80,y1:GY+500,s0:0.6,s1:1.0,pose:'front',spd:12,seed:7,flow:(x,y,i,tt)=>({x:lerp(x,540+(x-540)*0.5,q),y:y+q*(500+hash(i)*300)})});
   NAP({c:c2,x:540,y:GY+1100,s:3.2,f:1,t,eyes:'shock',brow:'up',mouth:'shout',hf:[10,92],hb:[-10,92]});}});FX.speed=0.5;vignette(c,0.4);};
 // 14 · "Why?" freeze, a big question mark
 SH.why=function(c,t){LIT();field(c,t,{x:540,y:1100,z:1.12,mm:50},{sky:'sun',troops:0,smoke:0,world:(c2,GY)=>{swarm(c2,0,{n:20,x0:100,x1:980,y0:GY+400,y1:GY+700,s0:0.8,s1:1.0,pose:'front',spd:0.0001,seed:7});}});ink(c,0.45);bigQ(c,540,900,back(clamp((t-A(14))/0.35))*1.2,t);vignette(c,0.5);};
@@ -84,24 +85,24 @@ SH.fed=function(c,t){LIT('#ffe8c0','#5a4030');field(c,t,{x:540,y:1100,z:1.08,mm:
   for(let i=0;i<7;i++){const a=i/7*Math.PI;rabbit(c2,540+Math.cos(a)*310,GY+540+Math.sin(a)*110,1.15,{pose:i%2?'eat':'front',f:Math.cos(a)>0?-1:1,t,seed:i,col:['white','grey','spot','brown'][i%4]});}}});
   c.fillStyle='rgba(255,200,120,0.12)';c.fillRect(0,0,W,H);vignette(c,0.5);};
 // 17 · "…mistaken Napoleon for the guy delivering lunch." rabbits all around him, each dreaming of carrots
-SH.lunch=function(c,t){LIT();field(c,t,{x:540,y:1100,z:pushZ(t,A(17),B(17),1.0,1.08),mm:50},{sky:'sun',troops:0,smoke:0,world:(c2,GY)=>{
+SH.lunch=function(c,t){LIT();field(c,t,{x:540,y:1100,z:pushZ(t,A(17),B(17),1.0,1.08),mm:50},{sky:'sun',troops:0,smoke:0,world:(c2,GY)=>{swarm(c2,t,{n:90,x0:-150,x1:1230,y0:GY+60,y1:GY+560,s0:0.35,s1:0.8,pose:'front',seed:21});
   NAP({c:c2,x:540,y:GY+760,s:2.5,f:1,t,eyes:'wide',brow:'worried',mouth:'o',hf:[10,92],hb:[-10,92]});
-  const R=[];for(let i=0;i<10;i++){const a=Math.PI*0.05+i/9*Math.PI*0.9;R.push([540+Math.cos(a)*380,GY+720+Math.sin(a)*240,i]);}R.sort((a,b)=>a[1]-b[1]).forEach(([x,y,i])=>{const h=rabbit(c2,x,y,1.05,{pose:'front',t,seed:i,col:['white','grey','spot','brown','white'][i%5]});
+  const R=[];for(let i=0;i<16;i++){const a=Math.PI*0.02+i/15*Math.PI*0.96,rr2=i%2?300:420;R.push([540+Math.cos(a)*rr2,GY+700+Math.sin(a)*(i%2?170:250),i]);}R.sort((a,b)=>a[1]-b[1]).forEach(([x,y,i])=>{const h=rabbit(c2,x,y,1.05,{pose:'front',t,seed:i,col:['white','grey','spot','brown','white'][i%5]});
     if(t>TW('lunch')-0.6&&i%3===0){const k=back(clamp((t-TW('lunch')+0.6-i*0.05)/0.3));c2.save();c2.translate(h.head.x,h.head.y-120);c2.scale(k,k);c2.fillStyle='#fff';c2.strokeStyle=K2;c2.lineWidth=4;c2.beginPath();c2.ellipse(0,0,52,40,0,0,TAU);c2.fill();c2.stroke();carrot(c2,-4,-26,0.55);c2.restore();}});}});vignette(c,0.4);};
 // 18 · "His men tried chasing them away with sticks and whips." soldiers swing; rabbits hop around them
 SH.sticks=function(c,t){LIT();field(c,t,{x:540,y:1100,z:1.0,mm:50},{sky:'sun',troops:0,smoke:0,world:(c2,GY)=>{
-  swarm(c2,t,{n:30,x0:-50,x1:1130,y0:GY+200,y1:GY+900,s0:0.7,s1:1.1,pose:'hop',spd:10,seed:11,f:1});
+  swarm(c2,t,{n:180,x0:-50,x1:1130,y0:GY+200,y1:GY+900,s0:0.7,s1:1.1,pose:'hop',spd:10,seed:11,f:1});
   const sw=Math.sin(t*9);fig2(c2,{kind:'french',view:'front',x:300,y:GY+700,s:2.2,f:1,t,seed:1,eyes:'squeeze',brow:'angry',mouth:'shout',propF:stickProp(160,-0.6+sw*0.7),hf:[50,-20],hb:[-10,92]});
   fig2(c2,{kind:'french',view:'front',x:800,y:GY+760,s:2.2,f:-1,t,seed:2,eyes:'squeeze',brow:'angry',mouth:'shout',propF:whipProp(-0.4+Math.cos(t*8)*0.5,t),hf:[50,-20],hb:[-10,92]});}});vignette(c,0.4);};
 // 19 · "But the rabbits kept coming." an endless stream over the rise
-SH.kept=function(c,t){LIT();field(c,t,{x:540,y:1080,z:1.0,mm:35},{sky:'sun',troops:0,smoke:0,world:(c2,GY)=>{swarm(c2,t,{n:80,x0:-200,x1:1280,y0:GY+20,y1:GY+1100,s0:0.4,s1:1.4,pose:'front',spd:11,seed:13,flow:(x,y,i,tt)=>({x,y:GY+20+((y-GY-20+tt*260)%1080)})});}});vignette(c,0.4);};
+SH.kept=function(c,t){LIT();field(c,t,{x:540,y:1080,z:1.0,mm:35},{sky:'sun',troops:0,smoke:0,world:(c2,GY)=>{swarm(c2,t,{n:180,x0:-200,x1:1280,y0:GY+20,y1:GY+1100,s0:0.4,s1:1.4,pose:'front',spd:11,seed:13,flow:(x,y,i,tt)=>({x,y:GY+20+((y-GY-20+tt*260)%1080)})});}});vignette(c,0.4);};
 // 20 · "They surrounded the hunters, swarmed around Napoleon's legs, and even followed him toward his carriage."
-SH.swarmed=function(c,t){LIT();const tl=TW('swarmed'),tc=TW('followed');if(t<tc-0.05){field(c,t,{x:540,y:1200,z:t<tl?1.0:1.25,mm:t<tl?50:85},{sky:'sun',troops:0,smoke:0,world:(c2,GY)=>{
+SH.swarmed=function(c,t){LIT();const tl=TW('swarmed'),tc=TW('followed');if(t<tc-0.05){field(c,t,{x:540,y:1200,z:t<tl?1.0:1.25,mm:t<tl?50:85},{sky:'sun',troops:0,smoke:0,world:(c2,GY)=>{swarm(c2,t,{n:110,x0:-150,x1:1230,y0:GY+80,y1:GY+640,s0:0.35,s1:0.85,pose:'hop',spd:9,seed:23,f:-1,flow:(x,y,i,tt)=>({x:((x+tt*120+200)%1500)-200,y})});
     NAP({c:c2,x:540,y:GY+800,s:2.6,f:1,t,eyes:'shock',brow:'up',mouth:'shout',hf:[10,92],hb:[-10,92]});
-    const R=[];for(let i=0;i<16;i++){const a=i/16*TAU+t*0.6;R.push([540+Math.cos(a)*(150+(i%3)*60),GY+800+Math.sin(a)*70,i]);}R.sort((a,b)=>a[1]-b[1]).forEach(([x,y,i])=>rabbit(c2,x,y,0.9,{pose:'hop',f:Math.sin(i/16*TAU+t*0.6)>0?-1:1,t,seed:i,col:['white','grey','spot','brown'][i%4]}));}});vignette(c,0.4);return;}
+    const R=[];for(let i=0;i<24;i++){const a=i/24*TAU+t*0.6;R.push([540+Math.cos(a)*(150+(i%3)*70),GY+800+Math.sin(a)*70,i]);}R.sort((a,b)=>a[1]-b[1]).forEach(([x,y,i])=>rabbit(c2,x,y,0.9,{pose:'hop',f:Math.sin(i/24*TAU+t*0.6)>0?-1:1,t,seed:i,col:['white','grey','spot','brown'][i%4]}));}});vignette(c,0.4);return;}
   field(c,t,{x:540,y:1100,z:1.0,mm:35},{sky:'sun',troops:0,smoke:0,world:(c2,GY)=>{const q=inv(tc,B(20)+0.4,t);carriage(c2,880,GY+560,0.85,t,{f:1});
-    const x=lerp(220,640,q);NAP({c:c2,x,y:GY+640,s:2.0,f:1,t,walk:1,ph:t*9,view:'side',eyes:'squeeze',brow:'angry',mouth:'flat',hf:[10,92],hb:[-10,92]});
-    for(let i=0;i<14;i++)rabbit(c2,x-160-i*60-(i%2)*20,GY+620+(i%3)*30,0.75,{pose:'hop',f:1,t,seed:i,col:['white','grey','spot','brown'][i%4]});}});vignette(c,0.4);};
+    const x=lerp(420,700,q);NAP({c:c2,x,y:GY+640,s:2.0,f:1,t,walk:1,ph:t*9,view:'side',eyes:'squeeze',brow:'angry',mouth:'flat',hf:[10,92],hb:[-10,92]});
+    const L=[];for(let i=0;i<46;i++){const d=hash(i*2.1);L.push([GY+430+d*300,x-60-hash(i*4.7)*560+(1-d)*60,i,0.45+d*0.45]);}L.sort((a,b)=>a[0]-b[0]).forEach(([y,xx,i,sc])=>rabbit(c2,xx,y,sc,{pose:'hop',f:1,t,seed:i,spd:10,col:['white','grey','spot','brown','white'][i%5]}));}});vignette(c,0.4);};
 // 21 · "Eventually, the emperor had enough." steam out of his ears
 SH.enough=function(c,t){LIT('#ffb080','#3a1a10');field(c,t,{x:540,y:1150,z:1.1,mm:85},{sky:'dusk',troops:0,smoke:0,world:(c2,GY)=>{NAP({c:c2,x:540,y:GY+900,s:3.0,f:1,t,eyes:'squeeze',brow:'angry',mouth:'grit',hf:[10,92],hb:[-10,92]});
   for(let i=0;i<8;i++){const p=((t*1.5+i/8)%1);for(const d of [-1,1]){c2.fillStyle=`rgba(240,240,240,${0.6*(1-p)})`;c2.beginPath();c2.arc(540+d*(260+p*110),GY+900-3.0*300-p*240,14+p*30,0,TAU);c2.fill();}}}});c.fillStyle='rgba(255,60,40,0.12)';c.fillRect(0,0,W,H);vignette(c,0.45);};
@@ -111,7 +112,7 @@ SH.flee=function(c,t){LIT();const t0=A(22);const tb=TW('retreating');if(t<tb-0.1
     statTag(c,540,700,'ENTIRE ARMIES',RED_C,k);vignette(c,0.5);return;}
   field(c,t,{x:540,y:1080,z:1.0,mm:35},{sky:'dusk',troops:0,smoke:0,world:(c2,GY)=>{const q=inv(tb,B(22),t);const cx=lerp(620,860,eo(q));const w=carriage(c2,cx,GY+420,1.2,t,{f:1,moving:1});
     c2.save();c2.beginPath();c2.rect(w.win.x-45,w.win.y-35,90,70);c2.clip();NAP({c:c2,x:w.win.x,y:w.win.y+230,s:0.9,f:-1,t,eyes:'wide',brow:'worried',mouth:'o',hf:[10,92],hb:[-10,92]});c2.restore();
-    for(let i=0;i<22;i++)rabbit(c2,cx-230-(i%11)*55-(i%3)*15,GY+440+(i%4)*40+(i>10?70:0),0.9+(i%4)*0.1,{pose:'hop',f:1,t,seed:i,spd:13,col:['white','grey','spot','brown'][i%4]});}});FX.speed=0.5;vignette(c,0.4);};
+    for(let i=0;i<48;i++)rabbit(c2,cx-230-(i%16)*42-(i%3)*15,GY+440+(i%4)*40+Math.floor(i/16)*55,0.9+(i%4)*0.1,{pose:'hop',f:1,t,seed:i,spd:13,col:['white','grey','spot','brown'][i%4]});}});FX.speed=0.5;vignette(c,0.4);};
 // 23 · "Now, there's a catch:" record-scratch freeze: the frame goes sepia and stops
 SH.catch=function(c,t){const tf=A(23);SH.flee(c,Math.min(t,tf));c.save();c.globalCompositeOperation='color';c.fillStyle='rgba(160,120,70,0.9)';c.fillRect(0,0,W,H);c.restore();ink(c,0.25);
   const k=back(clamp((t-tf)/0.3));c.save();c.translate(540,900);c.scale(k,k);c.fillStyle='#ffd04a';c.strokeStyle=K2;c.lineWidth=8;c.beginPath();for(let i=0;i<10;i++){const a=i*Math.PI/5-Math.PI/2,r=i%2?60:130;c.lineTo(Math.cos(a)*r,Math.sin(a)*r);}c.closePath();c.fill();c.stroke();txt(c,'!',0,6,110,K2,{stroke:false});c.restore();vignette(c,0.5);};
