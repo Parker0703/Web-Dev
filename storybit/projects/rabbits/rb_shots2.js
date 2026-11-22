@@ -98,3 +98,37 @@ SH.flee=function(c,t){LIT();const t0=A(22);const tb=TW('retreating');if(t<tb-0.1
     let co;swarm(c2,t,{n:90,x0:0,x1:1,y0:GY+380,y1:GY+860,persp:P,pose:'hop',spd:13,seed:51,f:1,flow:(x,y,i)=>({x:cxw-230-hash(i*4.7)*650+Math.sin(t*2+i)*30,y}),
       actors:[{x:cxw,y:GY+520,rx:1,draw:()=>{co=coach(c2,cxw,GY+520,ppu,t,{moving:1});inWindow(c2,co.win,t,{f:-1,eyes:'wide',brow:'worried',mouth:'o'});}}]});}});
   FX.speed=0.45;vignette(c,0.4);};
+// 24 · memoirs: the old general writes at his desk; the open book lies in perspective, his quill hand on the right page, lines appear as he writes
+SH.memoirs=function(c,t){LIT('#ffc070','#2a1a10');const t0=A(24),t1=B(24);salon(c,t,{x:540,y:1380,z:pushZ(t,t0,t1,1.45,1.6),mm:85},{night:1,world:(c2,GY)=>{
+  const s=2.2,fx=540,fy=GY+150,dyN=GY-40,dyF=GY-125;const ink=clamp((t-t0)/(t1-t0+0.4));
+  const bx=540,by=(dyN+dyF)/2+6,bw=330;
+  // where the nib touches the right page (moves along the line being written)
+  const row=Math.floor(ink*13),u=0.15+((ink*13)%1)*0.7,v=0.12+row/14*0.78;const Hb=bw*0.68;
+  const e=24*Math.PI/180,Dp=-(Hb/2-v*Hb),zp=bw*0.05;const nib=[bx-u*bw/2,by-(Dp*Math.sin(e)+(bw*0.035+zp*0.8)*Math.cos(e))];
+  const shx=fx,shy=fy-200*s;const hf=[(nib[0]-6-shx)/s,(nib[1]-8-shy)/s];
+  const rest=[(bx+bw*0.3-shx)/s,(by-14-shy)/s];fig2(c2,{kind:'memoir',view:'front',x:fx,y:fy,s,f:1,t,eyes:'half',brow:'flat',mouth:'flat',hf:rest,hb:hf,look:[-0.6,2],lean:0});
+  // desk: top in perspective + front panel
+  c2.fillStyle='#7a4e2c';c2.beginPath();c2.moveTo(150,dyN);c2.lineTo(930,dyN);c2.lineTo(880,dyF);c2.lineTo(200,dyF);c2.closePath();c2.fill();c2.strokeStyle=K2;c2.lineWidth=5;c2.stroke();
+  c2.fillStyle='#5a3418';c2.fillRect(150,dyN,780,26);c2.strokeRect(150,dyN,780,26);const dg=c2.createLinearGradient(0,dyN+26,0,dyN+560);dg.addColorStop(0,'#5a3820');dg.addColorStop(1,'#24140a');c2.fillStyle=dg;c2.fillRect(170,dyN+26,740,520);c2.strokeRect(170,dyN+26,740,520);
+  c2.strokeStyle='#c8a038';c2.lineWidth=4;for(const k of [0,1])c2.strokeRect(210+k*350,dyN+80,310,170);c2.fillStyle='#d8b040';for(const k of [365,715]){c2.beginPath();c2.arc(k,dyN+165,9,0,TAU);c2.fill();}
+  // the open book, ink well, candle
+  openBook(c2,bx,by,bw,{elev:24,title:'MÉMOIRES',ink,t,cover:'#5a1a12',flip:1});
+  c2.fillStyle='#1a1a22';c2.beginPath();c2.ellipse(300,dyN-30,26,10,0,0,TAU);c2.fill();c2.fillRect(276,dyN-62,48,32);c2.strokeStyle=K2;c2.lineWidth=3;c2.strokeRect(276,dyN-62,48,32);
+  const cx=820,cy=dyN-30;c2.fillStyle='#d8b040';c2.beginPath();c2.ellipse(cx,cy,30,9,0,0,TAU);c2.fill();c2.fillStyle='#fff8e8';c2.fillRect(cx-10,cy-100,20,96);c2.strokeRect(cx-10,cy-100,20,96);const fl=1+Math.sin(t*13)*0.12;c2.fillStyle='#ffd070';c2.beginPath();c2.ellipse(cx,cy-114,9,18*fl,0,0,TAU);c2.fill();
+  c2.save();c2.globalCompositeOperation='lighter';const lg=c2.createRadialGradient(cx,cy-114,0,cx,cy-114,560);lg.addColorStop(0,'rgba(255,190,100,0.55)');lg.addColorStop(1,'rgba(255,190,100,0)');c2.fillStyle=lg;c2.fillRect(cx-560,cy-674,1120,1120);c2.restore();
+  // quill in the writing hand: nib on the page, feather back over the hand
+  c2.save();c2.translate(nib[0],nib[1]);c2.scale(-1,1);c2.rotate(-0.55+Math.sin(t*9)*0.05);c2.fillStyle='#f4f0e6';c2.strokeStyle=K2;c2.lineWidth=3;c2.beginPath();c2.moveTo(0,0);c2.quadraticCurveTo(30,-70,14,-150);c2.quadraticCurveTo(-12,-70,0,0);c2.fill();c2.stroke();c2.strokeStyle='rgba(0,0,0,0.3)';c2.lineWidth=1.5;c2.beginPath();c2.moveTo(2,-6);c2.quadraticCurveTo(10,-70,12,-140);c2.stroke();c2.restore();
+  fist2(c2,{x:nib[0]-6,y:nib[1]-30},s,'#f2f0ea');fist2(c2,{x:bx+bw*0.3,y:by-14},s,'#f2f0ea');}});
+  c.fillStyle='rgba(255,170,80,0.10)';c.fillRect(0,0,W,H);
+  if(t>TW('decades')-0.1){const k=back(clamp((t-TW('decades')+0.1)/0.3));c.save();c.translate(540,620);c.scale(k,k);c.fillStyle='rgba(10,8,14,0.85)';c.beginPath();c.roundRect(-300,-70,600,140,24);c.fill();c.strokeStyle=GOLD_C;c.lineWidth=5;c.stroke();txt(c,'DECADES LATER',0,0,64,'#fff',{sw:10,ls:4});c.restore();}vignette(c,0.5);};
+// 25 · "so historians can't confirm every detail." the open memoir lies on the desk; a magnifier slides over the curved pages
+SH.confirm=function(c,t){const t0=A(25),t1=B(25);const dg=c.createLinearGradient(0,0,0,H);dg.addColorStop(0,'#2a1a10');dg.addColorStop(1,'#5a3a22');c.fillStyle=dg;c.fillRect(0,0,W,H);
+  c.strokeStyle='rgba(20,10,4,0.25)';c.lineWidth=3;for(let i=0;i<30;i++){c.beginPath();c.moveTo(0,i*70+Math.sin(i)*20);c.bezierCurveTo(360,i*70+30,720,i*70-30,1080,i*70+10);c.stroke();}
+  const z=pushZ(t,t0,t1,1.0,1.06);c.save();c.translate(540,1100);c.scale(z,z);c.translate(-540,-1100);
+  const draw=()=>openBook(c,540,1150,880,{elev:52,title:'MÉMOIRES',t,cover:'#5a1a12'});draw();
+  const mx=lerp(360,720,eo(inv(t0,t1,t))),my=1000+Math.sin(t*2)*50,R=150;
+  c.save();c.beginPath();c.arc(mx,my,R,0,TAU);c.clip();c.translate(mx,my);c.scale(1.7,1.7);c.translate(-mx,-my);draw();c.restore();
+  c.save();c.beginPath();c.arc(mx,my,R,0,TAU);const lg=c.createRadialGradient(mx-50,my-60,10,mx,my,R);lg.addColorStop(0,'rgba(255,255,255,0.35)');lg.addColorStop(0.5,'rgba(255,255,255,0.05)');lg.addColorStop(1,'rgba(180,200,220,0.15)');c.fillStyle=lg;c.fill();c.restore();
+  c.strokeStyle=K2;c.lineWidth=18;c.beginPath();c.arc(mx,my,R,0,TAU);c.stroke();c.strokeStyle='#c8a868';c.lineWidth=9;c.stroke();
+  c.lineCap='round';c.strokeStyle=K2;c.lineWidth=42;seg(c,mx+112,my+112,mx+250,my+250);c.strokeStyle='#5a3a22';c.lineWidth=28;seg(c,mx+112,my+112,mx+250,my+250);c.restore();
+  for(let i=0;i<3;i++){const k=back(clamp((t-t0-0.3-i*0.25)/0.3));if(k>0){c.save();c.translate(220+i*320,560+(i%2)*60);c.scale(k*0.55,k*0.55);bigQ(c,0,0,1,t);c.restore();}}vignette(c,0.5);};

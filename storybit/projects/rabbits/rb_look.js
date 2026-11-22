@@ -336,3 +336,39 @@ function inWindow(c,w,t,o){const x0=Math.min(w.a.x,w.b.x),x1=Math.max(w.a.x,w.b.
   const g=c.createLinearGradient(x0,y0,x1,y1);g.addColorStop(0,'rgba(180,210,255,0.28)');g.addColorStop(0.4,'rgba(180,210,255,0.05)');g.addColorStop(1,'rgba(180,210,255,0.18)');c.fillStyle=g;c.fillRect(x0,y0,wd,y1-y0);c.restore();}
 // steam puffs from a head
 function steam(c,x,y,s,t){for(let i=0;i<8;i++){const p=((t*1.5+i/8)%1);for(const d of [-1,1]){c.fillStyle=`rgba(240,240,240,${0.6*(1-p)})`;c.beginPath();c.arc(x+d*(34+p*40)*s,y-p*80*s,(5+p*12)*s,0,TAU);c.fill();}}}
+// ---------- 13. real books: open book lying in perspective (curved pages from the spine, page-block thickness, cover overhang, text following the curve, page lift)
+// x,y = centre of the spine on the table; W = full open width (px); o: elev (deg, 90=top-down), H (page height px), cover, title, turn (0..1 page being turned), ink (writing progress 0..1)
+function openBook(c,x,y,W,o={}){const e=(o.elev??38)*Math.PI/180,sE=Math.sin(e),cE=Math.cos(e),Hb=o.H??W*0.68,hw=W/2,zp=W*0.05,th=W*0.035,t=o.t??0;
+  const P=(X,D,Z)=>{const k=1/(1+D*0.00035);return [x+X*k,y-(D*sE+Z*cE)*k];};
+  const Zs=u=>th+zp*Math.sin(Math.min(1,u/0.28)*Math.PI/2)*(1-0.55*Math.max(0,u-0.28)/0.72)-th*Math.pow(Math.max(0,1-u/0.06),2);// gutter dip → crest → flatter edge
+  const N=28,ov=W*0.025,cov=o.cover||'#6a2418';c.save();c.lineJoin='round';
+  // cover boards (overhang) + their thickness at the near edge
+  const cq=[P(-hw-ov,-Hb/2-ov,0),P(hw+ov,-Hb/2-ov,0),P(hw+ov,Hb/2+ov,0),P(-hw-ov,Hb/2+ov,0)];
+  c.fillStyle='rgba(0,0,0,0.3)';c.beginPath();cq.forEach((p,i)=>i?c.lineTo(p[0]+8,p[1]+10):c.moveTo(p[0]+8,p[1]+10));c.fill();
+  c.fillStyle=shd(cov,-0.35);const a=P(-hw-ov,-Hb/2-ov,0),b=P(hw+ov,-Hb/2-ov,0);c.beginPath();c.moveTo(a[0],a[1]);c.lineTo(b[0],b[1]);c.lineTo(b[0],b[1]+W*0.012);c.lineTo(a[0],a[1]+W*0.012);c.closePath();c.fill();
+  c.fillStyle=cov;c.beginPath();cq.forEach((p,i)=>i?c.lineTo(...p):c.moveTo(...p));c.closePath();c.fill();c.strokeStyle=K2;c.lineWidth=Math.max(2,W*0.006);c.stroke();
+  for(const sd of [-1,1]){
+    const edge=D=>{const pts=[];for(let i=0;i<=N;i++){const u=i/N;pts.push(P(sd*u*hw,D,Zs(u)));}return pts;};
+    const far=edge(Hb/2),near=edge(-Hb/2);
+    // page block: near side face with stacked page lines, and outer side face
+    c.fillStyle='#e8dcc0';c.beginPath();near.forEach((p,i)=>i?c.lineTo(...p):c.moveTo(...p));for(let i=N;i>=0;i--)c.lineTo(...P(sd*i/N*hw,-Hb/2,0));c.closePath();c.fill();
+    c.strokeStyle='rgba(120,100,70,0.45)';c.lineWidth=1;for(let k=1;k<6;k++){c.beginPath();for(let i=0;i<=N;i++){const u=i/N,p=P(sd*u*hw,-Hb/2,Zs(u)*k/6);i?c.lineTo(...p):c.moveTo(...p);}c.stroke();}
+    const o1=P(sd*hw,-Hb/2,Zs(1)),o2=P(sd*hw,Hb/2,Zs(1)),o3=P(sd*hw,Hb/2,0),o4=P(sd*hw,-Hb/2,0);c.fillStyle='#d8caa8';c.beginPath();c.moveTo(...o1);c.lineTo(...o2);c.lineTo(...o3);c.lineTo(...o4);c.closePath();c.fill();
+    // page surface: shaded darker into the gutter, light on the crest
+    const g=c.createLinearGradient(x,0,x+sd*hw,0);g.addColorStop(0,'#b8a888');g.addColorStop(0.08,'#e4d8bc');g.addColorStop(0.3,'#fbf4e2');g.addColorStop(1,'#efe4c8');
+    c.fillStyle=g;c.beginPath();far.forEach((p,i)=>i?c.lineTo(...p):c.moveTo(...p));for(let i=N;i>=0;i--)c.lineTo(...near[i]);c.closePath();c.fill();c.strokeStyle=K2;c.lineWidth=Math.max(1.5,W*0.004);c.stroke();
+    // text lines that follow the curve (left page: heading)
+    const rows=14,u0=0.12,u1=0.9;const done=o.ink??1;
+    const FL=o.flip?-1:1,inkSide=o.flip?-1:1,titleSide=-inkSide;
+    for(let r=0;r<rows;r++){const v=0.12+r/rows*0.78,D=FL*(Hb/2-v*Hb);const len=sd!==inkSide||r<rows*done?1:0;if(!len)continue;const wl=(r===rows-1?0.55:0.9+0.1*hash(r*3+sd));
+      if(sd===titleSide&&r<2&&o.title){continue;}
+      c.strokeStyle='rgba(60,40,25,0.55)';c.lineWidth=Math.max(1.2,W*0.0035);c.beginPath();for(let i=0;i<=16;i++){const u=u0+(u1-u0)*wl*i/16;const p=P(sd*u*hw,D,Zs(u));p[1]+=Math.sin(i*1.7+r)*0.6;i?c.lineTo(...p):c.moveTo(...p);}c.stroke();}
+    if(sd===titleSide&&o.title){const p=P(sd*0.5*hw,FL*(Hb/2-0.16*Hb),Zs(0.5));c.save();c.translate(p[0],p[1]);c.scale(1,sE*0.9+0.1);if(o.flip)c.rotate(Math.PI);c.fillStyle='#5a2a1a';c.font=`900 ${W*0.045}px serif`;c.textAlign='center';c.textBaseline='middle';c.fillText(o.title,0,0);c.restore();}
+  }
+  // gutter shadow line
+  c.strokeStyle='rgba(40,25,10,0.6)';c.lineWidth=Math.max(2,W*0.006);c.beginPath();c.moveTo(...P(0,Hb/2,0));c.lineTo(...P(0,-Hb/2,0));c.stroke();
+  // a page being turned: lifts from the right, arcs over the spine
+  if(o.turn>0&&o.turn<1){const a0=o.turn*Math.PI;c.fillStyle='#fbf4e2';c.strokeStyle=K2;c.lineWidth=Math.max(1.5,W*0.004);c.beginPath();
+    const pt=(u,D)=>{const r=u*hw,bend=Math.sin(o.turn*Math.PI)*0.35*u;const ang=a0+bend;return P(Math.cos(ang)*r,D,th+Math.sin(ang)*r);};
+    for(let i=0;i<=N;i++)c.lineTo(...pt(i/N,Hb/2));for(let i=N;i>=0;i--)c.lineTo(...pt(i/N,-Hb/2));c.closePath();c.fill();c.stroke();}
+  c.restore();return {P,Zs,hw,Hb};}
