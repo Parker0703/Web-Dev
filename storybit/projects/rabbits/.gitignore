@@ -4,3 +4,5 @@ lk_*
 *.wav
 w*.log
 st/
+out/*.mp4
+vid.mp4
