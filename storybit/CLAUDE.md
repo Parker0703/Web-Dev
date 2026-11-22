@@ -54,6 +54,9 @@ Word-by-word, synced to the MP3, TOP of screen, small all-caps, wide letter spac
   4. Matching light: per-plate mood rim/ambient, local light sources (candle, screen, window) warm or tint the facing side of the character; one colour grade over both layers.
   5. Camera: characters pinned to world coordinates so pans/push-ins move them correctly; perspective scale; distant characters get the same depth-of-field blur as the plate.
   6. The world reacts: dust in light beams, flicker on characters, pages lifting, footprints, reflections on shiny floors.
+- **Never change a style's face design.** StoryBit B faces keep their dot eyes, brows, mouth expressions and nose/face shading; always give characters a full expression (brow + mouth), not just eyes.
+- Animals and creatures may be 3D models rendered to sprites (e.g. `projects/rabbits/rb3d.js` → `rbrun.js` → `rkey.py`), animated in 2D. People stay 2D.
+- Backgrounds should feel alive: trees, flowers, swaying grass, birds, floating dust/pollen, flickering light.
 - **FRONT view by default.** Use 3/4 ONLY when the character does something in a direction (walking/running, handing something over, rushing to someone). Never full side profiles.
 - **3/4 face rule** (StoryBit C, `turnFace()` in `projects/ko/style5.js`): features wrap around the round head toward the facing side — near eye full size, far eye narrower near the far edge, mouth shifted; hair/hats shift too and never cover the eyes. Mirrors for left-facing.
 - **Seated people actually sit** behind the table edge; nobody stands inside furniture. Tables with both sides: far side faces camera behind the table, near side seen from behind low chair backs. Nobody cut at the frame edge.
