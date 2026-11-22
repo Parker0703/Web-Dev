@@ -4,7 +4,7 @@ Object.assign(KIND2,{
   berthier:{coat:'#26346a',limb:'#f2f0ea',hat:'bicorneF',hair:'#5a3a22',skirt:'#26346a',skirtL:30,uniform:'nap',epaulettes:1,stache:1},
   tsar:{coat:'#1e5a3a',limb:'#f2f0ea',hat:'bicorneF',hair:'#c8a060',skirt:'#1e5a3a',skirtL:30,uniform:'ru',epaulettes:1},
   austrian:{coat:'#eeece4',limb:'#efece4',hat:'shako',shako:'#1a1a1a',plume:'#d8b040',skirt:'#eeece4',skirtL:24,uniform:'ru',belts:1},
-  keeper:{coat:'#7a5a3a',limb:'#f0eee6',hat:'none',hair:'#5a3a22',skirt:'#7a5a3a',skirtL:20},
+  keeper:{coat:'#7a5a3a',limb:'#f0eee6',hat:'none',hair:'#5a3a22',skirt:'#7a5a3a',skirtL:20,vest:'#e8dcc0',belt:1,buttons:1,hem:'#4a3420'},
   memoir:{coat:'#26346a',limb:'#f2f0ea',hat:'none',hair:'#d8d4cc',skirt:'#26346a',skirtL:30,uniform:'nap',epaulettes:1,stache:1},
 });
 const BER=o=>fig2(o.c,{kind:'berthier',view:'front',...o});

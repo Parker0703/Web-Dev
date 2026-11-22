@@ -30,7 +30,7 @@ SH.bullied=function(c,t){LIT();field(c,t,{x:540,y:1150,z:pushZ(t,A(3),B(3),1.05,
 // 4 · "It was 1807."
 SH.year=function(c,t){field(c,t,{x:540,y:1100,z:1.0,mm:35},{sky:'sun',troops:0,smoke:0,world:()=>{}});ink(c,0.35);card(c,t,A(4),'THE YEAR','1807',GOLD_C,1000,150);vignette(c,0.5);};
 // 5 · "Napoleon had just celebrated a major diplomatic victory…" the Tilsit raft: Napoleon and the Tsar shake hands; then Berthier
-SH.tilsit=function(c,t){LIT('#ffe0a8','#2a3a4a');river(c,t,{x:540,y:1080,z:pushZ(t,A(5),TW('chief')-0.1,1.0,1.08),mm:50},{pyr:0,sunX:780,GY:1150,world:(c2,GY)=>{raft(c2,540,GY+260,1.15,t);
+SH.tilsit=function(c,t){LIT('#ffe0a8','#2a3a4a');river(c,t,{x:540,y:1080,z:pushZ(t,A(5),TW('chief')-0.1,1.0,1.08),mm:50},{pyr:0,palms:0,sunX:780,GY:1150,world:(c2,GY)=>{raft(c2,540,GY+260,1.15,t);
   const shk=Math.sin(t*10)*4;NAP({c:c2,x:420,y:GY+230,s:1.6,f:1,t,eyes:'happy',brow:'up',mouth:'grin',hf:[46,40+shk],hb:[-10,92],seed:1});
   fig2(c2,{kind:'tsar',view:'front',x:660,y:GY+230,s:1.6,f:-1,t,eyes:'happy',brow:'flat',mouth:'smile',hf:[46,40-shk],hb:[-10,92],seed:2});}});
   statTag(c,540,640,'TREATY OF TILSIT',GOLD_C,clamp((t-TW('diplomatic'))/0.3));vignette(c,0.4);};
@@ -79,9 +79,9 @@ SH.why=function(c,t){LIT();field(c,t,{x:540,y:1100,z:1.12,mm:50},{sky:'sun',troo
 // 15 · "Because these weren't wild animals." a close-up: big-eyed tame bunny
 SH.cute=function(c,t){LIT();field(c,t,{x:540,y:1150,z:1.2,mm:135},{sky:'sun',troops:0,smoke:0,world:(c2,GY)=>{rabbit(c2,540,GY+640,4.2,{pose:'front',t,col:'white',seed:9});}});statTag(c,540,640,'TAME',GOLD_C,clamp((t-TW('wild',1)+0.1)/0.3));vignette(c,0.45);};
 // 16 · "They were used to being fed by humans." a keeper hands out carrots; rabbits crowd his boots (warm flashback)
-SH.fed=function(c,t){LIT('#ffe8c0','#5a4030');field(c,t,{x:540,y:1100,z:1.08,mm:50},{sky:'sun',troops:0,smoke:0,farm:1,world:(c2,GY)=>{
-  const r=fig2(c2,{kind:'keeper',view:'front',x:540,y:GY+760,s:2.5,f:1,t,eyes:'happy',brow:'up',mouth:'smile',hf:[50,30+Math.sin(t*4)*6],hb:[-10,92]});carrot(c2,r.hf.x+10,r.hf.y-10,1.4);
-  for(let i=0;i<7;i++){const a=i/7*Math.PI;rabbit(c2,540+Math.cos(a)*300,GY+800+Math.sin(a)*120,1.0,{pose:i%2?'eat':'front',f:Math.cos(a)>0?-1:1,t,seed:i,col:['white','grey','spot','brown'][i%4]});}}});
+SH.fed=function(c,t){LIT('#ffe8c0','#5a4030');field(c,t,{x:540,y:1100,z:1.08,mm:50},{sky:'sun',troops:0,smoke:0,world:(c2,GY)=>{cottage(c2,800,GY+250,0.75,t);
+  const r=fig2(c2,{kind:'keeper',view:'front',x:540,y:GY+520,s:2.3,f:1,t,eyes:'happy',brow:'up',mouth:'smile',hf:[50,30+Math.sin(t*4)*6],hb:[-10,92]});carrot(c2,r.hf.x+10,r.hf.y-10,1.4,t);
+  for(let i=0;i<7;i++){const a=i/7*Math.PI;rabbit(c2,540+Math.cos(a)*310,GY+540+Math.sin(a)*110,1.15,{pose:i%2?'eat':'front',f:Math.cos(a)>0?-1:1,t,seed:i,col:['white','grey','spot','brown'][i%4]});}}});
   c.fillStyle='rgba(255,200,120,0.12)';c.fillRect(0,0,W,H);vignette(c,0.5);};
 // 17 · "…mistaken Napoleon for the guy delivering lunch." rabbits all around him, each dreaming of carrots
 SH.lunch=function(c,t){LIT();field(c,t,{x:540,y:1100,z:pushZ(t,A(17),B(17),1.0,1.08),mm:50},{sky:'sun',troops:0,smoke:0,world:(c2,GY)=>{
@@ -116,8 +116,14 @@ SH.flee=function(c,t){LIT();const t0=A(22);const tb=TW('retreating');if(t<tb-0.1
 SH.catch=function(c,t){const tf=A(23);SH.flee(c,Math.min(t,tf));c.save();c.globalCompositeOperation='color';c.fillStyle='rgba(160,120,70,0.9)';c.fillRect(0,0,W,H);c.restore();ink(c,0.25);
   const k=back(clamp((t-tf)/0.3));c.save();c.translate(540,900);c.scale(k,k);c.fillStyle='#ffd04a';c.strokeStyle=K2;c.lineWidth=8;c.beginPath();for(let i=0;i<10;i++){const a=i*Math.PI/5-Math.PI/2,r=i%2?60:130;c.lineTo(Math.cos(a)*r,Math.sin(a)*r);}c.closePath();c.fill();c.stroke();txt(c,'!',0,6,110,K2,{stroke:false});c.restore();vignette(c,0.5);};
 // 24 · "this story comes mainly from a general's memoirs published decades later," the old general writes his memoirs by candle
-SH.memoirs=function(c,t){LIT('#ffc070','#2a1a10');salon(c,t,{x:540,y:1150,z:1.05,mm:50},{night:1,world:(c2,GY)=>{fig2(c2,{kind:'memoir',view:'front',x:540,y:GY+520,s:2.2,f:1,t,eyes:'focus',brow:'flat',mouth:'flat',old:1,hf:[40,50],hb:[-10,92],look:[0,6]});
-  c2.fillStyle='#5a3a22';c2.strokeStyle=K2;c2.lineWidth=6;c2.fillRect(200,GY+620,680,60);c2.strokeRect(200,GY+620,680,60);c2.fillStyle='#4a2e18';c2.fillRect(220,GY+680,640,300);c2.strokeRect(220,GY+680,640,300);memoirsBook(c2,540,GY+640,0.8,t,{title:1,quill:1});}});c.fillStyle='rgba(255,170,80,0.12)';c.fillRect(0,0,W,H);
+SH.memoirs=function(c,t){LIT('#ffc070','#2a1a10');salon(c,t,{x:540,y:1150,z:1.05,mm:50},{night:1,world:(c2,GY)=>{fig2(c2,{kind:'memoir',view:'front',x:540,y:GY+150,s:2.2,f:1,t,eyes:'focus',brow:'flat',mouth:'flat',old:1,hf:[46,72+Math.sin(t*8)*3],hb:[-10,92],look:[0.6,1.2],propF:(cc,h,ss)=>{cc.save();cc.translate(h.x,h.y);cc.rotate(-0.6);cc.fillStyle='#f4f0e6';cc.strokeStyle=K2;cc.lineWidth=3;cc.beginPath();cc.moveTo(0,10);cc.quadraticCurveTo(28,-60,8,-130);cc.quadraticCurveTo(-18,-60,0,10);cc.fill();cc.stroke();cc.restore();}});
+  const dy=GY-120;const dg=c2.createLinearGradient(0,dy,0,dy+500);dg.addColorStop(0,'#6a4226');dg.addColorStop(1,'#2a160a');c2.fillStyle=dg;c2.strokeStyle=K2;c2.lineWidth=6;c2.fillRect(170,dy+40,740,480);c2.strokeRect(170,dy+40,740,480);
+  c2.strokeStyle='#c8a038';c2.lineWidth=4;for(const k of [0,1])c2.strokeRect(210+k*350,dy+90,310,170);c2.fillStyle='#d8b040';for(const k of [365,715]){c2.beginPath();c2.arc(k,dy+175,9,0,TAU);c2.fill();}
+  c2.fillStyle='#8a5a30';c2.fillRect(140,dy,800,44);c2.strokeStyle=K2;c2.lineWidth=6;c2.strokeRect(140,dy,800,44);
+  c2.save();c2.translate(540,dy+6);c2.scale(1,0.42);memoirsBook(c2,0,-150,0.62,t,{title:1});c2.restore();
+  const cx=820,cyy=dy-10;c2.fillStyle='#d8b040';c2.fillRect(cx-30,cyy-10,60,12);c2.fillStyle='#fff8e8';c2.fillRect(cx-10,cyy-100,20,90);c2.strokeRect(cx-10,cyy-100,20,90);const fl=1+Math.sin(t*13)*0.12;c2.fillStyle='#ffd070';c2.beginPath();c2.ellipse(cx,cyy-114,9,18*fl,0,0,TAU);c2.fill();
+  c2.save();c2.globalCompositeOperation='lighter';const lg=c2.createRadialGradient(cx,cyy-114,0,cx,cyy-114,520);lg.addColorStop(0,'rgba(255,190,100,0.55)');lg.addColorStop(1,'rgba(255,190,100,0)');c2.fillStyle=lg;c2.fillRect(cx-520,cyy-634,1040,1040);c2.restore();
+  c2.fillStyle='#1a1a22';c2.beginPath();c2.ellipse(300,dy+4,28,14,0,0,TAU);c2.fill();c2.strokeRect(278,dy-30,44,34);}});c.fillStyle='rgba(255,170,80,0.10)';c.fillRect(0,0,W,H);
   if(t>TW('decades')-0.1){const k=back(clamp((t-TW('decades')+0.1)/0.3));c.save();c.translate(540,620);c.scale(k,k);c.fillStyle='rgba(10,8,14,0.85)';c.beginPath();c.roundRect(-300,-70,600,140,24);c.fill();c.strokeStyle=GOLD_C;c.lineWidth=5;c.stroke();txt(c,'DECADES LATER',0,0,64,'#fff',{sw:10,ls:4});c.restore();}vignette(c,0.5);};
 // 25 · "so historians can't confirm every detail." a magnifier over the page, question marks
 SH.confirm=function(c,t){c.fillStyle='#120c08';c.fillRect(0,0,W,H);memoirsBook(c,540,1050,1.9,t,{title:1});const mx=lerp(340,740,eo(inv(A(25),B(25),t))),my=1000+Math.sin(t*2)*60;c.strokeStyle=K2;c.lineWidth=16;c.beginPath();c.arc(mx,my,150,0,TAU);c.stroke();c.strokeStyle='#c8a868';c.lineWidth=8;c.stroke();c.strokeStyle=K2;c.lineWidth=40;c.lineCap='round';seg(c,mx+110,my+110,mx+260,my+260);c.strokeStyle='#5a3a22';c.lineWidth=26;seg(c,mx+110,my+110,mx+260,my+260);
