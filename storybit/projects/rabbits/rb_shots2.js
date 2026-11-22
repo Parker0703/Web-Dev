@@ -34,7 +34,7 @@ SH.hunt=function(c,t){LIT();const z=pushZ(t,A(6),A(7),1.05,1.12);field(c,t,{x:54
 SH.open=function(c,t){LIT();const to=TW('opened');const z=pushZ(t,A(11),B(11),1.0,1.06);field(c,t,{x:540+Math.sin(t*0.5)*20,y:1100,z,mm:50},{sky:'sun',troops:0,smoke:0,world:(c2,GY)=>{const P=PSP(GY,GY+820,2.6);
   const cx=i=>170+i*240,cy=GY+330,op=i=>eo(clamp((t-to+0.2-i*0.08)/0.5));
   const L=[];for(let i=0;i<4;i++)for(let j=0;j<9;j++){const p=clamp((t-to-0.25-i*0.08-j*0.2)/1.6);if(p<=0)continue;const ang=(hash(i*9+j)-0.5)*1.6;L.push([cx(i)+Math.sin(ang)*p*380,cy+18+p*(300+hash(j*3+i)*420)]);}
-  swarm(c2,t,{n:L.length,x0:0,x1:1,y0:0,y1:1,persp:P,spd:11,seed:5,flow:(x,y,i)=>({x:L[i][0],y:L[i][1]}),pose:'hop',f:i=>Math.sin((hash(i)-0.5))>0?1:-1,
+  swarm(c2,t,{n:L.length,x0:0,x1:1,y0:0,y1:1,persp:P,spd:11,seed:5,flow:(x,y,i)=>L[i]?{x:L[i][0],y:L[i][1]}:null,pose:'hop',f:i=>Math.sin((hash(i)-0.5))>0?1:-1,
     actors:[{x:600,y:GY+820,rx:150,draw:()=>NAP({c:c2,x:600,y:GY+820,s:2.6,f:1,t,eyes:'focus',brow:'flat',mouth:'smirk',propF:mCharge(),hf:[44,40],hb:[-10,92]})},
       {x:120,y:GY+380,rx:60,draw:()=>fig2(c2,{kind:'french',view:'front',x:120,y:GY+380,s:1.3,f:1,t,seed:3,hf:[40,40],hb:[-10,92]})},
       ...[0,1,2,3].map(i=>({x:cx(i),y:cy,rx:95,ry:24,draw:()=>cage(c2,cx(i),cy,1.0,op(i),{t,seed:i})}))]});}});
