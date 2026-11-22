@@ -137,7 +137,7 @@ SH.opponents=function(c,t){c.fillStyle='#0c0e16';c.fillRect(0,0,W,H);LIT('#ffe0a
   statTag(c,540,700,'MOST EMBARRASSING OPPONENT',GOLD_C,clamp((t-A(27))/0.3));vignette(c,0.5);};
 // 28 · "It was lunch." one small bunny munching a carrot, victorious; Napoleon's hat lies beside it
 SH.lunchEnd=function(c,t){LIT();field(c,t,{x:540,y:1150,z:pushZ(t,A(28),END,1.1,1.25),mm:135},{sky:'dusk',troops:0,smoke:0,world:(c2,GY)=>{
-  rabbit(c2,800,GY+560,3.4,{pose:'eat',f:-1,t,col:'white',seed:4});c2.save();c2.translate(640,GY+550);c2.rotate(-0.2);hat2b(c2,'bicorne',3.0,1,60,t);c2.restore();}});
+  rabbit(c2,640,GY+560,3.4,{pose:'eat',f:-1,t,col:'white',seed:4});c2.save();c2.translate(520,GY+560);c2.rotate(-0.2);hat2b(c2,'bicorne',3.0,1,60,t);c2.restore();}});
   const f=clamp((t-(END-1.8))/1.7);vignette(c,0.45);if(f>0){c.fillStyle=`rgba(0,0,0,${f})`;c.fillRect(0,0,W,H);}};
 var SHOTS=[[0,'hook'],[TW('nearly')-0.1,'europe'],[A(1)-0.05,'retreat'],[A(2)-0.05,'reveal'],[A(3)-0.05,'bullied'],[A(4)-0.05,'year'],[A(5)-0.05,'tilsit'],[TW('chief')-0.1,'berthier'],[A(6)-0.05,'hunt'],[A(7)-0.05,'cages'],[A(8)-0.05,'simple'],[A(9)-0.05,'mistake'],[A(10)-0.05,'tame'],
   [A(11)-0.05,'open'],[A(12)-0.05,'opposite'],[A(13)-0.05,'charge'],[A(14)-0.05,'why'],[A(15)-0.05,'cute'],[A(16)-0.05,'fed'],[A(17)-0.05,'lunch'],[A(18)-0.05,'sticks'],[A(19)-0.05,'kept'],[A(20)-0.05,'swarmed'],[A(21)-0.05,'enough'],[A(22)-0.05,'flee'],[A(23)-0.05,'catch'],[A(24)-0.05,'memoirs'],[A(25)-0.05,'confirm'],[A(26)-0.05,'account'],[A(27)-0.05,'opponents'],[A(28)-0.05,'lunchEnd']];
