@@ -18,7 +18,7 @@ function eyeB(c,x,y,s,o){const w=o.w*s,h=o.h*s,ir=o.ir*s,lk=o.lk||[0,0];c.save()
   c.restore();c.strokeStyle=K2;c.lineWidth=1.5*s;c.beginPath();c.ellipse(x,y,w,h,0,0,TAU);c.stroke();
   c.lineWidth=3.2*s;c.lineCap='round';c.beginPath();c.ellipse(x,y,w,h,0,Math.PI*1.08,Math.PI*1.92);c.stroke();// lash line
   c.restore();}
-{const _fM=face2;face2=function(c,o,s,f,R,t){const E=o.eyes;if(E==='dot'||E==='focus'||E==null)o={...o,eyes:E==='focus'?'half':'open'};return _fM(c,o,s,f,R,t);};}
+{const _fM=face2;face2=function(c,o,s,f,R,t){const E=o.eyes;if(E==='dot'||E==='focus'||E==null)o={...o,eyes:E==='focus'?'half':'open'};const MM={grin:'smile',grit:'teeth',shout:'scream'};if(MM[o.mouth])o={...o,mouth:MM[o.mouth]};return _fM(c,o,s,f,R,t);};}
 // ---------- 2. uniforms: piping, shiny buttons, bullion epaulettes, gold embroidery ----------
 Object.assign(KIND2.napoleon,{hem:'#c02828'});['berthier','memoir','marshal'].forEach(k=>{if(KIND2[k]){KIND2[k].hem='#d8b040';KIND2[k].embroid=1;}});
 function gbtn(c,x,y,r){const g=c.createRadialGradient(x+L2.dx*r*0.4,y-r*0.4,0,x,y,r);g.addColorStop(0,'#fffbe0');g.addColorStop(0.45,'#e8c048');g.addColorStop(1,'#7a5a10');c.fillStyle=g;c.beginPath();c.arc(x,y,r,0,TAU);c.fill();c.strokeStyle='rgba(40,25,0,0.7)';c.lineWidth=r*0.35;c.stroke();}
