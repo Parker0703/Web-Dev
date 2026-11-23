@@ -2,7 +2,7 @@
 // ===================== DMZ base helpers (from Lynch) (StoryBit C) =====================
 const XJ={};const LT=i=>L[i].a;
 function lens(c,t,o={}){cine(c,t,{v:o.v??0.5,bars:0});}
-const F=(e,b,m,o)=>BF(e,b,m,o);
+// F() is defined in dmz_shots.js (with face-name safety)
 const ink=(c,a)=>{c.fillStyle=`rgba(0,0,0,${a})`;c.fillRect(0,0,W,H);};
 function bigX(c,x,y,r,a=1,col='#ff3b30'){if(a<=0)return;c.save();c.globalAlpha=Math.min(1,a);c.strokeStyle=col;c.lineCap='round';c.lineWidth=r*0.22;const k=eo(clamp(a));seg(c,x-r*k,y-r*k,x+r*k,y+r*k);seg(c,x+r*k,y-r*k,x-r*k,y+r*k);c.restore();}
 function tagC(c,x,y,s,k=1,col='#ffd23f'){if(k<=0)return;c.save();c.globalAlpha=clamp(k*2);c.translate(x,y);const sc=lerp(0.7,1,eo(clamp(k)));c.scale(sc,sc);c.font='900 40px "Inter Display"';c.letterSpacing='5px';const w=c.measureText(s).width+60;
