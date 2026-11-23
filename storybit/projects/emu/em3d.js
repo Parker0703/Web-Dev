@@ -55,7 +55,34 @@ function buildTruck(D,o={}){const body=new Geo(),dark=new Geo(),wood=new Geo(),g
   vBox(wood,[-1.05,0.95,0],[2.6,0.12,1.7],'#7a5a34');for(const zs of [-1,1]){for(let k=0;k<3;k++)vBox(wood,[-1.05,1.12+k*0.16,zs*0.85],[2.6,0.12,0.05],k%2?'#8a6a40':'#6a4a2a');}for(let k=0;k<3;k++)vBox(wood,[-2.33,1.12+k*0.16,0],[0.05,0.12,1.7],'#6a4a2a');
   for(let i=0;i<5;i++)vBox(dark,[-2.2+i*0.6,1.25,0.86],[0.04,0.5,0.06],'#3a3a2a');
   // pedestal + Lewis gun
-  G.cyl(dark,M4.chain(M4.T(-0.6,1.0,0),M4.S(0.06,0.75,0.06)),'#2a2c2e',{seg:12});lewis3(dark,-0.6,1.8,0,o.gy||0);
+  G.cyl(dark,M4.chain(M4.T(-0.6,1.0,0),M4.S(0.06,0.75,0.06)),'#2a2c2e',{seg:12});{const lg=new Geo(),lw=new Geo();lewisGeo(lg,lw,M4.chain(M4.T(-0.6,1.8,0),M4.RY(o.gy||0)),1);push(D,lg,{spec:1.6,rim:0.45});push(D,lw,{spec:0.5,rim:0.35});}
   vBox(wood,[-1.7,1.1,0.4],[0.4,0.25,0.3],'#5a5a3a');vBox(wood,[-1.7,1.35,0.4],[0.36,0.22,0.28],'#4a4a30');
   push(D,body,{spec:0.6,rim:0.4});push(D,dark,{spec:1.0,rim:0.3});push(D,wood,{spec:0.3,rim:0.3});push(D,glass,{spec:3,rim:0.5});push(D,chrome,{spec:2.5,rim:0.5});push(D,tyre,{spec:0.4,rim:0.25});}
 PB.truck=buildTruck;
+// ===== weapons (origin = trigger / pistol grip, barrel along +x, metres) =====
+const GUNM='#2a2c2e',GUNM2='#3e4144',WALNUT='#7a4a24',WALNUT2='#5a3416';
+function lewisGeo(g,w,M0,boxStock){const T=(...a)=>M4.chain(M0,...a);
+  G.cyl(g,T(M4.T(0.04,0.03,0),M4.RZ(-Math.PI/2),M4.S(0.058,0.74,0.058)),GUNM,{seg:20});
+  for(let i=0;i<16;i++)G.cyl(g,T(M4.T(0.08+i*0.042,0.03,0),M4.RZ(-Math.PI/2),M4.S(0.064,0.012,0.064)),GUNM2,{seg:20});
+  G.cyl(g,T(M4.T(0.78,0.03,0),M4.RZ(-Math.PI/2),M4.S(0.058,0.06,0.058)),GUNM,{seg:20,rt:0.45,rb:1});G.cyl(g,T(M4.T(0.83,0.03,0),M4.RZ(-Math.PI/2),M4.S(0.017,0.12,0.017)),'#1a1a1a',{seg:10});
+  G.box(g,T(M4.T(0.88,0.07,0),M4.S(0.012,0.035,0.01)),GUNM,{});
+  G.box(g,T(M4.T(-0.1,0.02,0),M4.S(0.3,0.1,0.075)),GUNM,{});G.box(g,T(M4.T(-0.05,0.075,0.04),M4.S(0.08,0.02,0.02)),'#5a5c5e',{});
+  G.cyl(g,T(M4.T(-0.04,0.085,0),M4.S(0.135,0.05,0.135)),GUNM2,{seg:28});for(let k=0;k<20;k++){const a=k/20*TAU;G.box(g,T(M4.T(-0.04+Math.cos(a)*0.1,0.112,Math.sin(a)*0.1),M4.RY(-a),M4.S(0.05,0.008,0.012)),'#1e2022',{});}
+  G.cyl(g,T(M4.T(-0.04,0.11,0),M4.S(0.035,0.03,0.035)),'#5a5c5e',{seg:16});
+  G.box(g,T(M4.T(-0.32,0.0,0),M4.S(0.14,0.08,0.06)),GUNM,{});
+  if(boxStock)G.box(w,T(M4.T(-0.52,-0.02,0),M4.RZ(0.08),M4.S(0.28,0.08,0.06)),WALNUT,{});else vLoftT(w,M0,[[-0.38,-0.035,0.04,0.035,1],[-0.5,-0.06,0.038,0.038,1],[-0.66,-0.085,0.035,0.04,1]],WALNUT);
+  G.sphere(w,T(M4.T(-0.17,-0.08,0),M4.RZ(-0.35),M4.S(0.03,0.075,0.03)),WALNUT2,{su:12,sv:10});G.box(g,T(M4.T(-0.13,-0.04,0),M4.S(0.07,0.012,0.012)),GUNM,{});}
+function vLoftT(g,M0,secs,col){// smooth wooden furniture via the vehicle loft (superellipse rings), brass butt plate
+  vLoft(g,secs.map(a=>[a[0],a[1],a[2],a[3],1]),col,3.2,28);const l=secs[secs.length-1];G.box(g,M4.chain(M0,M4.T(l[0]-0.006,(l[1]+l[2])/2,0),M4.S(0.012,l[2]-l[1]+0.004,l[3]*2.05)),'#b08a40',{});}
+function smleGeo(g,w,M0){const T=(...a)=>M4.chain(M0,...a);
+  // walnut furniture almost to the muzzle (forend + handguard), wrist, butt
+  vLoftT(w,M0,[[0.36,-0.012,0.022,0.017,1],[0.05,-0.028,0.022,0.02,1],[-0.06,-0.04,0.02,0.02,1],[-0.18,-0.05,0.015,0.018,1],[-0.3,-0.085,0.02,0.02,1],[-0.62,-0.12,0.025,0.021,1],[-0.66,-0.125,0.026,0.021,1]],WALNUT);
+  vLoft(w,[[0.0,0.022,0.036,0.015,1],[0.34,0.02,0.032,0.013,1]],WALNUT2,3,20);
+  G.cyl(g,T(M4.T(0.36,0.008,0),M4.RZ(-Math.PI/2),M4.S(0.011,0.1,0.011)),GUNM,{seg:10});G.box(g,T(M4.T(0.37,0.01,0),M4.S(0.035,0.035,0.034)),GUNM,{});G.box(g,T(M4.T(0.39,0.035,0),M4.S(0.01,0.02,0.012)),GUNM,{});
+  G.box(g,T(M4.T(-0.05,0.025,0),M4.S(0.16,0.035,0.03)),GUNM,{});G.sphere(g,T(M4.T(-0.1,0.02,0.04),M4.S(0.016,0.016,0.016)),GUNM2,{su:10,sv:8});G.box(g,T(M4.T(-0.1,0.02,0.025),M4.S(0.012,0.008,0.03)),GUNM2,{});
+  G.box(g,T(M4.T(0.03,-0.07,0),M4.S(0.07,0.06,0.022)),GUNM,{});G.box(g,T(M4.T(-0.05,-0.055,0),M4.S(0.05,0.01,0.01)),GUNM,{});
+  for(const x of [0.25,0.12])G.box(g,T(M4.T(x,0,0),M4.S(0.012,0.05,0.042)),'#b08a40',{});}
+function buildGun(D,o={}){const g=new Geo(),w=new Geo();const M0=M4.id();if(o.kind==='smle')smleGeo(g,w,M0);else if(o.kind==='lewis')lewisGeo(g,w,M0);else{// tripod: crown + three splayed legs, origin = mount top
+    G.cyl(g,M4.chain(M4.T(0,-0.06,0),M4.S(0.045,0.06,0.045)),GUNM,{seg:14});for(const [a,b] of [[0.6,0.7],[0.6,-0.7],[-0.9,0]]){const fx=Math.cos(b)*Math.sin(a)*0.6,fz=Math.sin(b)*0.45,fy=-0.75;vBeam(g,[0,-0.08,0],[fx+(a<0?-0.35:0.2),fy,fz],0.03,'#3a3a36');G.sphere(g,M4.chain(M4.T(fx+(a<0?-0.35:0.2),fy,fz),M4.S(0.03,0.015,0.03)),'#2a2a26',{su:10,sv:6});}}
+  push(D,g,{spec:1.6,rim:0.45});push(D,w,{spec:0.5,rim:0.35});}
+PB.gun=buildGun;

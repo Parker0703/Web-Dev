@@ -9,10 +9,10 @@ const yearTxt=(c,s,k,y=430,col='#fff')=>{if(k<=0)return;c.save();c.translate(540
 const tag=(c,x,y,s,col,t,t0)=>statTag(c,x,y,s,col,clamp((t-t0)/0.25));
 const DW=(c2,x,y,s,t,o={})=>DIG({c:c2,x,y,s,f:o.f||1,t,eyes:o.eyes||'open',brow:o.brow||'flat',mouth:o.mouth||'flat',hf:o.hf||[10,92],hb:o.hb||[-10,92],seed:o.seed||0,...o});
 // gun crew: soldier standing behind a tripod Lewis gun, both hands on it (the action needs two hands)
-function gunner(c2,x,y,s,t,o={}){const f=o.f||1,fire=o.fire,u=167*s;const gx=x+f*0.55*u,gy=y-1.0*u;const ang=o.ang||0;
-  const kick=fire?Math.sin(t*60)*0.008*u:0;const G=lewisGun(c2,gx-f*kick,gy,s,ang,f,{tripod:true});
-  fig2(c2,{kind:o.kind||'digger',view:o.view||'side',x,y,s,f,t,eyes:o.eyes||'angry',brow:o.brow||'angry',mouth:o.mouth||'grit',hf:[(G.grip.x-x)/s*f*f,(G.grip.y-(y-200*s))/s],hb:[(G.stock.x+f*0.12*u-x)/s,(G.stock.y-(y-200*s)+8*s)/s],seed:o.seed||0});
-  lewisGun(c2,gx-f*kick,gy,s,ang,f,{tripod:false});if(fire){muzzleFlash(c2,G.muzzle.x,G.muzzle.y,s,t,ang,f);}return G;}
+function gunner(c2,x,y,s,t,o={}){const f=o.f||1,fire=o.fire,u=167*s;const gx=x+f*0.62*u,gy=y-1.0*u;const ang=o.ang||0;
+  const kick=fire?Math.sin(t*60)*0.008*u:0;const G=lewisGun(c2,gx-f*kick,gy,s,ang,f,{gun:false});
+  const sh=y-200*s;fig2(c2,{kind:o.kind||'digger',x,y,s,f,t,eyes:o.eyes||'angry',brow:o.brow||'angry',mouth:o.mouth||'grit',lean:0.08,hf:[(G.grip.x-x)/s,(G.grip.y-sh)/s],hb:[(G.stock.x-x)/s,(G.stock.y-sh)/s],seed:o.seed||0});
+  lewisGun(c2,gx-f*kick,gy,s,ang,f,{tripod:false});if(fire)muzzleFlash(c2,G.muzzle.x,G.muzzle.y,s,t,ang,f);return G;}
 // 0 · "In 1932," cold open: a machine gun opens up across the outback at a wall of emus
 SH.hook=function(c,t){LIT('#ffe0b0','#3a2418');const hh=handheld(t,7);outback(c,t,{x:540+hh.x,y:1150+hh.y,z:pushZ(t,0,A(1),1.0,1.08),mm:35},{land:'scrub',world:(c2,GY)=>{const P=PSP(GY,GY+760,2.2);
   flock(c2,t,{n:40,x0:600,x1:1500,y0:GY+60,y1:GY+420,persp:P,pose:'run',f:1,seed:3,flow:(x,y,i)=>({x:x+((t*170+i*40)%900)-200,y})});
@@ -22,7 +22,7 @@ SH.hook=function(c,t){LIT('#ffe0b0','#3a2418');const hh=handheld(t,7);outback(c,
 SH.map=function(c,t){const t0=A(1);const P=ausMap(c,t,{z:pushZ(t,t0,TW('soldiers'),1.0,1.15),cx:560,cy:800,wa:clamp((t-t0)/0.4),label:'AUSTRALIA',labelY:360});vignette(c,0.4);};
 // 2 · "sent soldiers armed with machine guns" — two diggers set up a Lewis gun; push in; tag
 SH.troops=function(c,t){LIT();const t0=TW('soldiers');outback(c,t,{x:540,y:1160,z:pushZ(t,t0-0.1,TW('fight'),1.0,1.14),mm:50},{land:'scrub',world:(c2,GY)=>{
-  DW(c2,740,GY+620,2.1,t,{f:-1,eyes:'open',brow:'angry',mouth:'smirk',seed:2,propF:mUp({len:240})});gunner(c2,300,GY+700,2.3,t,{f:1,eyes:'focus',brow:'angry',mouth:'flat'});ammoCrate(c2,520,GY+720,1.3);}});
+  DW(c2,740,GY+620,2.1,t,{f:-1,eyes:'open',brow:'angry',mouth:'smirk',seed:2,propF:rifleUp(),hf:[-34,64]});gunner(c2,300,GY+700,2.3,t,{f:1,eyes:'focus',brow:'angry',mouth:'flat'});ammoCrate(c2,520,GY+720,1.3);}});
   tag(c,540,430,'LEWIS MACHINE GUNS',GOLD_C,t,TW('machine'));vignette(c,0.4);};
 // 3 · "to fight 20,000 giant birds." — a wall of emus over the ridge; counter; one giant emu walks up to camera
 SH.horde=function(c,t){LIT();const t0=TW('fight');outback(c,t,{x:540,y:1120,z:pushZ(t,t0,A(2),1.0,1.1),mm:35},{land:'scrub',world:(c2,GY)=>{const P=PSP(GY,GY+900,2.4);
@@ -36,7 +36,7 @@ SH.won=function(c,t){LIT('#ffd0a0','#3a2418');const t0=A(2);outback(c,t,{x:540,y
   const eh=emuHead(700,GY+700-0.45*167*1.8,2.4,'q3',-1);c2.save();c2.translate(eh.x+4,eh.y+30);c2.rotate(-0.15);hat2b(c2,'slouch',1.3,-1,27*1.3,t);c2.restore();}});
   scoreboard(c,540,430,back(clamp((t-TW('won')+0.1)/0.3)),1,0);if(t>TW('won'))FW(c,t,TW('won'),0.2);vignette(c,0.45);};
 // 5 · "After World War I," — sepia trench, diggers in Brodie helmets; 1918
-SH.ww1=function(c,t){const t0=A(3);trench(c,t);for(let i=0;i<3;i++)fig2(c,{kind:'ww1',view:'front',x:250+i*290,y:1760+(i%2)*40,s:2.6,f:i%2?-1:1,t,seed:i,eyes:'half',brow:'worried',mouth:'flat',propF:mUp({len:230}),hf:[24,60],hb:[-10,92]});
+SH.ww1=function(c,t){const t0=A(3);trench(c,t);for(let i=0;i<3;i++)fig2(c,{kind:'ww1',view:'front',x:250+i*290,y:1760+(i%2)*40,s:2.6,f:i%2?-1:1,t,seed:i,eyes:'half',brow:'worried',mouth:'flat',propF:rifleUp(),hf:[34,64],hf:[24,60],hb:[-10,92]});
   sepia(c,0.85,t);yearTxt(c,'1918',clamp((t-t0)/0.3),420);vignette(c,0.55);};
 // 6 · "thousands of Australian veterans had settled on farmland" — veterans become farmers in the wheat; tag
 SH.settle=function(c,t){LIT();const t0=TW('thousands');outback(c,t,{x:540+Math.sin(t*0.4)*20,y:1150,z:pushZ(t,t0,TW('western'),1.0,1.08),mm:50},{land:'farm',house:[820,120],world:(c2,GY)=>{
@@ -62,7 +62,7 @@ SH.migrate=function(c,t){const t0=TW('migrated');ausMap(c,t,{z:2.0,lc:122,la:-28
 // 12 · "destroying crops" — the flock grazes the wheat flat; a farmer despairs behind
 SH.crops=function(c,t){LIT();const t0=TW('destroying');outback(c,t,{x:540,y:1150,z:pushZ(t,t0,TW('damaging'),1.0,1.08),mm:50},{land:'wheat',world:(c2,GY)=>{const P=PSP(GY,GY+800,2.3);
   for(let i=0;i<26;i++){const x=hash(i*2)*1200-60,y=GY+200+hash(i*5)*700;c2.fillStyle='rgba(120,80,30,0.45)';c2.beginPath();c2.ellipse(x,y,80+hash(i)*60,16,0,0,TAU);c2.fill();}
-  flock(c2,t,{n:30,x0:-80,x1:1160,y0:GY+80,y1:GY+620,persp:P,pose:'graze',seed:12,view:i=>i%2?'side':'q3',actors:[{x:860,y:GY+240,rx:60,draw:()=>fig2(c2,{kind:'farmer2',view:'front',x:860,y:GY+240,s:1.0,f:-1,t,eyes:'wide',brow:'worried',mouth:'scream',hf:[-30,-60],hb:[10,92]})}]});}});
+  flock(c2,t,{n:30,x0:-80,x1:1160,y0:GY+80,y1:GY+620,persp:P,pose:'graze',seed:12,view:'q3',actors:[{x:860,y:GY+240,rx:60,draw:()=>fig2(c2,{kind:'farmer2',view:'front',x:860,y:GY+240,s:1.0,f:-1,t,eyes:'wide',brow:'worried',mouth:'scream',hf:[-30,-60],hb:[10,92]})}]});}});
   tag(c,540,430,'CROPS DESTROYED',GOLD_C,t,t0+0.15);vignette(c,0.4);};
 // 13 · "and damaging fences." — emus burst through a wire fence; posts snap
 SH.fence=function(c,t){LIT();const t0=TW('damaging');const hh=handheld(t,6);outback(c,t,{x:540+hh.x,y:1150+hh.y,z:1.05,mm:50},{land:'farm',world:(c2,GY)=>{const P=PSP(GY,GY+800,2.3);const fy=GY+520,brk=clamp((t-t0-0.2)/0.3);
@@ -85,7 +85,7 @@ SH.two=function(c,t){LIT();const t0=A(9);outback(c,t,{x:540,y:1160,z:1.12,mm:85}
   const k1=back(clamp((t-t0)/0.25)),k2=back(clamp((t-t0-0.3)/0.25));if(k1>0)DW(c2,330,GY+760,2.4*k1,t,{f:1,eyes:'open',brow:'angry',mouth:'smirk',seed:1});if(k2>0)DW(c2,760,GY+760,2.4*k2,t,{f:-1,eyes:'focus',brow:'flat',mouth:'flat',seed:2});}});
   popup(c,t,t0+0.1,'SGT. McMURRAY','& GNR. O\'HALLORAN',GOLD_C,{y:440,size:56,w:860});vignette(c,0.4);};
 // 17 · "Machine guns." — Lewis gun close-up slam
-SH.guns=function(c,t){const t0=A(10);c.fillStyle='#1a1612';c.fillRect(0,0,W,H);LIT();const k=back(clamp((t-t0)/0.25));c.save();c.translate(540,820);c.scale(k,k);lewisGun(c,-380,0,5.2,-0.08,1,{tripod:false});c.restore();
+SH.guns=function(c,t){const t0=A(10);c.fillStyle='#1a1612';c.fillRect(0,0,W,H);LIT();const k=back(clamp((t-t0)/0.25));c.save();c.translate(540,820);c.scale(k,k);lewisGun(c,-60,0,4.6,-0.06,1,{tripod:false,view:'q3'});c.restore();
   tag(c,540,440,'LEWIS GUN × 2',GOLD_C,t,t0+0.1);c.save();c.globalCompositeOperation='lighter';lightRays(c,540,-100,'255,220,160',0.15,7,2000,0.5);c.restore();vignette(c,0.5);};
 // 18 · "Thousands of rounds of ammunition." — crates stack up; counter
 SH.ammo=function(c,t){LIT();const t0=TW('thousands');outback(c,t,{x:540,y:1160,z:1.05,mm:50},{land:'scrub',world:(c2,GY)=>{
@@ -94,17 +94,17 @@ SH.ammo=function(c,t){LIT();const t0=TW('thousands');outback(c,t,{x:540,y:1160,z
 // 19 · "What could possibly go wrong?" — smug crew; an emu peeks over their shoulders; record-scratch freeze
 SH.wrong=function(c,t){LIT();const t0=A(11),tf=TW('wrong');const tt=Math.min(t,tf);outback(c,tt,{x:540,y:1180,z:pushZ(tt,t0,tf,1.05,1.15),mm:85},{land:'scrub',world:(c2,GY)=>{
   const pk=clamp((tt-t0-0.3)/0.5);emu(c2,lerp(1000,820,eo(pk)),GY+560,2.4,tt,{pose:'stand',view:'q3',f:-1,seed:11});
-  DW(c2,330,GY+800,2.5,tt,{f:1,eyes:'sly',brow:'up',mouth:'smirk',seed:1});DW(c2,680,GY+820,2.5,tt,{f:-1,eyes:'happy',brow:'up',mouth:'smile',seed:2,propF:mUp({len:240})});}});
+  DW(c2,330,GY+800,2.5,tt,{f:1,eyes:'sly',brow:'up',mouth:'smirk',seed:1});DW(c2,680,GY+820,2.5,tt,{f:-1,eyes:'happy',brow:'up',mouth:'smile',seed:2,propF:rifleUp(),hf:[-34,64]});}});
   if(t>tf){c.save();c.globalCompositeOperation='saturation';c.fillStyle='rgba(0,0,0,0.6)';c.fillRect(0,0,W,H);c.restore();stamp(c,tf,t,'?',820,520,{size:140,col:'#ffd23f',rot:0.1});}vignette(c,0.45);};
 // 20 · "On November 2," — the date card over a dawn advance
-SH.nov2=function(c,t){LIT('#ffc890','#2a1a20');const t0=A(12);outback(c,t,{x:540+(t-t0)*40,y:1160,z:1.0,mm:35},{land:'scrub',dusk:1,world:(c2,GY)=>{for(let i=0;i<2;i++)DW(c2,300+i*170+(t-t0)*60,GY+640+i*30,1.6,t,{f:1,view:'side',walk:1,ph:t*8+i,seed:i,propF:i?mUp({len:220}):null});}});
+SH.nov2=function(c,t){LIT('#ffc890','#2a1a20');const t0=A(12);outback(c,t,{x:540+(t-t0)*40,y:1160,z:1.0,mm:35},{land:'scrub',dusk:1,world:(c2,GY)=>{for(let i=0;i<2;i++)DW(c2,300+i*170+(t-t0)*60,GY+640+i*30,1.6,t,{f:1,walk:1,ph:t*8+i,seed:i,propF:i?rifleUp():null,hf:i?[34,64]:undefined});}});
   const k=back(clamp((t-t0)/0.3));c.save();c.translate(540,470);c.scale(k,k);c.rotate(-0.04);c.fillStyle='#f4ecd8';c.strokeStyle=K2;c.lineWidth=6;c.fillRect(-200,-150,400,300);c.strokeRect(-200,-150,400,300);c.fillStyle='#b8201e';c.fillRect(-200,-150,400,80);txt(c,'NOV',0,-110,56,'#fff',{stroke:false,ls:6});txt(c,'2',0,10,140,'#1a1a1a',{stroke:false});txt(c,'1932',0,110,40,'#5a4a3a',{stroke:false,ls:6});c.restore();vignette(c,0.4);};
 // 21 · "the soldiers spotted a massive group of emus" — through the binoculars
-SH.spot=function(c,t){LIT();const t0=TW('spotted');outback(c,t,{x:540+Math.sin(t*1.1)*30,y:1330,z:pushZ(t,t0,TW('opened'),1.6,1.9),mm:200},{land:'scrub',lift:0,world:(c2,GY)=>{const P=PSP(GY,GY+400,1.2);flock(c2,t,{n:90,x0:-200,x1:1300,y0:GY+20,y1:GY+420,persp:P,pose:'graze',seed:21,view:i=>i%2?'side':'q3'});}});
+SH.spot=function(c,t){LIT();const t0=TW('spotted');outback(c,t,{x:540+Math.sin(t*1.1)*30,y:1330,z:pushZ(t,t0,TW('opened'),1.6,1.9),mm:200},{land:'scrub',lift:0,world:(c2,GY)=>{const P=PSP(GY,GY+400,1.2);flock(c2,t,{n:90,x0:-200,x1:1300,y0:GY+20,y1:GY+420,persp:P,pose:'graze',seed:21,view:'q3'});}});
   binoView(c,t);tag(c,540,300,'MASSIVE FLOCK',GOLD_C,t,TW('massive'));};
 // 22 · "and opened fire." — the gun roars, tracers, dust erupts among the birds
 SH.fire=function(c,t){LIT('#ffe0b0','#3a2418');const t0=TW('opened');const hh=handheld(t,12);outback(c,t,{x:540+hh.x,y:1150+hh.y,z:1.05,mm:35},{land:'scrub',world:(c2,GY)=>{const P=PSP(GY,GY+760,2.3);
-  flock(c2,t,{n:50,x0:500,x1:1500,y0:GY+40,y1:GY+420,persp:P,pose:'run',f:1,seed:22,view:'side',flow:(x,y,i)=>({x:x+(t-t0)*(200+hash(i)*200),y})});
+  flock(c2,t,{n:50,x0:500,x1:1500,y0:GY+40,y1:GY+420,persp:P,pose:'run',f:1,seed:22,view:'q3',flow:(x,y,i)=>({x:x+(t-t0)*(200+hash(i)*200),y})});
   const G=gunner(c2,230,GY+780,2.3,t,{fire:true,ang:-0.05,eyes:'angry',mouth:'scream'});for(let i=0;i<6;i++)tracer(c2,G.muzzle.x,G.muzzle.y,700+i*90,GY+100+i*50,t,i);for(let i=0;i<8;i++)dustHit(c2,600+hash(i)*700,GY+80+hash(i*3)*350,1.4,t,i);}});
   FW(c,t,t0,0.12);vignette(c,0.45);};
 // 23 · "But the birds scattered in every direction." — high angle: they burst outward like a firework of dust
@@ -113,7 +113,7 @@ SH.scatter=function(c,t){LIT();const t0=A(13);outback(c,t,{x:540,y:1450,z:pushZ(
   for(let i=0;i<8;i++){const p=((t-t0)*0.8+i/8)%1;c2.fillStyle=`rgba(180,110,60,${0.4*(1-p)})`;c2.beginPath();c2.arc(540,GY+700,80+p*500,0,TAU);c2.fill();}}});
   if(t>t0+0.3){c.save();c.globalAlpha=clamp((t-t0-0.3)/0.3);c.strokeStyle='#ffd23f';c.lineWidth=10;c.lineCap='round';for(let i=0;i<8;i++){const a=i/8*TAU;seg(c,540+Math.cos(a)*120,600+Math.sin(a)*120,540+Math.cos(a)*260,600+Math.sin(a)*260);}c.restore();}vignette(c,0.4);};
 // 24 · "They were surprisingly fast," — tracking shot beside a sprinting emu; speedometer
-SH.fast=function(c,t){LIT();const t0=A(14);const x0=(t-t0)*900;outback(c,t,{x:540+x0,y:1180,z:1.0,mm:50},{land:'scrub',world:(c2,GY)=>{emu(c2,500+x0,GY+760,2.5,t,{pose:'run',view:'side',f:1,seed:24,spd:16});emu(c2,200+x0,GY+520,1.7,t,{pose:'run',view:'side',f:1,seed:25,spd:15});}});
+SH.fast=function(c,t){LIT();const t0=A(14);const x0=(t-t0)*900;outback(c,t,{x:540+x0,y:1180,z:1.0,mm:50},{land:'scrub',world:(c2,GY)=>{emu(c2,500+x0,GY+760,2.5,t,{pose:'run',view:'q3',f:1,seed:24,spd:16});emu(c2,200+x0,GY+520,1.7,t,{pose:'run',view:'q3',f:1,seed:25,spd:15});}});
   c.save();c.strokeStyle='rgba(255,255,255,0.45)';c.lineWidth=4;for(let i=0;i<20;i++){const y=hash(i)*H,x=((hash(i*3)*W-(t*2400))%W+W)%W;seg(c,x,y,x+220,y);}c.restore();
   const k=back(clamp((t-t0)/0.3));c.save();c.translate(800,470);c.scale(k,k);c.fillStyle='rgba(10,8,14,0.85)';c.beginPath();c.arc(0,0,130,Math.PI,TAU);c.closePath();c.fill();c.strokeStyle='#ffd23f';c.lineWidth=8;c.stroke();const v=eo(clamp((t-t0)/0.9));c.strokeStyle='#fff';c.lineWidth=8;seg(c,0,0,Math.cos(Math.PI+v*Math.PI*0.85)*100,Math.sin(Math.PI+v*Math.PI*0.85)*100);txt(c,Math.round(v*50)+' KM/H',0,40,44,'#fff',{sw:8});c.restore();vignette(c,0.4);};
 // 25 · "difficult to hit," — bullets kick dust where the emu WAS: MISS, MISS
@@ -124,8 +124,8 @@ SH.hit=function(c,t){LIT();const t0=TW('difficult');const hh=handheld(t,8);outba
 // 26 · "and seemed completely impossible to control." — chaos: soldiers chase in circles, hats fly, emus everywhere
 SH.control=function(c,t){LIT();const t0=TW('seemed');const hh=handheld(t,10);outback(c,t,{x:540+hh.x,y:1180+hh.y,z:1.0,mm:35},{land:'scrub',world:(c2,GY)=>{const P=PSP(GY,GY+760,2.2);
   const s1=(t-t0)*2.2;flock(c2,t,{n:40,x0:-200,x1:1300,y0:GY+100,y1:GY+680,persp:P,pose:'run',view:'q3',seed:27,flow:(x,y,i)=>({x:((x+(t*(150+hash(i)*200))*(i%2?1:-1))%1500+1500)%1500-200,y}),f:i=>i%2?1:-1,
-    actors:[{x:540+Math.cos(s1)*240,y:GY+700+Math.sin(s1)*110,rx:80,draw:()=>DW(c2,540+Math.cos(s1)*240,GY+700+Math.sin(s1)*110,2.0,t,{f:-Math.sin(s1)>0?1:-1,view:'side',run:1,ph:t*13,eyes:'wide',brow:'worried',mouth:'scream',seed:1})},
-      {x:540+Math.cos(s1+Math.PI)*240,y:GY+700+Math.sin(s1+Math.PI)*110,rx:80,draw:()=>DW(c2,540+Math.cos(s1+Math.PI)*240,GY+700+Math.sin(s1+Math.PI)*110,2.0,t,{f:-Math.sin(s1+Math.PI)>0?1:-1,view:'side',run:1,ph:t*13+1,eyes:'shock',brow:'up',mouth:'scream',seed:2})}]});
+    actors:[{x:540+Math.cos(s1)*240,y:GY+700+Math.sin(s1)*110,rx:80,draw:()=>DW(c2,540+Math.cos(s1)*240,GY+700+Math.sin(s1)*110,2.0,t,{f:-Math.sin(s1)>0?1:-1,run:1,ph:t*13,eyes:'wide',brow:'worried',mouth:'scream',seed:1})},
+      {x:540+Math.cos(s1+Math.PI)*240,y:GY+700+Math.sin(s1+Math.PI)*110,rx:80,draw:()=>DW(c2,540+Math.cos(s1+Math.PI)*240,GY+700+Math.sin(s1+Math.PI)*110,2.0,t,{f:-Math.sin(s1+Math.PI)>0?1:-1,run:1,ph:t*13+1,eyes:'shock',brow:'up',mouth:'scream',seed:2})}]});
   const hp=((t-t0)*0.9)%1;c2.save();c2.translate(300+hp*500,GY+200-Math.sin(hp*Math.PI)*400);c2.rotate(hp*8);hat2b(c2,'slouch',1.6,1,27*1.6,t);c2.restore();}});vignette(c,0.4);};
 // 27 · "The soldiers even mounted a machine gun on a truck," — the truck rolls in, gunner standing in the tray
 SH.truck=function(c,t){LIT();const t0=A(15);const q=eo(clamp((t-t0)/1.6));outback(c,t,{x:540,y:1120,z:pushZ(t,t0,TW('hoping'),1.0,1.1),mm:35},{land:'scrub',world:(c2,GY)=>{
@@ -133,33 +133,33 @@ SH.truck=function(c,t){LIT();const t0=A(15);const q=eo(clamp((t-t0)/1.6));outbac
   tag(c,540,430,'TRUCK-MOUNTED GUN',GOLD_C,t,TW('truck')-0.1);vignette(c,0.4);};
 // 28 · "hoping to chase them down." — tracking chase across the scrub
 SH.chase=function(c,t){LIT();const t0=TW('hoping');const xw=(t-t0)*700;outback(c,t,{x:700+xw,y:1150,z:1.0,mm:50},{land:'scrub',world:(c2,GY)=>{const P=PSP(GY,GY+640,1.2);
-  flock(c2,t,{n:16,x0:0,x1:1,y0:GY+300,y1:GY+620,persp:P,pose:'run',view:'side',f:1,seed:28,spd:16,flow:(x,y,i)=>({x:900+xw+i*70+Math.sin(t*2+i)*40,y}),
-    actors:[{x:300+xw,y:GY+700,rx:1,draw:()=>{const T0=truck(c2,300+xw,GY+700,1.0,t,{view:'side',moving:1,bump:0.3,gunner:(x,y,s,pt)=>{const gp=pt(-0.85,1.76,0);fig2(c2,{kind:'digger',view:'side',x,y,s,f:1,t,eyes:'angry',brow:'angry',mouth:'grit',hf:[(gp.x-x)/s,(gp.y-(y-200*s))/s],hb:[(gp.x-x)/s-6,(gp.y-(y-200*s))/s+6]});}});muzzleFlash(c2,T0.muzzle.x,T0.muzzle.y,1.0,t,0,1);}}]});}});FX.speed=0.4;vignette(c,0.4);};
+  flock(c2,t,{n:16,x0:0,x1:1,y0:GY+300,y1:GY+620,persp:P,pose:'run',view:'q3',f:1,seed:28,spd:16,flow:(x,y,i)=>({x:900+xw+i*70+Math.sin(t*2+i)*40,y}),
+    actors:[{x:300+xw,y:GY+700,rx:1,draw:()=>{const T0=truck(c2,300+xw,GY+700,1.0,t,{view:'q3',moving:1,bump:0.3,gunner:(x,y,s,pt)=>{const gp=pt(-0.85,1.76,0);fig2(c2,{kind:'digger',x,y,s,f:1,t,eyes:'angry',brow:'angry',mouth:'grit',hf:[(gp.x-x)/s,(gp.y-(y-200*s))/s],hb:[(gp.x-x)/s-6,(gp.y-(y-200*s))/s+6]});}});muzzleFlash(c2,T0.muzzle.x,T0.muzzle.y,1.0,t,0,1);}}]});}});FX.speed=0.4;vignette(c,0.4);};
 // 29 · "But the rough terrain made aiming almost impossible." — the truck bucks over ruts; the gun sight swings wildly
 SH.terrain=function(c,t){LIT();const t0=TW('rough')-0.6;const xw=(t-t0)*500;const hh=handheld(t,16);outback(c,t,{x:540+xw+hh.x,y:1150+hh.y,z:1.15,mm:85},{land:'scrub',world:(c2,GY)=>{
   for(let i=0;i<12;i++){const x=i*260-400+Math.floor(xw/260)*260;c2.fillStyle='rgba(90,40,20,0.5)';c2.beginPath();c2.ellipse(x,GY+760,90,22,0,0,TAU);c2.fill();c2.fillStyle='#8a5a3a';c2.beginPath();c2.ellipse(x+120,GY+740,60,26,0,Math.PI,TAU);c2.fill();}
-  truck(c2,480+xw,GY+760,1.15,t,{view:'side',moving:1,bump:1.6,gunner:(x,y,s,pt)=>{const gp=pt(-0.85,1.76,0);fig2(c2,{kind:'digger',view:'side',x,y,s,f:1,t,eyes:'shock',brow:'up',mouth:'scream',hf:[(gp.x-x)/s,(gp.y-(y-200*s))/s],hb:[(gp.x-x)/s-6,(gp.y-(y-200*s))/s+6]});}});}});
+  truck(c2,480+xw,GY+760,1.15,t,{view:'q3',moving:1,bump:1.6,gunner:(x,y,s,pt)=>{const gp=pt(-0.85,1.76,0);fig2(c2,{kind:'digger',x,y,s,f:1,t,eyes:'shock',brow:'up',mouth:'scream',hf:[(gp.x-x)/s,(gp.y-(y-200*s))/s],hb:[(gp.x-x)/s-6,(gp.y-(y-200*s))/s+6]});}});}});
   const ax=820+Math.sin(t*9)*130,ay=480+Math.cos(t*7)*90;c.save();c.strokeStyle='#ffd23f';c.lineWidth=6;c.beginPath();c.arc(ax,ay,70,0,TAU);c.stroke();seg(c,ax-100,ay,ax+100,ay);seg(c,ax,ay-100,ax,ay+100);c.restore();vignette(c,0.45);};
 // 30 · "And the emus just kept running." — low angle: they stream past camera, endless
 SH.running=function(c,t){LIT('#ffd8a0','#3a2418');const t0=A(16);outback(c,t,{x:540,y:1250,z:1.0,mm:24},{land:'scrub',dusk:1,world:(c2,GY)=>{const P=PSP(GY,GY+700,2.0);
-  flock(c2,t,{n:44,x0:-300,x1:1400,y0:GY+60,y1:GY+780,persp:P,pose:'run',view:'side',f:1,spd:15,seed:30,flow:(x,y,i)=>({x:((x+t*(300+hash(i)*200))%1900+1900)%1900-400,y})});}});vignette(c,0.4);};
+  flock(c2,t,{n:44,x0:-300,x1:1400,y0:GY+60,y1:GY+780,persp:P,pose:'run',view:'q3',f:1,spd:15,seed:30,flow:(x,y,i)=>({x:((x+t*(300+hash(i)*200))%1900+1900)%1900-400,y})});}});vignette(c,0.4);};
 // 31 · "After several failed attempts," — one, two, three attempts: X X X
 SH.failed=function(c,t){LIT();const t0=A(17);outback(c,t,{x:540,y:1180,z:1.05,mm:50},{land:'scrub',world:(c2,GY)=>{DW(c2,540,GY+800,2.5,t,{f:1,eyes:'half',brow:'worried',mouth:'frown',seed:1,lean:0.1,crouch:6});ammoCrate(c2,820,GY+760,1.6,'EMPTY');}});
   for(let i=0;i<3;i++){const k=clamp((t-t0-0.15-i*0.4)/0.25);if(k>0){c.save();c.translate(300+i*240,440);c.fillStyle='rgba(10,8,14,0.8)';c.beginPath();c.roundRect(-90,-90,180,180,20);c.fill();bigX(c,0,0,70,k,'#ffd23f');c.restore();}}vignette(c,0.45);};
 // 32 · "the military operation was called off." — stamp; the truck drives away into the dusk
-SH.off=function(c,t){LIT('#ffb890','#2a1a20');const t0=TW('called')-0.2;outback(c,t,{x:540,y:1150,z:1.0,mm:35},{land:'scrub',dusk:1,world:(c2,GY)=>{truck(c2,600-(t-t0)*120,GY+420,0.8,t,{view:'side',f:-1,moving:1});emu(c2,860,GY+700,1.9,t,{pose:'stand',view:'q3',f:-1,seed:32});}});
+SH.off=function(c,t){LIT('#ffb890','#2a1a20');const t0=TW('called')-0.2;outback(c,t,{x:540,y:1150,z:1.0,mm:35},{land:'scrub',dusk:1,world:(c2,GY)=>{truck(c2,600-(t-t0)*120,GY+420,0.8,t,{view:'q3',f:-1,moving:1});emu(c2,860,GY+700,1.9,t,{pose:'stand',view:'q3',f:-1,seed:32});}});
   stamp(c,t0,t,'CALLED OFF',540,450,{size:100,col:'#ffd23f',rot:-0.1});vignette(c,0.45);};
 // 33 · "The soldiers had fired thousands of rounds," — empty brass everywhere; counter
 SH.rounds=function(c,t){LIT();const t0=A(18);c.fillStyle='#7a4424';c.fillRect(0,0,W,H);for(let i=0;i<260;i++){const x=hash(i)*W,y=700+hash(i*3)*1220,a=hash(i*5)*TAU,k=clamp((t-t0-hash(i*7)*1.2)/0.2);if(k<=0)continue;c.save();c.translate(x,y-(1-k)*300);c.rotate(a);c.fillStyle='#d8a840';c.strokeStyle='#5a3a10';c.lineWidth=2;c.beginPath();c.roundRect(-22,-7,44,14,5);c.fill();c.stroke();c.fillStyle='#f0d080';c.fillRect(-16,-5,24,3);c.restore();}
   counterCard(c,540,450,back(clamp((t-t0)/0.3)),'~'+Math.round(eo(clamp((t-t0)/1.2))*10000).toLocaleString('en-US'),'ROUNDS FIRED');vignette(c,0.45);};
 // 34 · "but the emus were still everywhere." — pull back: emus all over the camp, one standing on the truck
 SH.everywhere=function(c,t){LIT();const t0=TW('still')-0.3;outback(c,t,{x:540,y:1150,z:pushZ(t,t0,A(19),1.25,0.95),mm:35},{land:'farm',world:(c2,GY)=>{const P=PSP(GY,GY+760,2.2);
-  flock(c2,t,{n:80,x0:-300,x1:1400,y0:GY+30,y1:GY+700,persp:P,pose:'graze',seed:34,view:i=>i%3?'side':'q3',actors:[{x:520,y:GY+620,rx:330,ry:60,draw:()=>{truck(c2,520,GY+620,1.2,t,{view:'q3'});emu(c2,520-0.9*167*1.2,GY+620-1.1*167*1.2,1.2,t,{pose:'stand',view:'q3',f:-1,seed:35});}}]});}});vignette(c,0.4);};
+  flock(c2,t,{n:80,x0:-300,x1:1400,y0:GY+30,y1:GY+700,persp:P,pose:'graze',seed:34,view:'q3',actors:[{x:520,y:GY+620,rx:330,ry:60,draw:()=>{truck(c2,520,GY+620,1.2,t,{view:'q3'});emu(c2,520-0.9*167*1.2,GY+620-1.1*167*1.2,1.2,t,{pose:'stand',view:'q3',f:-1,seed:35});}}]});}});vignette(c,0.4);};
 // 35 · "And that's how Australia became famous" — newspapers spin in
 SH.famous=function(c,t){const t0=A(19);c.fillStyle='#2a2420';c.fillRect(0,0,W,H);const k=eo(clamp((t-t0)/0.6));emuPaper(c,540,760,lerp(0.2,1.0,k),lerp(6,-0.06,k),t);tag(c,540,330,'FAMOUS WORLDWIDE',GOLD_C,t,TW('famous'));vignette(c,0.5);};
 // 36 · "for fighting a war against birds..." — map of Australia with an emu flag over the wheatbelt
 SH.against=function(c,t){const t0=TW('fighting');const P=ausMap(c,t,{z:1.6,lc:126,la:-28,cx:540,cy:780,wa:1,wheat:1});const q=P([118.4,-31.1]);const k=back(clamp((t-t0)/0.4));
-  c.save();c.translate(q[0],q[1]);c.scale(k,k);c.strokeStyle='#3a2a1a';c.lineWidth=8;seg(c,0,0,0,-260);c.fillStyle='#ffd23f';c.strokeStyle=K2;c.lineWidth=5;c.beginPath();c.moveTo(0,-260);c.lineTo(190,-215);c.lineTo(0,-170);c.closePath();c.fill();c.stroke();c.restore();emu(c,q[0]+90,q[1]-170*k+10,0.45*k,t,{pose:'stand',view:'side',seed:2});vignette(c,0.4);};
+  c.save();c.translate(q[0],q[1]);c.scale(k,k);c.strokeStyle='#3a2a1a';c.lineWidth=8;seg(c,0,0,0,-260);c.fillStyle='#ffd23f';c.strokeStyle=K2;c.lineWidth=5;c.beginPath();c.moveTo(0,-260);c.lineTo(190,-215);c.lineTo(0,-170);c.closePath();c.fill();c.stroke();c.restore();emu(c,q[0]+90,q[1]-170*k+10,0.45*k,t,{pose:'stand',view:'q3',seed:2});vignette(c,0.4);};
 // 37 · "and losing." — the victor: an emu in a slouch hat stands on the abandoned truck at sunset; final score
 SH.losing=function(c,t){LIT('#ffb080','#3a1a10');const t0=A(20);outback(c,t,{x:540,y:1180,z:pushZ(t,t0,END,1.05,1.2),mm:50},{land:'scrub',dusk:1,world:(c2,GY)=>{
   truck(c2,520,GY+760,1.15,t,{view:'q3'});const ex=520-0.95*167*1.15,ey=GY+760-1.12*167*1.15;emu(c2,ex,ey,1.6,t,{pose:'stand',view:'q3',f:-1,seed:37});const eh=emuHead(ex,ey,1.6,'q3',-1);c2.save();c2.translate(eh.x+3,eh.y+22);c2.rotate(-0.15);hat2b(c2,'slouch',0.95,-1,27*0.95,t);c2.restore();}});
@@ -172,5 +172,5 @@ var IMPACTS=[[0.02,10,0.3,'#ffffff',0.3],[TW('won'),8,0.3],[A(5),12,0.4,'#ffffff
 
 function emuPaper(c,x,y,s,rot,t){c.save();c.translate(x,y);c.rotate(rot);c.scale(s,s);c.shadowColor='rgba(0,0,0,0.5)';c.shadowBlur=30;c.fillStyle='#ece4cc';c.fillRect(-380,-500,760,1000);c.shadowColor='transparent';c.strokeStyle='#222';c.lineWidth=4;c.strokeRect(-380,-500,760,1000);
   c.fillStyle='#111';c.font='900 52px "Lora",serif';c.textAlign='center';c.fillText('THE DAILY NEWS',0,-430);c.fillRect(-340,-405,680,6);c.font='900 92px "Inter Display"';c.fillStyle='#111';c.fillText('THE GREAT',0,-300);c.fillText('EMU WAR',0,-200);
-  c.fillStyle='#c8bfa4';c.fillRect(-320,-150,640,400);c.strokeRect(-320,-150,640,400);c.save();c.beginPath();c.rect(-320,-150,640,400);c.clip();emu(c,-60,230,1.9,t,{pose:'stand',view:'q3',f:1,seed:3});emu(c,190,200,1.4,t,{pose:'run',view:'side',f:-1,seed:5});c.restore();
+  c.fillStyle='#c8bfa4';c.fillRect(-320,-150,640,400);c.strokeRect(-320,-150,640,400);c.save();c.beginPath();c.rect(-320,-150,640,400);c.clip();emu(c,-60,230,1.9,t,{pose:'stand',view:'q3',f:1,seed:3});emu(c,190,200,1.4,t,{pose:'run',view:'q3',f:-1,seed:5});c.restore();
   c.fillStyle='#555';for(let i=0;i<9;i++){c.fillRect(-320,290+i*22,i%3===2?400:640,10);}c.restore();}

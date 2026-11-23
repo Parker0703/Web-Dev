@@ -56,17 +56,17 @@ function truck(c,x,y,s,t,o={}){const vw=o.view||'side',ppu=167*s,f=o.f||1;const 
   c.save();c.translate(x,y+by);c.rotate(rot);c.scale(f*k,k);c.drawImage(RIMG[nm],-m.ax,-m.ay,m.w,m.h);c.restore();
   return {pt,muzzle:pt(0.4,1.8,0),grip:pt(-0.85,1.76,0)};}
 // ---------------- Lewis gun (2D side view) on a tripod, muzzle flash, tracers, dust hits ----------------
-function lewisGun(c,x,y,s,ang,f=1,o={}){const u=167*s;c.save();c.translate(x,y);c.scale(f,1);c.rotate(ang);c.lineJoin='round';c.strokeStyle=K2;c.lineWidth=0.012*u;
-  if(o.tripod!==false){c.strokeStyle='#2a2a26';c.lineWidth=0.025*u;for(const a of [-0.35,0.05,0.4]){c.beginPath();c.moveTo(0,0);c.lineTo(Math.sin(a)*0.5*u,0.75*u);c.stroke();}c.strokeStyle=K2;c.lineWidth=0.012*u;}
-  const sg=c.createLinearGradient(0,-0.06*u,0,0.06*u);sg.addColorStop(0,'#5a5c5e');sg.addColorStop(0.5,'#2a2c2e');sg.addColorStop(1,'#141516');
-  c.fillStyle=sg;c.beginPath();c.roundRect(-0.05*u,-0.065*u,0.85*u,0.13*u,0.02*u);c.fill();c.stroke();
-  c.strokeStyle='rgba(255,255,255,0.15)';c.lineWidth=0.006*u;for(let i=0;i<10;i++)seg(c,(0.02+i*0.075)*u,-0.06*u,(0.02+i*0.075)*u,0.06*u);c.strokeStyle=K2;c.lineWidth=0.012*u;
-  c.fillStyle='#1a1a1a';c.fillRect(0.8*u,-0.02*u,0.2*u,0.04*u);c.strokeRect(0.8*u,-0.02*u,0.2*u,0.04*u);
-  c.fillStyle='#3a3c3e';c.beginPath();c.ellipse(0.12*u,-0.1*u,0.2*u,0.045*u,0,0,TAU);c.fill();c.stroke();c.fillStyle='#4a4c4e';c.beginPath();c.ellipse(0.12*u,-0.115*u,0.07*u,0.02*u,0,0,TAU);c.fill();
-  c.fillStyle='#2a2a2c';c.beginPath();c.moveTo(-0.05*u,-0.05*u);c.lineTo(-0.25*u,-0.04*u);c.lineTo(-0.25*u,0.05*u);c.lineTo(-0.05*u,0.06*u);c.closePath();c.fill();c.stroke();
-  c.fillStyle='#6a4a2a';c.beginPath();c.moveTo(-0.25*u,-0.04*u);c.lineTo(-0.55*u,-0.02*u);c.lineTo(-0.58*u,0.09*u);c.lineTo(-0.25*u,0.05*u);c.closePath();c.fill();c.stroke();
-  c.fillStyle='#4a3420';c.beginPath();c.roundRect(-0.2*u,0.05*u,0.05*u,0.12*u,0.015*u);c.fill();c.stroke();
-  c.restore();return {muzzle:{x:x+f*Math.cos(ang)*1.0*u,y:y+Math.sin(ang)*1.0*u},grip:{x:x+f*(-0.17*Math.cos(ang))*u,y:y+0.1*u},stock:{x:x-f*0.45*u,y:y}};}
+// 3D weapon sprites (gn_lewis / gn_smle / gn_tripod), drawn so model point (ox,oy) lands on (x,y), barrel rotated by ang, mirrored by f
+function gunSpr(c,name,x,y,s,ang,f=1,ox=0,oy=0){const m=RMETA[name],im=RIMG[name];if(!m||!im)return;const ppu=167*s,k=ppu/m.ppu;c.save();c.translate(x,y);c.scale(f,1);c.rotate(ang);c.translate(-ox*ppu,oy*ppu);c.scale(k,k);c.drawImage(im,-m.ax,-m.ay,m.w,m.h);c.restore();}
+const GQ=0.9;// x foreshortening of the 3/4 gun view
+function lewisGun(c,x,y,s,ang,f=1,o={}){const u=167*s,vw=o.view||'q3',q=vw==='q3'?GQ:1;
+  if(o.tripod!==false)gunSpr(c,`gn_tripod_${vw}`,x,y+0.02*u,s*1.25,0,f);
+  if(o.gun!==false)gunSpr(c,`gn_lewis_${vw}`,x,y,s,ang,f,0.1*q,0.05);
+  const P=(X,Y)=>{const xx=(X-0.1)*q*u,yy=-(Y+0.05)*u;return {x:x+f*(xx*Math.cos(ang)-yy*Math.sin(ang)),y:y+xx*Math.sin(ang)+yy*Math.cos(ang)};};
+  return {muzzle:P(0.93,0.03),grip:P(-0.17,-0.12),stock:P(-0.5,-0.02)};}
+// rifle held upright at the shoulder (the hand on the wrist of the butt) / levelled
+const rifleUp=(o={})=>(c,h,s,f)=>gunSpr(c,`gn_smle_${o.view||'q3'}`,h.x,h.y,s,-Math.PI/2+0.1*f,f,-0.42,0.0);
+const rifleLevel=(o={})=>(c,h,s,f)=>gunSpr(c,`gn_smle_${o.view||'q3'}`,h.x,h.y,s,0.05,f,-0.1,-0.02);
 function muzzleFlash(c,x,y,s,t,ang=0,f=1){const fl=(Math.floor(t*30)%2)===0;if(!fl)return;const u=167*s;c.save();c.translate(x,y);c.scale(f,1);c.rotate(ang);c.globalCompositeOperation='lighter';
   const g=c.createRadialGradient(0.1*u,0,0,0.1*u,0,0.35*u);g.addColorStop(0,'rgba(255,250,210,1)');g.addColorStop(0.35,'rgba(255,190,80,0.8)');g.addColorStop(1,'rgba(255,120,40,0)');c.fillStyle=g;c.beginPath();c.ellipse(0.12*u,0,0.35*u,0.16*u,0,0,TAU);c.fill();
   c.fillStyle='rgba(255,240,180,0.9)';for(const a of [-0.5,0,0.5]){c.beginPath();c.moveTo(0,0);c.lineTo(Math.cos(a)*0.3*u,Math.sin(a)*0.3*u-0.02*u);c.lineTo(Math.cos(a)*0.3*u,Math.sin(a)*0.3*u+0.02*u);c.fill();}c.restore();}
