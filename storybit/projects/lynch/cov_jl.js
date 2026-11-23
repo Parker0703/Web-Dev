@@ -1,11 +1,22 @@
-T=2.0;const t=2.0;window.SS=1;
-c.save();c.beginPath();c.moveTo(640,0);c.lineTo(W,0);c.lineTo(W,H);c.lineTo(440,H);c.closePath();c.clip();camAt(c,'iq_hosp',[0,4,-4],1.1,{oy:0});c.restore();
-const s1=1.55;const a=who(c,'sf2',[0,0,0],F('focus','angry','grit',{seed:4,walk:1,ph:1,f:-1,abs:{x:980,y:1760,s:s1},hf:[-46,40],hb:[-30,44]}));const b=who(c,'sf',[0,0,0],F('focus','angry','grit',{seed:3,walk:1,ph:4,f:-1,abs:{x:640,y:1760,s:s1},hf:[22,52],hb:[40,48]}));
-if(a&&b){const A={x:(a.hf.x+a.hb.x)/2,y:(a.hf.y+a.hb.y)/2},B={x:(b.hf.x+b.hb.x)/2,y:(b.hf.y+b.hb.y)/2};c.strokeStyle=OL;c.lineWidth=10;seg(c,A.x,A.y,B.x,B.y);c.fillStyle='#5a6a4a';c.fillRect(B.x+20,B.y-6,A.x-B.x-40,20);c.strokeRect(B.x+20,B.y-6,A.x-B.x-40,20);
-  c.fillStyle='#f2efe8';c.beginPath();c.arc(B.x+70,B.y-36,32,0,TAU);c.fill();c.stroke();c.fillStyle='#d8b060';c.beginPath();c.arc(B.x+66,B.y-44,32,Math.PI*0.95,Math.PI*2.05);c.fill();c.stroke();c.fillStyle='#7a8a6a';c.beginPath();c.roundRect(B.x+100,B.y-50,A.x-B.x-150,44,14);c.fill();c.stroke();}nightVision(c,t,false);c.restore();
-c.save();c.beginPath();c.moveTo(0,0);c.lineTo(640,0);c.lineTo(440,H);c.lineTo(0,H);c.closePath();c.clip();
-const g=c.createRadialGradient(260,1100,50,260,1100,1100);g.addColorStop(0,'#ffcf5a');g.addColorStop(1,'#c8401a');c.fillStyle=g;c.fillRect(0,0,W,H);c.globalAlpha=0.35;for(let i=0;i<24;i++){c.fillStyle=i%2?'#fff':'#ffb020';c.beginPath();c.moveTo(260,1100);const a=i/24*TAU;c.lineTo(260+Math.cos(a)*1800,1100+Math.sin(a)*1800);c.lineTo(260+Math.cos(a+0.13)*1800,1100+Math.sin(a+0.13)*1800);c.fill();}c.globalAlpha=1;
-const r=who(c,'jess',[0,0,0],F('angry','angry','grit',{seed:1,abs:{x:220,y:1700,s:2.3},hf:[100,-10],hb:[66,0],lean:0.1}));if(r){m16(c,r.hf.x+20,r.hf.y+6,0.5,-0.1);}c.restore();
-c.save();c.strokeStyle='#fff';c.lineWidth=14;seg(c,640,0,440,H);c.restore();
-c.save();c.shadowColor='rgba(0,0,0,0.85)';c.shadowBlur=40;c.shadowOffsetY=12;txt(c,'THE HERO',540,200,130,'#ffffff',{sw:26,ls:3});txt(c,'STORY WAS',540,350,120,'#ffffff',{sw:24,ls:3});txt(c,'A LIE',540,520,170,'#ff2a22',{sw:32,ls:6});c.restore();
-txt(c,'MYTH',200,1800,70,'#ffd23f',{sw:12,ls:6});txt(c,'TRUTH',860,1800,70,'#8aff9a',{sw:12,ls:6});
+T=39.2;const t=39.2;window.SS=1;
+// background: dark red-to-black with soft heroic rays
+{const g=c.createLinearGradient(0,0,0,H);g.addColorStop(0,'#2a0a08');g.addColorStop(0.55,'#4a1410');g.addColorStop(1,'#120606');c.fillStyle=g;c.fillRect(0,0,W,H);
+ c.save();c.globalAlpha=0.16;for(let i=0;i<28;i++){c.fillStyle=i%2?'#ffb070':'#ff5a3a';c.beginPath();c.moveTo(540,1250);const a=i/28*TAU;c.lineTo(540+Math.cos(a)*2200,1250+Math.sin(a)*2200);c.lineTo(540+Math.cos(a+0.11)*2200,1250+Math.sin(a+0.11)*2200);c.fill();}c.restore();}
+// right: the night-vision "LIVE" rescue footage on a TV
+{const cv=document.createElement('canvas');cv.width=W;cv.height=H;const c2=cv.getContext('2d');XJ.carry(c2,39.2,1.5,4);
+ c.save();c.translate(805,930);c.rotate(0.06);c.fillStyle='#111';c.strokeStyle='#0b0b0d';c.lineWidth=10;c.beginPath();c.roundRect(-270,-210,540,420,26);c.fill();c.stroke();
+ c.save();c.beginPath();c.roundRect(-250,-190,500,380,14);c.clip();c.drawImage(cv,60,560,1000,760,-250,-190,500,380);c.restore();
+ c.fillStyle='#e0201a';c.fillRect(-250,128,120,44);txt(c,'LIVE',-190,163,34,'#fff',{sw:0,ls:4});c.restore();}
+// left: the newspaper myth, stamped FALSE
+{c.save();c.translate(280,950);c.rotate(-0.08);c.fillStyle='#f1ece0';c.strokeStyle='#0b0b0d';c.lineWidth=8;c.beginPath();c.rect(-230,-250,460,500);c.fill();c.stroke();
+ c.fillStyle='#1a1a1a';c.font='900 34px "Inter Display"';c.textAlign='center';c.fillText('MORNING EDITION',0,-208);c.fillRect(-210,-196,420,5);
+ c.font='900 64px "Inter Display"';c.fillText('SHE FOUGHT',0,-128);c.fillText('TO THE',0,-62);c.fillText('DEATH',0,4);
+ c.fillStyle='rgba(0,0,0,0.25)';for(let i=0;i<7;i++){c.fillRect(-210,40+i*26,i%3===2?260:420,10);}
+ c.restore();
+ c.save();c.translate(270,1090);c.rotate(-0.28);c.strokeStyle='#e8231c';c.lineWidth=12;c.beginPath();c.roundRect(-190,-62,380,124,16);c.stroke();txt(c,'FALSE',0,40,110,'#e8231c',{sw:0,ls:10});c.restore();}
+// Jessica, big and clear: eyes open, serious, in uniform
+{const s=3.4,hx=540,hy=1480;const g=c.createRadialGradient(hx,hy,60,hx,hy,640);g.addColorStop(0,'rgba(255,120,80,0.45)');g.addColorStop(1,'rgba(255,60,40,0)');c.fillStyle=g;c.fillRect(0,700,W,1220);
+ who(c,'jess',[0,0,0],F('dot','worried','flat',{seed:2,abs:{x:hx,y:hy+253*s,s}}));}
+// title
+c.save();c.shadowColor='rgba(0,0,0,0.9)';c.shadowBlur=40;c.shadowOffsetY=12;txt(c,'THE HERO STORY',540,250,112,'#ffffff',{sw:24,ls:2});txt(c,'WAS',540,400,120,'#ffffff',{sw:24,ls:4});txt(c,'A LIE',540,590,200,'#ff2a22',{sw:34,ls:8});c.restore();
+txt(c,'PFC JESSICA LYNCH',540,1860,64,'#ffd23f',{sw:14,ls:4});

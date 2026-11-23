@@ -63,7 +63,7 @@ function bedPatient(c,p,o={}){const s=p.s;c.save();c.strokeStyle=OL;c.lineWidth=
   c.fillStyle='#a8c8d8';c.beginPath();c.roundRect(p.x-44*s,p.y-62*s,190*s,44*s,14*s);c.fill();c.stroke();c.restore();}
 // =============== shots ===============
 // 0-1 · "In 2003, America watched a hero get rescued live from an Iraqi hospital…" — the night-vision footage on the news
-XJ.live=(c,t,u,d)=>{const cx=0.2+u*0.35;camAt(c,'iq_hosp',[cx+0.4,1.3,8],1.45+u*0.02,{oy:-20});carryOut(c,t,cx,8);c.restore();nightVision(c,t);tvFrame(c,t,t>LT(1)-0.1);
+XJ.live=(c,t,u,d)=>{const cx=2.4+u*0.35;camAt(c,'iq_hosp',[cx,1.3,8],1.3+u*0.02,{oy:-20});carryOut(c,t,cx,8);c.restore();nightVision(c,t);tvFrame(c,t,t>LT(1)-0.1);
   if(u<0.6)bigCard(c,540,520,clamp(u/0.25),'2003','IRAQ WAR');lens(c,t,{v:0.4});};
 // 2 · "and almost none of it was true." freeze, the image cracks
 XJ.untrue=(c,t,u,d)=>{XJ.live(c,LT(2)-0.2,LT(2)-0.2,3);c.save();c.globalCompositeOperation='saturation';c.fillStyle='rgba(0,0,0,0.9)';c.fillRect(0,0,W,H);c.restore();ink(c,0.3);
@@ -97,7 +97,7 @@ XJ.prisoner=(c,t,u,d)=>{camAt(c,'iq_ward',[0,0.8,-1.8],1.5,{oy:-30});const p=pp(
 // 11 · "Nine days later, Special Forces stormed the hospital where she was being held." night raid: operators run in
 XJ.storm=(c,t,u,d)=>{camAt(c,'iq_hosp',[0,2.2,4],1.15+u*0.04,{oy:0});cast(c,[['sf',[-3+u*1.4,0,6.5],F('focus','angry','grit',{seed:3,run:1,ph:t*13,f:1})],['sf2',[-5+u*1.4,0,7.5],F('focus','angry','grit',{seed:4,run:1,ph:t*13+1,f:1})],['sf',[-7+u*1.4,0,6],F('focus','angry','grit',{seed:7,run:1,ph:t*13+2,f:1})]]);c.restore();nightVision(c,t);tagC(c,540,330,'9 DAYS LATER',clamp(u/0.3),'#8aff9a');lens(c,t,{v:0.3});};
 // 12 · "Night-vision cameras rolled as they carried her out on a stretcher."
-XJ.carry=(c,t,u,d)=>{const cx=-0.8+u*0.4;camAt(c,'iq_hosp',[cx+0.4,1.3,8.5],1.4,{oy:-20});carryOut(c,t,cx,8.5);c.restore();nightVision(c,t);lens(c,t,{v:0.3});};
+XJ.carry=(c,t,u,d)=>{const cx=2.0+u*0.4;camAt(c,'iq_hosp',[cx,1.3,8.5],1.3,{oy:-20});carryOut(c,t,cx,8.5);c.restore();nightVision(c,t);lens(c,t,{v:0.3});};
 // 13 · "And by the next morning," sunrise, a stack of newspapers dropped on a doorstep
 XJ.morning=(c,t,u,d)=>{const g=c.createLinearGradient(0,0,0,H);g.addColorStop(0,'#f8c080');g.addColorStop(1,'#6a4a3a');c.fillStyle=g;c.fillRect(0,0,W,H);c.fillStyle='#ffe8a0';c.beginPath();c.arc(540,1200,200,0,TAU);c.fill();
   for(let i=0;i<5;i++){const k=eo(clamp((u-i*0.12)/0.4));paper(c,540+(i-2)*40,lerp(-400,900+i*30,k),0.5,(i-2)*0.12,'POW RESCUED','',{});}lens(c,t);};

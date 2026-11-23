@@ -1,24 +1,25 @@
 'use strict';
 // ===================== Jessica Lynch · 3D sets: Nasiriyah road, hospital (ext night + ward), Congress hearing room =====================
-function buildIqRoad(){texInit();const g=new Geo(),D=[];
+function buildIqRoad(o={}){texInit();const g=new Geo(),D=[];
   TX.sand=TX.sand||cvTex(512,512,(x,w,h)=>{x.fillStyle='#b89060';x.fillRect(0,0,w,h);speck(x,w,h,3000,['rgba(120,90,50,0.35)','rgba(255,240,200,0.3)'],2);},{repeat:1});
   TX.asph=TX.asph||cvTex(512,512,(x,w,h)=>{x.fillStyle='#4a4644';x.fillRect(0,0,w,h);speck(x,w,h,2500,['rgba(0,0,0,0.3)','rgba(255,255,255,0.08)'],2);x.fillStyle='rgba(200,170,120,0.25)';for(let i=0;i<30;i++)x.fillRect(hash(i)*w,hash(i*3)*h,40+hash(i*5)*80,6);},{repeat:1});
   const gr=new Geo();G.plane(gr,M4.S(200,1,200),[1,1,1],{uv:60});D.push({mesh:mesh(gr),M:M4.id(),tex:TX.sand,col:[1,1,1],rim:0});
   const rd=new Geo();G.plane(rd,M4.chain(M4.T(0,0.01,0),M4.S(200,1,7)),[1,1,1],{uv:30});D.push({mesh:mesh(rd),M:M4.id(),tex:TX.asph,col:[1,1,1],spec:0.5,rim:0});
   for(let x=-90;x<90;x+=6)BX(g,[x,0.012,0],[3,0.005,0.15],'#e8e0c8');
   // low mud-brick houses with flat roofs, parapets, dark windows; a minaret; date palms; power poles
-  for(let i=0;i<34;i++){const x=-60+i*5+hash(i)*2,z=(i%2?-1:1)*(7+hash(i*3)*4),w=4+hash(i*5)*3,h=3+hash(i*7)*3.5;BX(g,[x,0,z],[w,h,4],['#c8b088','#b8a078','#d8c098'][i%3]);BX(g,[x,h,z],[w+0.2,0.35,4.2],'#a89068');
+  for(let i=0;i<34;i++){const x=-60+i*5+hash(i)*2,z=(i%2?-1:1)*(7+hash(i*3)*4),w=4+hash(i*5)*3,h=3+hash(i*7)*3.5;if(o.skip&&o.skip(x,z))continue;BX(g,[x,0,z],[w,h,4],['#c8b088','#b8a078','#d8c098'][i%3]);BX(g,[x,h,z],[w+0.2,0.35,4.2],'#a89068');
     for(let k=0;k<2;k++)BX(g,[x-w/4+k*w/2,h*0.55,z+(z>0?-2.02:2.02)],[0.7,0.9,0.05],'#2a2420');}
   G.cyl(g,M4.chain(M4.T(30,0,-24),M4.S(1.2,16,1.2)),'#d8c8a8',{seg:12});G.lathe(g,M4.chain(M4.T(30,16,-24)),'#4a8a7a',[[0.001,3],[1.6,0.6],[1.4,0],[0.001,0]],{seg:12});
-  for(let i=0;i<26;i++){const x=-90+hash(i*2.2)*180,z=(hash(i*4.4)>0.5?1:-1)*(5+hash(i*6.6)*20),h=6+hash(i)*4;G.cyl(g,M4.chain(M4.T(x,0,z),M4.RZ((hash(i*9)-0.5)*0.2),M4.S(0.22,h,0.22)),'#7a5a3a',{seg:8});
+  for(let i=0;i<26;i++){const x=-90+hash(i*2.2)*180,z=(hash(i*4.4)>0.5?1:-1)*(5+hash(i*6.6)*20),h=6+hash(i)*4;if(o.skip&&o.skip(x,z))continue;G.cyl(g,M4.chain(M4.T(x,0,z),M4.RZ((hash(i*9)-0.5)*0.2),M4.S(0.22,h,0.22)),'#7a5a3a',{seg:8});
     for(let k=0;k<8;k++){const a=k/8*TAU;G.sphere(g,M4.chain(M4.T(x+Math.cos(a)*1.3,h-0.2,z+Math.sin(a)*1.3),M4.RY(-a),M4.RZ(0.6),M4.S(1.6,0.12,0.4)),'#5a7a3a',{su:10,sv:6});}}
-  for(let x=-80;x<80;x+=14){G.cyl(g,M4.chain(M4.T(x,0,4.6),M4.S(0.12,7,0.12)),'#5a4a3a',{seg:6});BX(g,[x,6.6,4.6],[1.8,0.1,0.1],'#5a4a3a');}
+  for(let x=-80;x<80;x+=14){if(o.skip&&o.skip(x,4.6))continue;G.cyl(g,M4.chain(M4.T(x,0,4.6),M4.S(0.12,7,0.12)),'#5a4a3a',{seg:6});BX(g,[x,6.6,4.6],[1.8,0.1,0.1],'#5a4a3a');}
   // the wrecked convoy: burnt trucks, a flipped Humvee, debris
   const tr=(x,z,ry,col,burnt,flip)=>{const M0=M4.chain(M4.T(x,flip?1.1:0,z),M4.RY(ry),M4.RZ(flip?2.6:0));const B=(p,s,c)=>G.box(g,M4.chain(M0,M4.T(...p),M4.S(...s)),c,{base:1});
     B([0,0.45,0],[4.6,1.2,2.2],burnt?'#3a3634':col);B([1.4,1.65,0],[1.6,0.9,2.0],burnt?'#2a2624':col);B([-0.8,1.65,0],[2.8,0.2,2.1],'#2a2a26');
     for(const [wx,wz] of [[1.5,1.1],[1.5,-1.1],[-1.4,1.1],[-1.4,-1.1]])G.cyl(g,M4.chain(M0,M4.T(wx,0.5,wz),M4.RX(Math.PI/2),M4.S(0.5,0.35,0.5),M4.T(0,-0.5,0)),'#141414',{seg:16});};
-  tr(-6,0.8,0.15,'#8a7a5a',1,0);tr(5,-1.6,-0.4,'#c8b088',0,1);tr(14,1.2,0.6,'#6a6a58',1,0);tr(-16,-1.8,-0.1,'#8a7a5a',1,0);
-  for(let i=0;i<30;i++)BX(g,[-20+hash(i)*40,0,(hash(i*3)-0.5)*8],[0.15+hash(i*5)*0.3,0.05,0.1+hash(i*7)*0.2],'#2a2622',{ry:hash(i*9)*3});
+  if(!o.clean){tr(-6,0.8,0.15,'#8a7a5a',1,0);tr(5,-1.6,-0.4,'#c8b088',0,1);tr(14,1.2,0.6,'#6a6a58',1,0);tr(-16,-1.8,-0.1,'#8a7a5a',1,0);
+  for(let i=0;i<30;i++)BX(g,[-20+hash(i)*40,0,(hash(i*3)-0.5)*8],[0.15+hash(i*5)*0.3,0.05,0.1+hash(i*7)*0.2],'#2a2622',{ry:hash(i*9)*3});}
+  if(o.check){G.cyl(g,M4.chain(M4.T(11,0,-6),M4.S(0.12,6,0.12)),'#5a5a5a',{seg:6});BX(g,[11,6,-6],[0.8,0.4,0.5],'#e8e8d8');}
   D.push({mesh:mesh(g),M:M4.id(),col:[1,1,1],rim:0.3,spec:0.6});return {D,pts:[]};}
 function buildIqHosp(){texInit();const g=new Geo(),D=[];
   TX.conc=TX.conc||cvTex(512,512,(x,w,h)=>{x.fillStyle='#b8b0a0';x.fillRect(0,0,w,h);speck(x,w,h,2000,['rgba(0,0,0,0.15)','rgba(255,255,255,0.1)'],2);for(let i=0;i<8;i++){x.fillStyle='rgba(90,80,70,0.25)';x.fillRect(0,i*64,w,3);}},{repeat:1});
@@ -64,11 +65,13 @@ LIGHT5.ward={sunDir:[0.2,0.9,0.3],sunCol:[0.6,0.62,0.6],sky:[0.5,0.55,0.55],gnd:
   post:{bloom:0.4,thr:1.0,sat:0.95,expo:1.05,lift:[0,0.02,0.02],gain:[0.96,1.02,1.0],vig:1.1,ink:1}};
 LIGHT5.hearing={sunDir:[0.2,0.9,0.4],sunCol:[0.9,0.85,0.75],sky:[0.5,0.48,0.45],gnd:[0.3,0.28,0.26],fog:[0.4,0.38,0.35],fogD:0.005,fogH:0,skyTop:[0.5,0.48,0.45],skyHor:[0.5,0.48,0.45],skyBot:[0.4,0.38,0.35],cloud:0,stars:0,sunSize:3000,sunGlow:[0,0,0],
   post:{bloom:0.35,thr:1.0,sat:1.05,expo:1.05,lift:[0.01,0.01,0.02],gain:[1.02,1.0,0.96],vig:1.1,ink:1}};
-{const _gi=getSet;getSet=function(k){const B={iqroad:buildIqRoad,iqhosp:buildIqHosp,ward:buildWard,hearing:buildHearing};if(B[k])return SETS[k]||(SETS[k]=B[k]());return _gi(k);};}
+{const _gi=getSet;getSet=function(k){const B={iqroadC:()=>buildIqRoad({clean:1,skip:(x,z)=>z>0&&x>-40&&x<20}),iqcheck:()=>buildIqRoad({clean:1,check:1,skip:(x,z)=>z>0&&x>-24&&x<14}),iqroad:buildIqRoad,iqhosp:buildIqHosp,ward:buildWard,hearing:buildHearing};if(B[k])return SETS[k]||(SETS[k]=B[k]());return _gi(k);};}
 PL.length=0;
 PL.push(
  ['iq_road','iqroad','desertDay',[14,2.4,4.2],[-8,1.4,-0.5],50],
  ['iq_roadLow','iqroad','desertDay',[4,1.2,4.4],[-8,1.2,0],44],
+ ['iq_crash','iqroadC','desertDay',[-13,3.2,16],[-12,1.0,0],54],
+ ['iq_check','iqcheck','iqNight',[-13,5.8,4.5],[5,0.6,-0.3],40],
  ['iq_hosp','iqhosp','iqNight',[8,2.2,22],[0,4,-8],52],
  ['iq_ward','ward','ward',[2.2,1.7,5.2],[-0.6,0.8,-1.5],50],
  ['cg_hear','hearing','hearing',[0,1.6,6.5],[0,1.2,1.2],44],
