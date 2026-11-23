@@ -43,6 +43,11 @@ PL.push(
  ['ne_wide','northend','winterDay',[16,1.7,6],[-22,6.5,-4],56],
  ['ne_street','northend','winterDay',[20,1.6,0.6],[-20,3.5,-3],46],
  ['ne_tank','northend','winterDay',[-4,1.6,16],[-30,9.5,-10],62],
+ ['ne_side','northend','winterDay',[2,1.7,11],[2,2.6,-6],50],
+ ['ne_tankC','northend','winterDay',[-14,1.6,8],[-22,4.5,-2],46],
+ ['ne_aerial','northend','winterDay',[22,20,22],[-12,0,-4],52],
+ ['ne_rail','northend','winterDay',[8,0.6,4],[0,6.2,-0.5],56],
+ ['ne_sideHi','northend','winterDay',[3,4.6,13],[1,0.8,-3],48],
  ['ne_flood','northend','winterDay',[5,2.6,9.5],[-4,0.9,-0.6],38],
  ['ne_low','northend','winterDay',[14,0.5,4.5],[-10,2.2,-2],40],
 );
