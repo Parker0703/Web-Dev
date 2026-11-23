@@ -14,7 +14,7 @@ First time in a new environment: follow `SETUP.md`, then render one test still i
    - First line extra hooky, only half the context. No slow setup.
    - "What if…" videos open with "What if you…" and keep the "you" framing. Superpower what-ifs are pure fantasy.
    - System videos (levels, stats, save/load): introduce the rules right after the hook.
-   - Timer line says what will be shown ("Give me 60 seconds, and I'll show you how…").
+   - **No timer line and no countdown.** Never write "Give me 60 seconds…" (or any time promise) in scripts, and never show the countdown timer HUD in videos. If the user's own script has one, ask before keeping it.
    - Raw, casual, a bit funny, short, fast; every fact TRUE and checked.
    - **[pause]** markers (lowercase, square brackets) where a pause helps — the only brackets allowed.
    - No "Follow for more" — end on a strong closing line.
