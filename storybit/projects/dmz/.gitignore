@@ -1,7 +1,4 @@
-ch_*
-lk_*
-*.wav
-w*.log
-st/
-vid.mp4
-out/*.mp4
+vh/raw_*
+vh/cam_*
+*.log
+plates/s2_top.jpg
