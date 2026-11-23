@@ -15,8 +15,9 @@ function wave3(c,t,fx,h,o={}){const za=o.za??-7,zb=o.zb??7,n=o.n??18,tail=o.tail
   const Q=[];const K=grid[0].length;for(let i=0;i<n;i++)for(let k=0;k<K-1;k++){const a=grid[i][k],b=grid[i][k+1],cc=grid[i+1][k+1],dd=grid[i+1][k];const m=[(a[0]+b[0]+cc[0]+dd[0])/4,(a[1]+b[1]+cc[1]+dd[1])/4,(a[2]+b[2]+cc[2]+dd[2])/4];
     const dist=Math.hypot(m[0]-cam[0],m[1]-cam[1],m[2]-cam[2]);const dx=b[0]-a[0],dy=b[1]-a[1];const L=Math.hypot(dx,dy)||1;const ny=dx/L;// up-facing → lit
     Q.push({pts:[a,b,cc,dd],dist,lit:ny,k,ht:m[1]/h});}
+  for(const a of (o.actors||[])){Q.push({actor:a,dist:Math.hypot(a.pos[0]-cam[0],a.pos[1]+1-cam[1],a.pos[2]-cam[2])-(a.bias||0)});}
   Q.sort((p,q)=>q.dist-p.dist);c.save();c.lineJoin='round';
-  for(const q of Q){const P=q.pts.map(p=>pp(p));if(P.some(p=>p.w<=0.2))continue;const l=clamp(0.35+q.lit*0.45+q.ht*0.35);const r=Math.round(lerp(30,128,l*l)),g=Math.round(lerp(12,58,l*l)),bb=Math.round(lerp(4,20,l*l));
+  for(const q of Q){if(q.actor){c.restore();q.actor.draw();c.save();c.lineJoin='round';continue;}const P=q.pts.map(p=>pp(p));if(P.some(p=>p.w<=0.2))continue;const l=clamp(0.35+q.lit*0.45+q.ht*0.35);const r=Math.round(lerp(30,128,l*l)),g=Math.round(lerp(12,58,l*l)),bb=Math.round(lerp(4,20,l*l));
     c.fillStyle=`rgb(${r},${g},${bb})`;c.strokeStyle=c.fillStyle;c.lineWidth=1.5;c.beginPath();P.forEach((p,i)=>i?c.lineTo(p.x,p.y):c.moveTo(p.x,p.y));c.closePath();c.fill();c.stroke();
     if(q.ht>0.85&&q.lit>0.2){c.fillStyle='rgba(255,210,150,0.22)';c.fill();}}
   // dark outline along the crest + glossy streaks on the face
@@ -32,6 +33,27 @@ function wave3(c,t,fx,h,o={}){const za=o.za??-7,zb=o.zb??7,n=o.n??18,tail=o.tail
 // someone caught in the wave: tumbling, carried along, half covered in molasses
 function swept(c,kind,x,y,z,t,o={}){const rot=o.rot??t*3.2;const r=who(c,kind,[x,y,z],BF('shock','up','scream',{seed:o.seed||1,rot,hf:[50+Math.sin(t*9)*20,-80],hb:[-50,-70+Math.cos(t*8)*20],run:1,ph:t*16,f:o.f||1}));
   const p=pp([x,y,z]);c.save();for(let k=0;k<6;k++){const a=k*1.1+t*2;c.fillStyle=k%2?'#4a220c':'#3a1a08';c.beginPath();c.ellipse(p.x+Math.cos(a)*60*p.s,p.y-40*p.s+Math.sin(a)*30*p.s,(40+k*6)*p.s,(26+k*3)*p.s,a,0,TAU);c.fill();}c.restore();return r;}
+// someone the wave catches from behind: runs → lifted, pitched forward, arms thrown up, splash climbing them → swallowed (front face covers them in the depth sort)
+function victimActor(c,kind,x,z,fx,t,o={}){const dx=fx-x;const k=clamp((dx+3.2)/3.2);const lift=k*k*1.3,pitch=k*0.9;
+  return {pos:[x,0,z],bias:0.3,draw:()=>{const r=who(c,kind,[x+k*1.2,lift,z],F(k>0?'shock':'wide','up','scream',{seed:o.seed||1,run:1,ph:t*(15-k*8),f:o.f??-1,rot:(o.f??-1)*-pitch*0.6+Math.sin(t*9)*0.08*k,
+      hf:undefined,hb:undefined}));
+    if(k>0){const g=pp([x,0,z]);for(let i=0;i<14;i++){const ph=(t*2+hash(i*3.1))%1;const bx=g.x+(hash(i)-0.5)*180*g.s,by=g.y-(ph*lift*170+ph*60)*g.s*1.0-k*40*g.s;c.fillStyle=i%2?'#4a220c':'#3a1a08';c.strokeStyle='#120602';c.lineWidth=2;
+        c.beginPath();c.ellipse(bx,by,(10+hash(i*5)*18)*g.s*(0.5+k),(9+hash(i*7)*14)*g.s*(0.5+k),0,0,TAU);c.fill();c.stroke();}
+      const sp=pp([x,lift*0.6,z]);c.fillStyle='#3a1a08';c.beginPath();c.ellipse(sp.x,sp.y+40*sp.s,(90+k*70)*sp.s,(30+k*50)*sp.s,0,0,TAU);c.fill();}}};}
+// after being swallowed: the head and a reaching hand break the surface on top of the crest, then go under again
+function crestRider(c,kind,fx,h,z,t,o={}){const cr=pp([fx-1.4,h*0.98,z]);if(cr.w<=0.2)return;const bob=Math.sin(t*5+(o.seed||0))*0.25;const r0=pp([fx-1.4,h*0.98-1.2+bob,z]);
+  c.save();c.beginPath();c.rect(-3000,-3000,8000,cr.y+3000+6*cr.s);c.clip();const r=who(c,kind,[fx-1.4,h*0.98-1.35+bob,z],F('shock','up','scream',{seed:o.seed||1,rot:Math.sin(t*3)*0.5+(o.rot||0),hf:[60,-160+Math.sin(t*9)*20],hb:[-50,-120]}));c.restore();
+  c.save();c.fillStyle='#4a220c';c.strokeStyle='#120602';c.lineWidth=2;for(let i=0;i<5;i++){const a=i*1.3+t*3;c.beginPath();c.ellipse(cr.x+Math.cos(a)*50*cr.s,cr.y+Math.sin(a)*10*cr.s,22*cr.s,12*cr.s,0,0,TAU);c.fill();c.stroke();}c.restore();return r;}
+// carried in the flood after the wave: body under the surface, tilted, drifting with the current; dunks under and claws back up; molasses coats head and arms
+function carried(c,kind,pos,surf,t,o={}){const sd=o.seed||1;const dunk=Math.max(0,Math.sin(t*1.6+sd*2))**6;const dd=lerp(o.d??0.85,1.3,dunk);const g=pp([pos[0],surf,pos[2]]);
+  c.save();c.beginPath();c.rect(-3000,-3000,8000,g.y+3000+2*g.s);c.clip();const r=who(c,kind,[pos[0],surf-dd,pos[2]],F(dunk>0.5?'squeeze':'shock','up','scream',{seed:sd,rot:(o.tilt??0.35)+Math.sin(t*2.2+sd)*0.18,f:o.f||1,
+    hf:[50+Math.sin(t*7+sd)*25,-175+Math.cos(t*6)*15],hb:[-60+Math.cos(t*8+sd)*20,-80+Math.sin(t*5)*25]}));c.restore();
+  if(r){c.fillStyle='rgba(58,26,8,0.85)';for(const hp of [r.hf,r.hb]){if(hp.y>g.y)continue;c.beginPath();c.ellipse(hp.x,hp.y+8*g.s,11*g.s,16*g.s,0,0,TAU);c.fill();}
+    if(r.hc&&r.hc.y<g.y){c.beginPath();c.ellipse(r.hc.x,r.hc.y-14*g.s,24*g.s,12*g.s,0,0,TAU);c.fill();for(let i=0;i<3;i++){const dl=((t*0.8+i*0.33)%1);c.beginPath();c.ellipse(r.hc.x-14*g.s+i*14*g.s,r.hc.y-6*g.s+dl*30*g.s,3*g.s,6*g.s,0,0,TAU);c.fill();}}}
+  c.save();const w=60*g.s;c.fillStyle='#2e1406';c.beginPath();c.ellipse(g.x,g.y+2*g.s,w*1.4,w*0.34,0,0,TAU);c.fill();c.strokeStyle='rgba(255,170,90,0.35)';c.lineWidth=3;c.beginPath();c.ellipse(g.x,g.y,w*1.4,w*0.34,0,Math.PI*1.1,Math.PI*1.9);c.stroke();
+  for(let i=0;i<4;i++){const ph=(t*1.2+i/4)%1;c.strokeStyle=`rgba(255,170,90,${0.3*(1-ph)})`;c.lineWidth=3;const tx=pp([pos[0]-0.4-ph*2.4,surf,pos[2]]);c.beginPath();c.moveTo(tx.x,tx.y-6*g.s);c.lineTo(tx.x-40*g.s,tx.y);c.stroke();}
+  if(dunk>0.45){c.save();c.translate(g.x+10*g.s,g.y);c.rotate(Math.sin(t*6)*0.2);c.strokeStyle='#0b0b0d';c.lineWidth=16*g.s;c.lineCap='round';seg(c,0,0,0,-90*g.s*dunk);c.strokeStyle='#3a1a08';c.lineWidth=11*g.s;seg(c,0,0,0,-90*g.s*dunk);c.fillStyle='#f2efe8';c.strokeStyle='#0b0b0d';c.lineWidth=3;c.beginPath();c.arc(0,-96*g.s*dunk,11*g.s,0,TAU);c.fill();c.stroke();c.fillStyle='rgba(58,26,8,0.8)';c.beginPath();c.arc(0,-92*g.s*dunk,8*g.s,0,Math.PI);c.fill();c.restore();}
+  if(dunk>0.3){for(let i=0;i<6;i++){const a=i/6*TAU+t*4;c.fillStyle='#4a220c';c.beginPath();c.arc(g.x+Math.cos(a)*w,g.y-Math.abs(Math.sin(a))*30*g.s*dunk,8*g.s,0,TAU);c.fill();}}c.restore();return r;}
 // ---------- props / ui ----------
 function tagC(c,x,y,s,k=1,col='#ffd23f'){if(k<=0)return;c.save();c.globalAlpha=clamp(k*2);c.translate(x,y);c.scale(lerp(0.7,1,eo(clamp(k))),lerp(0.7,1,eo(clamp(k))));c.font='900 40px "Inter Display"';c.letterSpacing='5px';const w=c.measureText(s).width+60;
   c.fillStyle='rgba(12,10,8,0.86)';c.beginPath();c.roundRect(-w/2,-38,w,76,38);c.fill();c.strokeStyle=col;c.lineWidth=4;c.stroke();c.fillStyle='#fff';c.textAlign='center';c.textBaseline='middle';c.fillText(s,0,3);c.restore();}
@@ -56,9 +78,9 @@ function tankCut(c,id,fill,t){// x-ray cut-out in the tank wall showing the mola
 const F=(e,b,m,o)=>BF(e,b,m,o);
 // =============== shots ===============
 // 0 · "A 25-foot wave just swallowed a city street…" people turn, run at camera; the wave rolls under the El and scoops up a man
-XM.hook=(c,t,u,d)=>{const h=HH(t,10);camAt(c,'ne_street',[0,3,-1],1.05+u*0.02,{ox:h.ox,oy:60+h.oy});const fx=-18+u*7;molassesSheet(c,t,-60,fx-1,-7,7,0.9,{edge:false});wave3(c,t,fx,7.6,{debris:6});
-  const ty=clamp((u-0.4)/0.6);swept(c,'dock2',fx+0.6,2.6+Math.sin(u*4)*0.6,-0.5,t,{seed:3});
-  cast(c,[['boy',[2-u*1.2,0,0.8],F(ty>0.5?'wide':'dot','up',ty>0.5?'scream':'o',{seed:1,run:ty>0?1:0,ph:t*15,f:-1,back:ty<0.3,hf:[40,-70],hb:[-40,-60]})],['dock',[6-u*1.3,0,-1.6],F('shock','up','scream',{seed:2,run:1,ph:t*14+1,f:-1})],['girl',[9-u*1.1,0,1.8],F('wide','worried','scream',{seed:4,run:1,ph:t*13+2,f:-1,hf:[30,-80],hb:[-30,-80]})]]);
+XM.hook=(c,t,u,d)=>{const h=HH(t,10);camAt(c,'ne_street',[0,3,-1],1.05+u*0.02,{ox:h.ox,oy:-50+h.oy});const fx=-14+u*6.5;molassesSheet(c,t,-60,fx-1,-7,7,0.9,{edge:false});
+  const A=[victimActor(c,'dock2',-2.5+u*1.1,-0.6,fx,t,{seed:3}),victimActor(c,'boy',3.2+u*1.4,0.9,fx,t,{seed:1}),victimActor(c,'dock',6.8+u*1.3,-1.8,fx,t,{seed:2}),victimActor(c,'girl',10+u*1.2,1.9,fx,t,{seed:4})];
+  wave3(c,t,fx,7.6,{debris:6,actors:A});if(fx>-1)crestRider(c,'dock2',fx,7.6,-0.6,t,{seed:3});
   c.restore();if(u<0.12)flash(c,1-u/0.12,'#000');lens(c,t,{v:0.6});};
 // 1 · "and it was made of syrup." a fat drip splats on a man's cap; he wipes it, sniffs his fingers
 XM.syrup=(c,t,u,d)=>{camAt(c,'ne_low',[2,1.6,0],1.55,{oy:-80});const P=[2,0,0];const fall=clamp(u/0.45);const r=who(c,'dock',P,F(fall<1?'dot':'wide','up',fall<1?'flat':'o',{seed:5,hf:u>0.6?[16,-150]:[14,90],hb:[-12,92],look:[0,-3]}));
@@ -109,8 +131,10 @@ XM.split=(c,t,u,d)=>{const h=HH(t,14);camAt(c,'ne_tank',[-24,7,-2],1.0,{ox:h.ox,
   for(let i=0;i<40;i++){const ph=(t*1.2+hash(i))%1,y=lerp(A.y,B.y,hash(i*3)*k);const x=A.x+(hash(i*5)-0.3)*30;c.fillStyle='#4a220c';c.strokeStyle='#120602';c.lineWidth=2;const bx=x+ph*400*(hash(i*7)+0.3),by=y+ph*ph*600-ph*120;c.beginPath();c.ellipse(bx,by,(16+hash(i)*26)*(0.4+ph),(14+hash(i)*20)*(0.4+ph),0,0,TAU);c.fill();c.stroke();}
   c.restore();flash(c,clamp(1-u/0.2)*0.6);lens(c,t,{v:0.65});};
 // 13 · "And a brown wave, 25 feet tall, rushed out at 35 miles per hour." side view: the wave crosses the street, a man for scale; height + speed
-XM.wave=(c,t,u,d)=>{const h=HH(t,9);camAt(c,'ne_street',[0,3,-1],1.04,{ox:h.ox,oy:60+h.oy});const fx=-30+u*5;molassesSheet(c,t,-60,fx-1,-7,7,0.9,{edge:false});wave3(c,t,fx,7.6,{debris:5});
-  const run=clamp((u-1.6)/0.3);cast(c,[['dock2',[4-run*(u-1.6)*1.5,0,0.4],F(run>0?'shock':'wide','up',run>0?'scream':'o',{seed:6,run:run>0?1:0,ph:t*15,f:-1,back:run<=0,hf:run>0?undefined:[30,-60],hb:run>0?undefined:[-30,-60]})],['girl',[7-run*(u-1.6)*1.4,0,-2.2],F(run>0?'shock':'wide','up','scream',{seed:9,run:run>0?1:0,ph:t*14,f:-1,back:run<=0})]]);
+XM.wave=(c,t,u,d)=>{const h=HH(t,9);camAt(c,'ne_street',[0,3,-1],1.04,{ox:h.ox,oy:60+h.oy});const fx=-22+u*5.2;molassesSheet(c,t,-60,fx-1,-7,7,0.9,{edge:false});
+  const run=clamp((u-1.4)/0.3),rx=run*(u-1.4)*1.5;const A=[victimActor(c,'dock2',3+rx,0.4,fx,t,{seed:6}),victimActor(c,'girl',5.5+rx,-2.2,fx,t,{seed:9})];
+  if(run<=0){A[0]={pos:[3,0,0.4],draw:()=>who(c,'dock2',[3,0,0.4],F('wide','up','o',{seed:6,back:1,hf:[30,-60],hb:[-30,-60]}))};A[1]={pos:[5.5,0,-2.2],draw:()=>who(c,'girl',[5.5,0,-2.2],F('wide','up','o',{seed:9,back:1}))};}
+  wave3(c,t,fx,7.6,{debris:5,actors:A});if(fx>3.5)crestRider(c,'dock2',fx,7.6,0.4,t,{seed:6});
   const top=pp([fx-1.2,7.6,3]),bot=pp([fx-1.2,0,3]);c.save();c.strokeStyle='#ffd23f';c.lineWidth=6;seg(c,top.x+40,top.y,top.x+40,bot.y);seg(c,top.x+20,top.y,top.x+60,top.y);seg(c,bot.x+20,bot.y,bot.x+60,bot.y);c.restore();c.restore();
   tagC(c,300,470,'25 FEET',clamp((t-wb('25',35))/0.3));bigCard(c,700,470,clamp((t-wb('35',37.5))/0.3),'35','MILES PER HOUR');FX.speed=0.35;lens(c,t);};
 // 14 · "It smashed buildings," the wave slams a frame house; planks burst
@@ -123,9 +147,14 @@ XM.el=(c,t,u,d)=>{const h=HH(t,10);camAt(c,'ne_rail',[0,6.2,-0.5],1.05,{ox:h.ox,
   const tc=pp([2,7.2-b*1.6,-0.6]);c.save();c.translate(tc.x,tc.y);c.rotate(-0.08-b*0.25+Math.sin(t*4)*0.02);c.fillStyle='#7a2a22';c.strokeStyle='#0b0b0d';c.lineWidth=5;const s=tc.s;c.fillRect(-260*s,-150*s,520*s,150*s);c.strokeRect(-260*s,-150*s,520*s,150*s);c.fillStyle='#f4e8c8';for(let i=0;i<6;i++)c.fillRect((-230+i*80)*s,-120*s,50*s,50*s);c.restore();
   c.restore();soundFx(c,540,1500,'CREEEAK',u/1.6,0.05,'#fff');lens(c,t,{v:0.6});};
 // 16 · "and swept people and horses away." people + a horse tumble along in the flood
-XM.swept=(c,t,u,d)=>{const h=HH(t,10);camAt(c,'ne_sideHi',[1,1.2,1],1.15,{ox:h.ox,oy:h.oy});const fx=40;molassesSheet(c,t,-40,30,-7,8.5,1.0,{edge:false});
-  const hp=pp([-3.5+u*2,1.2+Math.sin(u*3)*0.2,-1]);c.save();c.translate(hp.x,hp.y);c.rotate(-0.9+Math.sin(t*2)*0.5);horse(c,0,0,hp.s*1.1,t);c.restore();c.save();c.fillStyle='#3a1a08';for(let k=0;k<5;k++){c.beginPath();c.ellipse(hp.x-120*hp.s+k*60*hp.s,hp.y+60*hp.s,70*hp.s,30*hp.s,0,0,TAU);c.fill();}c.restore();
-  for(let i=0;i<18;i++){const z=-6+hash(i*3)*16,x=((hash(i)*30+t*4)%30)-14;const a=pp([x,1.0,z]),b=pp([x+2.5,1.0,z]);c.strokeStyle='rgba(255,170,90,0.25)';c.lineWidth=5*a.s;c.lineCap='round';seg(c,a.x,a.y,b.x,b.y);}swept(c,'girl',-1+u*2.5,1.2+Math.sin(u*4)*0.3,3,t,{seed:4,rot:t*2.6});swept(c,'dock',-2+u*2,1.4+Math.cos(u*3)*0.3,0.5,t,{seed:5,rot:-t*2.2});swept(c,'boy',4+u*2.4,1.5,-2.5,t,{seed:3,rot:t*3.5});c.restore();lens(c,t,{v:0.6});};
+XM.swept=(c,t,u,d)=>{const h=HH(t,10);camAt(c,'ne_sideHi',[0.6+u*0.9,1.4,1.4],1.3,{ox:h.ox,oy:h.oy-60});const S=1.4;molassesSheet(c,t,-40,30,-7,8.5,S,{edge:false});
+  for(let i=0;i<26;i++){const z=-6+hash(i*3)*15,x=((hash(i)*34+t*5)%34)-16;const a=pp([x,S,z]),b=pp([x+2.8,S,z]);c.strokeStyle='rgba(255,170,90,0.22)';c.lineWidth=5*a.s;c.lineCap='round';seg(c,a.x,a.y,b.x,b.y);}
+  for(let i=0;i<6;i++){const z=-5+i*2.3,x=((hash(i*7)*30+t*5)%30)-12;const b=pp([x,S,z]);c.save();c.translate(b.x,b.y);c.rotate(Math.sin(t+i));c.fillStyle=['#8a6a44','#6a4a2a','#a8986a'][i%3];c.strokeStyle='#120602';c.lineWidth=3;c.fillRect(-60*b.s,-8*b.s,120*b.s,16*b.s);c.strokeRect(-60*b.s,-8*b.s,120*b.s,16*b.s);c.restore();}
+  const L=[['horse',[-3.5+u*1.0,0,-2.5]],['dock',[-1.5+u*1.1,0,0.8],{seed:5,tilt:-0.4}],['girl',[0.6+u*1.2,0,3.2],{seed:4,d:0.8,tilt:0.5}],['boy',[2.6+u*1.0,0,-1.2],{seed:3,d:0.9}]].sort((a,b)=>a[1][2]-b[1][2]);
+  for(const [k,pos,o] of L){if(k==='horse'){const p=pp([pos[0],S,pos[2]]);c.save();c.beginPath();c.rect(-3000,-3000,8000,p.y+3000);c.clip();c.translate(p.x,p.y-20*p.s+Math.sin(t*2.5)*14*p.s);c.rotate(-0.5+Math.sin(t*1.8)*0.25);horse(c,0,0,p.s*1.15,t*0.6);c.restore();
+      c.fillStyle='#2e1406';c.beginPath();c.ellipse(p.x,p.y,220*p.s,40*p.s,0,0,TAU);c.fill();for(let i=0;i<8;i++){const a=i/8*TAU+t*3;c.fillStyle='#4a220c';c.beginPath();c.arc(p.x+Math.cos(a)*200*p.s,p.y-Math.abs(Math.sin(a+t))*30*p.s,10*p.s,0,TAU);c.fill();}}
+    else carried(c,k,pos,S,t,o);}
+  c.restore();lens(c,t,{v:0.6});};
 // 17 · "But here's the twist:" freeze, desaturate, stamp
 XM.twist=(c,t,u,d)=>{XM.swept(c,LT(17)+1.4,1.4,2.2);c.save();c.globalCompositeOperation='saturation';c.fillStyle='rgba(0,0,0,0.75)';c.fillRect(0,0,W,H);c.restore();stamp(c,LT(18)+0.1,t,'TWIST',540,520,{col:'#ffd23f',size:120});};
 // 18 · "the wave wasn't the worst part." aerial: the whole North End drowned in brown, the tank burst
