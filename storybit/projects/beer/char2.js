@@ -52,7 +52,7 @@ function fig2(c,o){
   if(o.castLen){c.save();c.translate(o.x,o.y);c.transform(1,0,-L2.dx*o.castLen,0.28,0,0);c.fillStyle='rgba(0,0,0,0.32)';rr(c,-16*s,-260*s,32*s,260*s,16*s);c.fill();c.beginPath();c.arc(0,-280*s,28*s,0,TAU);c.fill();c.restore();}
   c.fillStyle='rgba(0,0,0,0.42)';c.beginPath();c.ellipse(o.x,o.y+2*s,62*s,12*s,0,0,TAU);c.fill();
   // back arm, legs
-  limb2(c,shB,AB.e,AB.h,10,shd(K.limb,-0.18),s);fist2(c,AB.h,s,shd(K.limb,-0.18));
+  if(!o.noArms){limb2(c,shB,AB.e,AB.h,10,shd(K.limb,-0.18),s);fist2(c,AB.h,s,shd(K.limb,-0.18));}
   limb2(c,hip,LB.e,LB.h,12,shd(K.limb,-0.18),s);boot2(c,LB.h,s,f,K);
   limb2(c,hip,LF.e,LF.h,12,K.limb,s);boot2(c,LF.h,s,f,K);
   // torso (white tube) + clothing wrapped round it
@@ -73,7 +73,7 @@ function fig2(c,o){
   // head
   head2(c,hc,s,f,o,K,t,lean,HR);
   // front arm
-  limb2(c,shF,AF.e,AF.h,10,K.limb,s);if(o.propF)o.propF(c,AF.h,s,f,t);fist2(c,AF.h,s,K.limb);
+  if(!o.noArms){limb2(c,shF,AF.e,AF.h,10,K.limb,s);if(o.propF)o.propF(c,AF.h,s,f,t);fist2(c,AF.h,s,K.limb);}
   return {hip,hc,hf:AF.h,hb:AB.h};
 }
 function fist2(c,p,s,col){const g=c.createRadialGradient(p.x+L2.dx*3*s,p.y-3*s,1,p.x,p.y,10*s);g.addColorStop(0,shd(col,0.5));g.addColorStop(1,shd(col,-0.35));c.fillStyle=g;c.strokeStyle=K2;c.lineWidth=4*s;c.beginPath();c.arc(p.x,p.y,9*s,0,TAU);c.fill();c.stroke();}

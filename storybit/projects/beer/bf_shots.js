@@ -176,7 +176,7 @@ SH.refund=function(c,t){LIT('#ffe8c0','#2a2018');const t0=A(26)-0.05,u=t-t0;
   c.save();c.beginPath();c.rect(540,0,540,H);c.clip();const g=c.createRadialGradient(810,1100,50,810,1100,800);g.addColorStop(0,'#ffcf5a');g.addColorStop(1,'#8a4a10');c.fillStyle=g;c.fillRect(540,0,540,H);
     for(let i=0;i<20;i++){const a=(u*0.6+hash(i))%1;coin(c,560+hash(i*3)*500,-60+a*2000,22,t*6+i);}
     BW(c,'owner',810,1620,1.7,t,{f:-1,eyes:'happy',brow:'up',mouth:'smile',hf:[-40,20],seed:4});moneyBag(c,810-40*1.7-30,1620-200*1.7+20*1.7+60,1.1);c.restore();
-  c.strokeStyle='#fff';c.lineWidth=10;seg(c,540,0,540,H);c.save();c.translate(810,560);c.scale(0.7,0.7);stamp(c,0,0,'REFUND',clamp((t-TW('refund')+0.1)/0.5),'#3aff7a',-0.1);c.restore();
+  c.strokeStyle='#fff';c.lineWidth=10;seg(c,540,0,540,H);c.save();c.translate(810,330);c.scale(0.7,0.7);stamp(c,0,0,'REFUND',clamp((t-TW('refund')+0.1)/0.5),'#3aff7a',-0.1);c.restore();
   const f=clamp((t-(END-1.8))/1.7);vignette(c,0.45);if(f>0){c.fillStyle=`rgba(0,0,0,${f})`;c.fillRect(0,0,W,H);}};
 function eightCandlesHalf(c,t){for(let i=0;i<8;i++){const x=110+(i%4)*110,y=1150+Math.floor(i/4)*260;candle(c,x,y,1.5,t,1,i);}txt(c,'8 DEAD',270,760,100,'#fff',{sw:16});}
 var SHOTS=[[0,'hook'],[A(1)-0.05,'wave'],[A(2)-0.05,'eight'],[A(3)-0.05,'brewery'],[A(4)-0.05,'vat'],[TW('held')-0.1,'barrels'],[A(5)-0.05,'hoops'],[A(6)-0.05,'date'],[A(7)-0.05,'snap'],[A(8)-0.05,'calm'],
