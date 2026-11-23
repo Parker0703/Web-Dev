@@ -24,7 +24,7 @@ function renderFrame(t){
   grade(g,t,window.GR||{});
   if(FX.flash>0){g.save();g.globalCompositeOperation='screen';g.globalAlpha=FX.flash;g.fillStyle=FX.flashCol;g.fillRect(0,0,W,H);g.restore();}
   // caption backing band for legibility
-  if(!window.NOCAP){const cb=g.createLinearGradient(0,0,0,420);cb.addColorStop(0,'rgba(0,0,0,0.55)');cb.addColorStop(1,'rgba(0,0,0,0)');g.fillStyle=cb;g.fillRect(0,0,W,420);}
+
   if(!window.NOCAP){timer(g,t);captions(g,t);}
   out.drawImage(big,0,0,outC.width,outC.height);
 }

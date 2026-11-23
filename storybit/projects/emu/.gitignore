@@ -1,8 +1,8 @@
-rprops/raw_*.png
 ch_*
 lk_*
 *.wav
 w*.log
 st/
-out/*.mp4
 vid.mp4
+out/*.mp4
+rprops/raw_*.png

@@ -3,7 +3,7 @@
 const CAP_Y=1210,CAP_W=840,CAP_YEL='#ffd23f',CAP_LH=104;
 const CAP2=[];(function(){for(const l of L){let g=[],n=0;const fl=()=>{if(g.length)CAP2.push(g);g=[];n=0;};
   for(const w of l.w){const s=w.x.toUpperCase();if(g.length&&(n+s.length>26||g.length>=5))fl();g.push(w);n+=s.length+1;if(/[.!?:…]$/.test(w.x)&&n>8)fl();}fl();}
-  for(let i=0;i<CAP2.length;i++){const g=CAP2[i];g.t0=g[0].t;const nx=i+1<CAP2.length?CAP2[i+1][0].t:99;g.t1=Math.min(nx,g[g.length-1].e+0.4);}})();
+  for(let i=0;i<CAP2.length;i++){const g=CAP2[i];g.t0=g[0].t;const nx=i+1<CAP2.length?CAP2[i+1][0].t-0.025:99;g.t1=Math.min(nx,g[g.length-1].e+0.4);}})();
 function timer(){}
 function captions(c,t){for(const g of CAP2){if(t<g.t0-0.02||t>=g.t1)continue;
   c.save();c.font='900 86px "Inter Display"';c.letterSpacing='1px';const sp=26;

@@ -5,15 +5,15 @@ def key(f):
   a=np.asarray(Image.open(f).convert('RGB')).astype(float);r,g,b=a[...,0],a[...,1],a[...,2]
   d=g-np.maximum(r,b);fg=np.clip(1-(d-12)/33,0,1);bg=d>45;alpha=np.where(bg,0,fg)
   out=a.copy();mx=np.maximum(r,b);out[...,1]=np.where(g>mx,mx+(g-mx)*0.15,g);out[bg]=0;return out,alpha
-for f in sorted(glob.glob('rprops/raw_rb_*_sit_*.png')):
+for f in []:
   out,al=key(f);ys,xs=np.where(al>0.5);gy[f.split('_')[-1][:-4]]=ys.max()-4
 def proj(cm,P):
   c=np.array(cm['c'],float);ev=np.array(cm['eye'],float);ev/=np.linalg.norm(ev);fv=np.tan(np.radians(9));dist=cm['r']/fv/(1080/1920)*1.05
   E=c+ev*dist;F=(c-E)/np.linalg.norm(c-E);R=np.cross(F,[0,1,0]);R/=np.linalg.norm(R);U=np.cross(R,F);d=np.array(P,float)-E
   x,y,z=d@R,d@U,d@F;fp=960/fv;return 540+x/z*fp,960-y/z*fp,fp/z
-for f in sorted(glob.glob('rprops/raw_rb_*.png'))+sorted(glob.glob('rprops/raw_co_*.png'))+sorted(glob.glob('rprops/raw_ho_*.png')):
+for f in sorted(glob.glob('rprops/raw_em_*.png'))+sorted(glob.glob('rprops/raw_tr_*.png')):
   n=os.path.basename(f)[4:-4];vw=n.split('_')[-1];out,al=key(f)
-  big=n[:3] in ('co_','ho_');KK=1.0 if big else K
+  big=True;KK=0.85 if n.startswith('em_') else 1.0
   if big:
     cm=json.load(open(f'rprops/cam_{n}.json'));ox,oy,ppu=proj(cm,[0,0,0])
   ys,xs=np.where(al>0.5);x0,x1,y0,y1=xs.min()-4,xs.max()+4,ys.min()-4,(ys.max()+4 if big else max(ys.max()+4,gy.get(vw,0)+4))
