@@ -14,14 +14,15 @@ function stamp(c,x,y,s,k,col=RED_C,rot=-0.12){if(k<=0)return;c.save();c.translat
 function eightCandles(c,t,t0,y=1640,s=1.6,dim=0){for(let i=0;i<8;i++){const k=clamp((t-t0-i*0.09)/0.2);const x=540+(i-3.5)*110;c.fillStyle='rgba(0,0,0,0.35)';c.beginPath();c.ellipse(x,y+4,26*s,6*s,0,0,TAU);c.fill();candle(c,x,y,s,t,k*(1-dim),i);}}
 // ---------------- 0 · "In 1814," a wall of beer rises above the rooftops ----------------
 SH.hook=function(c,t){LIT('#ffd0a0','#3a2a28');const k=eo(clamp(t/1.4));londonSt(c,t,{x:540,y:1000+Math.sin(t*31)*6*k,z:1.02+t*0.03},{GY:1300,houseH:560,behind:(c2,GY)=>{wallWave(c2,t,lerp(GY-450,GY-1060,k),GY+40,{debris:4});},world:(c2,GY)=>{
+    const sp=clamp((t-0.75)/0.6);if(sp>0)for(let i=0;i<4;i++){const x0=-80+i*330,ry=GY-560*(0.86+hash(i*3)*0.12);curtain(c2,t,x0,x0+300,ry,GY+20,eo(clamp(sp*1.4-i*0.12)),{sd:i});}
     BW(c2,'poorM',360,GY+520,1.5,t,{f:1,eyes:'wide',brow:'worried',mouth:'scream',hf:[40,30],seed:1,look:[0,-1]});BW(c2,'poorW',720,GY+560,1.6,t,{f:-1,eyes:'shock',brow:'worried',mouth:'o',seed:2,look:[0,-1]});}});
   yearTxt(c,'1814',clamp((t-0.05)/0.3),420,'#ffd23f');FW(c,t,0,0.2);vignette(c,0.45);};
 // ---------------- 1 · "a wave of beer taller than a house smashed through London…" ----------------
-SH.wave=function(c,t){LIT('#ffd0a0','#3a2a28');const t0=A(1)-0.05,u=t-t0;const xF=lerp(-500,1700,u/3.8);
+SH.wave=function(c,t){LIT('#ffd0a0','#3a2a28');const t0=A(1)-0.05,u=t-t0;const xF=lerp(-150,950,u/3.8);
   londonSt(c,t,{x:540,y:1000+Math.sin(t*37)*8,z:1.0},{GY:1250,world:(c2,GY)=>{
     const ppl=[[ -60,GY+300,1.05,'poorM2',3],[260,GY+420,1.25,'poorW',4],[620,GY+360,1.15,'poorM',5],[900,GY+470,1.35,'poorW2',6]];
     for(const [x0,y,s,k,sd] of ppl){const x=x0+u*300;if(xF<x-260*s)BW(c2,k,x,y,s,t,{view:'q3',run:1,ph:t*12+sd,f:1,eyes:'wide',brow:'worried',mouth:'scream',seed:sd});}
-    sideWave(c2,t,xF,GY+500,1000,1,{debris:5});floodSurf(c2,t,-1500,xF-200,GY+80,GY+1200,{flow:400});}});
+    floodSurf(c2,t,-1500,xF-300,GY+80,GY+1200,{flow:400});sideWave(c2,t,xF,GY+500,1000,1,{debris:5});}});
   measure(c,960,1650,1650-0,'',0);tag(c,540,420,'TALLER THAN A HOUSE',GOLD_C,t,TW('taller'));vignette(c,0.4);};
 // ---------------- 2 · "and killed eight people." ----------------
 SH.eight=function(c,t){LIT('#a8b8ff','#22222e');const t0=A(2)-0.05;londonSt(c,t,{x:540,y:960,z:1.05},{GY:1200,night:1,poor:1,world:(c2,GY)=>{floodSurf(c2,t,-1500,2600,GY+60,GY+1400,{flow:60,top:'#8a5a24'});
@@ -93,10 +94,10 @@ SH.wall=function(c,t){LIT('#ffd0a0','#3a2a28');const t0=A(12)-0.05,tb=TW('burst'
       for(let i=0;i<40;i++){const a=hash(i*1.3)*TAU,sp=0.5+hash(i*2.1),r=bk*1300*sp;const x=540+Math.cos(a)*r,y=GY-500+Math.sin(a)*r*0.7+bk*bk*900,sc=1+bk*2.5*sp;c2.save();c2.translate(x,y);c2.rotate(bk*6*sp+i);c2.fillStyle=['#8a4a32','#7a3e2a','#9a5a3e'][i%3];c2.strokeStyle=K2;c2.lineWidth=2;c2.fillRect(-18*sc,-9*sc,36*sc,18*sc);c2.strokeRect(-18*sc,-9*sc,36*sc,18*sc);c2.restore();}}}});
   const v=Math.round(eo(clamp((t-TW('million')+0.2)/0.9))*1000000);counterCard(c,540,440,back(clamp((t-TW('million')+0.3)/0.3)),(v>=1000000?'1,000,000+':v.toLocaleString('en-US')),'LITRES OF BEER',GOLD_C);FW(c,t,tb,0.2);vignette(c,0.4);};
 // ---------------- 15 · "A fifteen-foot wave tore into St Giles," ----------------
-SH.street=function(c,t){LIT('#ffd0a0','#3a2a28');const t0=A(13)-0.05,u=t-t0;const xF=lerp(-200,1500,u/3.0);londonSt(c,t,{x:540,y:1000+Math.sin(t*33)*6,z:1.0},{GY:1250,poor:1,world:(c2,GY)=>{
+SH.street=function(c,t){LIT('#ffd0a0','#3a2a28');const t0=A(13)-0.05,u=t-t0;const xF=lerp(-100,900,u/3.0);londonSt(c,t,{x:540,y:1000+Math.sin(t*33)*6,z:1.0},{GY:1250,poor:1,world:(c2,GY)=>{
     c2.fillStyle='#e8e0cc';c2.strokeStyle=K2;c2.lineWidth=4;c2.fillRect(620,GY-560,300,80);c2.strokeRect(620,GY-560,300,80);c2.fillStyle='#1a1a1a';c2.font='900 44px "Lora",serif';c2.textAlign='center';c2.fillText('ST GILES',770,GY-506);
     BW(c2,'poorW',1000,GY+430,1.2,t,{view:'q3',run:1,ph:t*12,f:1,eyes:'wide',brow:'worried',mouth:'scream',seed:3});
-    sideWave(c2,t,xF,GY+480,860,1,{debris:4});floodSurf(c2,t,-1500,xF-150,GY+120,GY+1200,{flow:400});measure(c2,xF+200,GY+480,GY+480-860,'15 FT',clamp((t-TW('fifteen-foot'))/0.5));}});vignette(c,0.4);};
+    floodSurf(c2,t,-1500,xF-260,GY+120,GY+1200,{flow:400});sideWave(c2,t,xF,GY+480,860,1,{debris:4});measure(c2,xF+200,GY+480,GY+480-860,'15 FT',clamp((t-TW('fifteen-foot'))/0.5));}});vignette(c,0.4);};
 // ---------------- 16 · "one of the poorest slums in London." ----------------
 SH.slum=function(c,t){LIT('#ffd0a0','#3a2a28');const t0=A(14)-0.05;londonSt(c,t,{x:540,y:1000,z:pushZ(t,t0,A(15),1.0,1.08)},{GY:1220,poor:1,world:(c2,GY)=>{
     const P=[['poorW',120,GY+260,0.95,1,'worried','flat'],['poorM2',420,GY+200,0.85,-1,'flat','frown'],['poorM',760,GY+300,1.05,-1,'worried','flat'],['poorW2',980,GY+240,0.95,-1,'flat','flat'],['poorM',260,GY+520,1.3,1,'worried','frown'],['poorW',820,GY+600,1.45,-1,'worried','flat']];
@@ -117,11 +118,11 @@ SH.cellars=function(c,t){LIT('#ffd0a0','#2a2018');const t0=TW('flooded')-0.1,u=t
   c.strokeStyle=K2;c.lineWidth=8;c.strokeRect(60,SY+60,960,760);c.fillStyle='#2a2218';c.fillRect(60,SY+820,960,30);
   // grating: beer pours down
   c.fillStyle='#1a1a1e';c.fillRect(780,SY,160,60);const fy=SY+820-lv*520;c.save();c.beginPath();c.rect(60,SY+60,960,760);c.clip();
-  for(let i=0;i<6;i++){c.fillStyle=`rgba(200,130,40,${0.85})`;c.fillRect(790+i*24+Math.sin(t*20+i)*3,SY+60,14,fy-SY-60);}
+  pour(c,t,860,SY+60,fy,130,{spread:0.6,sd:2});
   // the family in the cellar: they stand up and back away as the beer comes in
   const fam=[['poorW',300,1.05,1,'shock','worried','o'],['poorM',520,1.15,1,'wide','worried','scream'],['poorW2',690,0.8,-1,'wide','worried','o']];
   for(const [k,x,s,f,e,b,m] of fam)BW(c,k,x-lv*120,SY+800,s*1.25,t,{f,eyes:e,brow:b,mouth:m,seed:x,look:[0.8,-0.5]});
-  floodSurf(c,t,60,1020,fy,SY+830,{flow:200});c.restore();c.restore();tag(c,540,300,'WHOLE FAMILIES LIVED HERE',GOLD_C,t,TW('families')-0.3);vignette(c,0.4);};
+  floodSurf(c,t,60,1020,fy,SY+830,{flow:-200,dir:-1,refl:0.2});for(const [k,x] of fam)legWake(c,t,x-lv*120,fy+4,1,-1,x);c.restore();c.restore();tag(c,540,300,'WHOLE FAMILIES LIVED HERE',GOLD_C,t,TW('families')-0.3);vignette(c,0.4);};
 // ---------------- 19 · "In one basement," ----------------
 SH.basement=function(c,t){LIT('#ffc890','#1a1410');const t0=A(16)-0.05;cellar(c,t,{x:540,y:960,z:pushZ(t,t0,A(17),1.0,1.12)},{GY:1450,world:(c2,GY)=>{coffin(c2,560,GY+60,1.2);for(const x of [380,740])candle(c2,x,GY+60-150*1.2,1.2,t,1,x);candle(c2,180,GY+80,1.4,t,1,3);candle(c2,940,GY+90,1.4,t,1,5);}});
   c.fillStyle='rgba(10,6,4,0.25)';c.fillRect(0,0,W,H);vignette(c,0.6);};
@@ -132,9 +133,8 @@ SH.wake=function(c,t){LIT('#ffc890','#1a1410');const t0=A(17)-0.05;cellar(c,t,{x
   tag(c,540,420,"A LITTLE BOY'S WAKE",GOLD_C,t,TW('wake')-0.3);vignette(c,0.6);};
 // ---------------- 21 · "Five of them drowned." beer floods the cellar, candles go out ----------------
 SH.drowned=function(c,t){LIT('#ffc890','#1a1410');const t0=A(18)-0.05,u=t-t0,lv=clamp(u/1.9);cellar(c,t,{x:540,y:1250+Math.sin(t*29)*5,z:1.35},{GY:1450,world:(c2,GY)=>{
-    for(let i=0;i<5;i++){c2.fillStyle='rgba(200,130,40,0.9)';c2.fillRect(650+i*40+Math.sin(t*22+i)*4,GY-920,26,920);}
-    const M=[['mournW',160,1.15,1],['mournM',350,1.0,1],['mournW',760,1.0,-1],['mournM',940,1.15,-1]];for(const [k,x,s,f] of M)BW(c2,k,x,GY+40,s,t,{f,eyes:'shock',brow:'worried',mouth:'o',look:[0,-1],seed:x});
-    floodSurf(c2,t,-1500,2600,GY+80-lv*230,GY+1500,{flow:250});for(const x of [250,830])candle(c2,x,GY-lv*230+60,1.3,t,1-clamp(u/0.9),x);}});
+        const M=[['mournW',160,1.15,1],['mournM',350,1.0,1],['mournW',760,1.0,-1],['mournM',940,1.15,-1]];for(const [k,x,s,f] of M)BW(c2,k,x,GY+40,s,t,{f,eyes:'shock',brow:'worried',mouth:'o',look:[0,-1],seed:x});
+    floodSurf(c2,t,-1500,2600,GY+80-lv*230,GY+1500,{flow:-160,dir:-1});pour(c2,t,760,GY-920,GY+80-lv*230,190,{spread:0.5,sd:4});for(const [k,x] of M)legWake(c2,t,x,GY+80-lv*230+4,1.1,-1,x);for(const x of [250,830])candle(c2,x,GY-lv*230+60,1.3,t,1-clamp(u/0.9),x);}});
   c.fillStyle=`rgba(0,0,0,${clamp((t-A(18)-1.1)/0.7)*0.6})`;c.fillRect(0,0,W,H);counterCard(c,540,440,back(clamp((t-TW('five')+0.1)/0.3)),'5','MOURNERS DROWNED',RED_C);vignette(c,0.6);};
 // ---------------- 22 · "Rescuers dug through the wreckage for hours." ----------------
 SH.rescue=function(c,t){LIT('#ffc070','#1a1820');const t0=A(19)-0.05;londonSt(c,t,{x:540,y:1000,z:pushZ(t,t0,A(20),1.0,1.08)},{GY:1220,night:1,poor:1,lamps:false,world:(c2,GY)=>{
