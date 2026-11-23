@@ -11,7 +11,7 @@ def proj(cm,P):
   c=np.array(cm['c'],float);ev=np.array(cm['eye'],float);ev/=np.linalg.norm(ev);fv=np.tan(np.radians(9));dist=cm['r']/fv/(1080/1920)*1.05
   E=c+ev*dist;F=(c-E)/np.linalg.norm(c-E);R=np.cross(F,[0,1,0]);R/=np.linalg.norm(R);U=np.cross(R,F);d=np.array(P,float)-E
   x,y,z=d@R,d@U,d@F;fp=960/fv;return 540+x/z*fp,960-y/z*fp,fp/z
-for f in sorted(glob.glob('rprops/raw_em_*.png'))+sorted(glob.glob('rprops/raw_tr_*.png'))+sorted(glob.glob('rprops/raw_gn_*.png')):
+for f in sorted(glob.glob('rprops/raw_em_*.png'))+sorted(glob.glob('rprops/raw_tr_*.png'))+sorted(glob.glob('rprops/raw_gn_*.png'))+sorted(glob.glob('rprops/raw_am_*.png')):
   n=os.path.basename(f)[4:-4];vw=n.split('_')[-1];out,al=key(f)
   big=True;KK=0.85 if n.startswith('em_') else 1.0
   if big:

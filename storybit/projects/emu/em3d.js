@@ -86,3 +86,13 @@ function buildGun(D,o={}){const g=new Geo(),w=new Geo();const M0=M4.id();if(o.ki
     G.cyl(g,M4.chain(M4.T(0,-0.06,0),M4.S(0.045,0.06,0.045)),GUNM,{seg:14});for(const [a,b] of [[0.6,0.7],[0.6,-0.7],[-0.9,0]]){const fx=Math.cos(b)*Math.sin(a)*0.6,fz=Math.sin(b)*0.45,fy=-0.75;vBeam(g,[0,-0.08,0],[fx+(a<0?-0.35:0.2),fy,fz],0.03,'#3a3a36');G.sphere(g,M4.chain(M4.T(fx+(a<0?-0.35:0.2),fy,fz),M4.S(0.03,0.015,0.03)),'#2a2a26',{su:10,sv:6});}}
   push(D,g,{spec:1.6,rim:0.45});push(D,w,{spec:0.5,rim:0.35});}
 PB.gun=buildGun;
+// ===== .303 small-arms-ammunition box: wooden crate, plank seams, iron corner brackets, rope handles, hinged lid with latch (origin = bottom centre) =====
+function buildAmmo(D,o={}){const w=new Geo(),m=new Geo(),r=new Geo();const L=0.5,Hh=0.3,Wd=0.3,WD='#7a6a3a';
+  vBox(w,[0,Hh/2,0],[L,Hh,Wd],WD);vBox(w,[0,Hh+0.02,0],[L+0.02,0.04,Wd+0.02],'#857544');
+  for(const y of [0.1,0.2])for(const zs of [-1,1])vBox(m,[0,y,zs*(Wd/2+0.001)],[L-0.01,0.006,0.004],'#4a3e22');for(const y of [0.1,0.2])for(const xs of [-1,1])vBox(m,[xs*(L/2+0.001),y,0],[0.004,0.006,Wd-0.01],'#4a3e22');
+  for(const xs of [-1,1])for(const zs of [-1,1]){vBox(m,[xs*(L/2-0.02),Hh/2,zs*(Wd/2+0.004)],[0.04,Hh+0.01,0.006],'#3a3a36');vBox(m,[xs*(L/2+0.004),Hh/2,zs*(Wd/2-0.02)],[0.006,Hh+0.01,0.04],'#3a3a36');}
+  vBox(m,[0,Hh-0.03,Wd/2+0.006],[0.06,0.05,0.01],'#8a6a30');vBox(m,[0,Hh+0.01,Wd/2+0.008],[0.04,0.03,0.01],'#8a6a30');
+  for(const xs of [-1,1]){const pr=[];for(let i=0;i<=12;i++){const a=-i/12*TAU;pr.push([0.045+Math.cos(a)*0.012,Math.sin(a)*0.012]);}G.lathe(r,M4.chain(M4.T(xs*(L/2+0.015),Hh*0.62,0),M4.RZ(Math.PI/2),M4.S(1,1,1.4)),'#c8b080',pr,{seg:20});
+    vBox(m,[xs*(L/2+0.006),Hh*0.62,-0.05],[0.012,0.03,0.02],'#3a3a36');vBox(m,[xs*(L/2+0.006),Hh*0.62,0.05],[0.012,0.03,0.02],'#3a3a36');}
+  push(D,w,{spec:0.3,rim:0.35});push(D,m,{spec:1.4,rim:0.3});push(D,r,{spec:0.3,rim:0.3});}
+PB.ammo=buildAmmo;

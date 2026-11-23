@@ -142,6 +142,11 @@ function scoreboard(c,x,y,k,a,b){if(k<=0)return;c.save();c.translate(x,y);c.scal
   txt(c,'EMUS',-200,-50,48,'#fff',{sw:8,ls:6});txt(c,'ARMY',200,-50,48,'#fff',{sw:8,ls:6});txt(c,String(a),-200,40,110,'#ffd23f',{sw:12});txt(c,String(b),200,40,110,'#fff',{sw:12});txt(c,':',0,30,90,'#fff',{sw:10});c.restore();}
 function counterCard(c,x,y,k,val,label,col=GOLD_C){if(k<=0)return;c.save();c.translate(x,y);c.scale(k,k);c.fillStyle='rgba(10,8,14,0.86)';c.beginPath();c.roundRect(-300,-95,600,190,28);c.fill();c.strokeStyle=col;c.lineWidth=6;c.stroke();
   txt(c,val,0,-14,104,'#fff',{sw:12});c.font='800 30px "Inter Display"';c.letterSpacing='6px';c.fillStyle=col;c.textAlign='center';c.fillText(label,0,62);c.restore();}
-function ammoCrate(c,x,y,s,lbl){const u=167*s;c.save();c.translate(x,y);c.lineJoin='round';c.strokeStyle=K2;c.lineWidth=0.012*u;c.fillStyle='#6a6a3a';c.fillRect(-0.4*u,-0.35*u,0.8*u,0.35*u);c.strokeRect(-0.4*u,-0.35*u,0.8*u,0.35*u);c.fillStyle='#7a7a48';c.beginPath();c.moveTo(-0.4*u,-0.35*u);c.lineTo(0.4*u,-0.35*u);c.lineTo(0.5*u,-0.45*u);c.lineTo(-0.3*u,-0.45*u);c.closePath();c.fill();c.stroke();
-  c.fillStyle='#e8e0c0';c.font=`900 ${0.09*u}px "Inter Display"`;c.textAlign='center';c.textBaseline='middle';c.fillText(lbl||'.303 AMMO',0,-0.18*u);c.restore();}
+const AM_CAM={c:[0,0.16,0],r:0.42,eye:[0.62,0.16,0.76]};
+function ammoCrate(c,x,y,s,lbl){const nm='am_q3',m=RMETA[nm],im=RIMG[nm];if(!m||!im)return;const ppu=167*s,k=ppu/m.ppu;
+  c.save();c.fillStyle='rgba(0,0,0,0.3)';c.beginPath();c.ellipse(x,y+0.01*ppu,0.36*ppu,0.07*ppu,0,0,TAU);c.fill();c.translate(x,y);c.scale(k,k);c.drawImage(im,-m.ax,-m.ay,m.w,m.h);c.restore();
+  // stencil on the long front face, mapped onto the face in perspective
+  const o0=cProj(AM_CAM,[0,0,0]),P=(X,Y,Z)=>{const p=cProj(AM_CAM,[X,Y,Z]);return [x+(p[0]-o0[0])*k*(m.ppu/m.ppu),y+(p[1]-o0[1])*k];};
+  const a=P(-0.2,0.24,0.152),b=P(0.2,0.24,0.152),d=P(-0.2,0.06,0.152);c.save();c.setTransform(c.getTransform().multiply(new DOMMatrix([(b[0]-a[0])/400,(b[1]-a[1])/400,(d[0]-a[0])/180,(d[1]-a[1])/180,a[0],a[1]])));
+  c.fillStyle='rgba(30,24,10,0.85)';c.font='900 64px "Inter Display"';c.textAlign='center';c.textBaseline='middle';c.fillText(lbl==='EMPTY'?'EMPTY':'.303',200,62);c.font='800 34px "Inter Display"';c.fillText(lbl==='EMPTY'?'':'S.A.A. BALL',200,135);c.restore();}
 function binoView(c,t){c.save();c.fillStyle='#000';c.beginPath();c.rect(0,0,W,H);c.arc(330,960,330,0,TAU,true);c.moveTo(1080,960);c.arc(750,960,330,0,TAU,true);c.fill('evenodd');c.restore();}

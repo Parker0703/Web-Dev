@@ -85,11 +85,11 @@ SH.two=function(c,t){LIT();const t0=A(9);outback(c,t,{x:540,y:1160,z:1.12,mm:85}
   const k1=back(clamp((t-t0)/0.25)),k2=back(clamp((t-t0-0.3)/0.25));if(k1>0)DW(c2,330,GY+760,2.4*k1,t,{f:1,eyes:'open',brow:'angry',mouth:'smirk',seed:1});if(k2>0)DW(c2,760,GY+760,2.4*k2,t,{f:-1,eyes:'focus',brow:'flat',mouth:'flat',seed:2});}});
   popup(c,t,t0+0.1,'SGT. McMURRAY','& GNR. O\'HALLORAN',GOLD_C,{y:440,size:56,w:860});vignette(c,0.4);};
 // 17 · "Machine guns." — Lewis gun close-up slam
-SH.guns=function(c,t){const t0=A(10);c.fillStyle='#1a1612';c.fillRect(0,0,W,H);LIT();const k=back(clamp((t-t0)/0.25));c.save();c.translate(540,820);c.scale(k,k);lewisGun(c,-60,0,4.6,-0.06,1,{tripod:false,view:'q3'});c.restore();
+SH.guns=function(c,t){const t0=A(10);c.fillStyle='#1a1612';c.fillRect(0,0,W,H);LIT();const k=back(clamp((t-t0)/0.25));c.save();c.translate(540,820);c.scale(k,k);lewisGun(c,-120,0,3.7,-0.06,1,{tripod:false,view:'q3'});c.restore();
   tag(c,540,440,'LEWIS GUN × 2',GOLD_C,t,t0+0.1);c.save();c.globalCompositeOperation='lighter';lightRays(c,540,-100,'255,220,160',0.15,7,2000,0.5);c.restore();vignette(c,0.5);};
 // 18 · "Thousands of rounds of ammunition." — crates stack up; counter
 SH.ammo=function(c,t){LIT();const t0=TW('thousands');outback(c,t,{x:540,y:1160,z:1.05,mm:50},{land:'scrub',world:(c2,GY)=>{
-  for(let i=0;i<9;i++){const k=clamp((t-t0-i*0.12)/0.25);if(k<=0)continue;const r=Math.floor(i/3),q=i%3;ammoCrate(c2,300+q*240+r*40,GY+880-r*0.36*167*1.8-(1-eo(k))*600,1.8);}}});
+  for(let i=0;i<9;i++){const k=clamp((t-t0-i*0.12)/0.25);if(k<=0)continue;const r=Math.floor(i/3),q=i%3;ammoCrate(c2,290+q*250+r*45,GY+880-r*0.335*167*2.0-(1-eo(k))*600,2.0);}}});
   counterCard(c,540,450,back(clamp((t-t0)/0.3)),Math.round(eo(clamp((t-t0)/1.4))*10000).toLocaleString('en-US'),'ROUNDS');vignette(c,0.4);};
 // 19 · "What could possibly go wrong?" — smug crew; an emu peeks over their shoulders; record-scratch freeze
 SH.wrong=function(c,t){LIT();const t0=A(11),tf=TW('wrong');const tt=Math.min(t,tf);outback(c,tt,{x:540,y:1180,z:pushZ(tt,t0,tf,1.05,1.15),mm:85},{land:'scrub',world:(c2,GY)=>{
