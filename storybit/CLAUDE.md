@@ -39,7 +39,12 @@ First time in a new environment: follow `SETUP.md`, then render one test still i
 - Leave room after the last word: **END = last word + at least 3 s**. Music and visuals keep going after the voice, then picture and music fade out together over the last ~1.7 s. The audio must never sound cut off. **Every video ends by fading to black.**
 
 ## 3. Captions
-Word-by-word, synced to the MP3, TOP of screen, small all-caps, wide letter spacing, few red key words, never overflow. Always use the aligner (runs.py → galign.py → align3.py); fix `phr.json` by hand when two lines merge.
+Word-by-word, synced to the MP3 (aligner: runs.py → galign.py → align3.py → ps_align.py; fix `phr.json` by hand when lines merge).
+**House style (from the emu video on):** `cap2.js` in `projects/emu`.
+- Position: lower-middle, centre at y≈1210 (about 63% down), never at the top, never at the very bottom (app UI), max width 840 px so it clears the right-side buttons.
+- Compact chunks of 1–3 words, heavy all-caps font (~86 px), white with a thick black outline + soft shadow, chunk pops in.
+- The word being spoken is **yellow** (#ffd23f) with a small pop; a few key words also yellow. **Never red** in captions.
+- Keep faces and key action out of the caption band (y≈1120–1300).
 
 ## 4. Characters, props, camera (all styles)
 - Arms come out of the shoulders; relaxed arms hang down naturally (no wide loops).
