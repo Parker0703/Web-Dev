@@ -2,9 +2,9 @@
 // ===================== flood shots rebuilt on the depth-sorted flood engine =====================
 function mkF(c2,GY,o){const F=Object.assign({c:c2,GY,yb:2150,x0:-320,x1:1420,step:18,rows:40,Hmax:820,flow:320,spray:1,dir:1,inkFrom:38,vk:0.68},o);F.step2=F.step;return F;}
 // ---- 1 · "a wave of beer taller than a house smashed through London…" ----
-SH.wave=function(c,t){LIT('#ffd0a0','#3a2a28');const t0=A(1)-0.05;const xF=tt=>lerp(-260,1500,clamp((tt-t0)/3.7));const sh=4+6*clamp((t-t0)/1.5);
+SH.wave=function(c,t){LIT('#ffd0a0','#3a2a28');const t0=A(1)-0.05;const FV=470;const xF=tt=>lerp(-260,1500,clamp((tt-t0)/3.7));const sh=4+6*clamp((t-t0)/1.5);
   londonSt(c,t,{x:540+Math.sin(t*37)*sh,y:1000+Math.cos(t*29)*sh,z:1.0},{GY:1250,world:(c2,GY)=>{
-    const F=mkF(c2,GY,{});F.H=boreH({GY,skew:0.4,xF,Hf:660,Hd:230,L:300,toe:170,faceW:120});F.runup={xF,Hf:700,Hd:230};
+    const F=mkF(c2,GY,{foamV:FV,flow:FV*0.6});F.H=boreH({GY,skew:0.4,xF,Hf:660,Hd:230,L:300,toe:170,faceW:120});F.runup={xF,Hf:700,Hd:230};
     F.actors=[sweptPerson(F,'poorM2',-40,GY+250,t,{t0,seed:3,vr:230,vf:200}),sweptPerson(F,'poorW',260,GY+430,t,{t0,seed:4,vr:250,vf:210}),sweptPerson(F,'poorM',600,GY+330,t,{t0,seed:5,vr:270,vf:190}),sweptPerson(F,'poorW2',880,GY+520,t,{t0,seed:6,vr:300,vf:220}),
       floater(F,'barrel',-500,GY+300,t-t0,{v:330}),floater(F,'stave',-700,GY+480,t-t0,{v:320,spin:1.5}),floater(F,'stave',-900,GY+180,t-t0,{v:300,spin:-1})];
     floodField(c2,t,F);}});tag(c,540,420,'TALLER THAN A HOUSE',GOLD_C,t,TW('taller'));vignette(c,0.4);};
@@ -12,7 +12,7 @@ SH.wave=function(c,t){LIT('#ffd0a0','#3a2a28');const t0=A(1)-0.05;const xF=tt=>l
 SH.street=function(c,t){LIT('#ffd0a0','#3a2a28');const t0=A(13)-0.05;const xF=tt=>lerp(-200,1250,clamp((tt-t0)/3.0));
   londonSt(c,t,{x:540+Math.sin(t*33)*6,y:1000+Math.cos(t*27)*5,z:1.0},{GY:1250,poor:1,world:(c2,GY)=>{
     c2.fillStyle='#e8e0cc';c2.strokeStyle=K2;c2.lineWidth=4;c2.fillRect(620,GY-560,300,80);c2.strokeRect(620,GY-560,300,80);c2.fillStyle='#1a1a1a';c2.font='900 44px "Lora",serif';c2.textAlign='center';c2.fillText('ST GILES',770,GY-506);
-    const F=mkF(c2,GY,{});F.H=boreH({GY,skew:0.4,xF,Hf:660,Hd:240,L:300,toe:160,faceW:110});F.runup={xF,Hf:720,Hd:240};
+    const F=mkF(c2,GY,{foamV:480,flow:300});F.H=boreH({GY,skew:0.4,xF,Hf:660,Hd:240,L:300,toe:160,faceW:110});F.runup={xF,Hf:720,Hd:240};
     F.actors=[sweptPerson(F,'poorW',420,GY+380,t,{t0,seed:7,vr:240,vf:200}),sweptPerson(F,'poorM',820,GY+250,t,{t0,seed:8,vr:260,vf:190}),floater(F,'barrel',-400,GY+420,t-t0,{v:340}),floater(F,'stave',-650,GY+260,t-t0,{v:330,spin:1.2})];
     floodField(c2,t,F);const fx=xF(t)+(GY+500-GY)*0.15+110;measure(c2,Math.min(1000,fx-60),GY+500,GY+500-660*0.68*sAtY(GY,GY+500),'15 FT',clamp((t-TW('fifteen-foot'))/0.5));}});vignette(c,0.4);};
 // ---- 17 · "It crushed homes" the surge slams a house front, it buckles and goes down into the flood ----
@@ -20,7 +20,7 @@ SH.crush=function(c,t){LIT('#ffd0a0','#3a2a28');const t0=A(15)-0.05,tb=TW('crush
   londonSt(c,t,{x:540+Math.sin(t*63)*20*sh,y:1000,z:1.0},{GY:1250,poor:1,houseH:0,lamps:false,world:(c2,GY)=>{
     for(let i=0;i<6;i++){const hy=GY-900+i*150,fall=clamp(ck*1.4-i*0.07);c2.save();c2.translate(260+fall*(i%2?150:60),hy+fall*fall*760);c2.rotate(fall*(i%2?0.7:0.45));brickWall(c2,0,0,560,150,'#7a4a36',{bh:22,bw:56});c2.strokeStyle=K2;c2.lineWidth=4;c2.strokeRect(0,0,560,150);if(i>0&&i<5)sash(c2,80,26,90,100,0,{broken:1}),sash(c2,380,26,90,100,0,{broken:1});c2.restore();}
     if(ck>0.35)for(let i=0;i<10;i++){const a=clamp(ck*1.5-0.4-i*0.04);const x=300+i*60+a*300,y=GY-200+a*a*500-Math.sin(a*Math.PI)*200;c2.save();c2.translate(x,y);c2.rotate(a*5+i);c2.fillStyle='#8a4a32';c2.strokeStyle=K2;c2.lineWidth=2;c2.fillRect(-18,-9,36,18);c2.strokeRect(-18,-9,36,18);c2.restore();}
-    const F=mkF(c2,GY,{});F.H=boreH({GY,skew:0.4,xF,Hf:560,Hd:170,L:260});F.runup={xF,Hf:900,Hd:170};F.actors=[floater(F,'stave',-200,GY+300,t-t0,{v:360,spin:2}),floater(F,'stave',-500,GY+520,t-t0,{v:350,spin:-1.5}),floater(F,'barrel',-800,GY+400,t-t0,{v:330})];floodField(c2,t,F);}});
+    const F=mkF(c2,GY,{foamV:900,flow:400});F.H=boreH({GY,skew:0.4,xF,Hf:560,Hd:170,L:260});F.runup={xF,Hf:900,Hd:170};F.actors=[floater(F,'stave',-200,GY+300,t-t0,{v:360,spin:2}),floater(F,'stave',-500,GY+520,t-t0,{v:350,spin:-1.5}),floater(F,'barrel',-800,GY+400,t-t0,{v:330})];floodField(c2,t,F);}});
   FW(c,t,tb,0.15);vignette(c,0.45);};
 // ---- 14 · "Over a million litres of beer burst through the brewery wall." cracks spurt, the wall gives way, the torrent comes at us ----
 SH.wall=function(c,t){LIT('#ffd0a0','#3a2a28');const t0=A(12)-0.05,tb=TW('burst')-0.05,bk=clamp((t-tb)/1.2);const sh=t>tb&&t<tb+0.7?(1-(t-tb)/0.7):(t<tb?0.25*clamp((t-t0)/1.5):0);

@@ -25,13 +25,15 @@ function floodRow(c,t,F,P,yg,s,gap,Hm,r){const bot=yg+gap+2;
     // surface sheen + ripple highlights along this row's top edge, scrolling with the flow
     c.save();c.lineCap='round';for(let i=0;i<S.length-1;i++){const [x,h]=S[i],[x2,h2]=S[i+1];if(h<6)continue;const ph=hash(Math.floor((x-(t*(F.flow??200)))/40)+r*13);if(ph<0.12){c.strokeStyle=LQ.dk+'0.22)';c.lineWidth=Math.max(1,3*s);c.beginPath();c.moveTo(x-6,yg-h*s+6*s);c.quadraticCurveTo((x+x2)/2,yg-(h+h2)/2*s+10*s,x2+6,yg-h2*s+6*s);c.stroke();continue;}if(ph<0.82)continue;
       c.strokeStyle=LQ.hi+(0.12+0.3*(ph-0.75))+')';c.lineWidth=Math.max(1,2.4*s);seg(c,x,yg-h*s+1.5*s,x2,yg-h2*s+1.5*s);}c.restore();
-    // steep face: vertical flow streaks + whitewater where the profile climbs fast (the surge front)
-    for(let i=1;i<S.length-1;i++){const [x,h]=S[i],hp=S[i-1][1],hn=S[i+1][1];const slope=Math.max(Math.abs(h-hp),Math.abs(hn-h))/F.step2;
-      if(slope>0.9&&h>40){const top=yg-h*s;if(r%2===0){const ph=(t*1.8+hash(x*0.13+r))%1;c.strokeStyle=LQ.hi+(0.3*(1-ph))+')';c.lineWidth=(3+hash(x+r)*5)*s;seg(c,x,top+ph*h*s*0.3,x+(hash(x)-0.5)*10*s,top+h*s*(0.5+0.4*hash(x*3+r)));}
-        if((r%4===0&&hash(x*0.37+r)>0.55)||(slope>3&&r%2===0))whitewater(c,t,x+(hash(x+r*7)-0.5)*20*s,top+6*s,(14+hash(x*1.7+r)*22)*s*Math.min(1.4,0.6+slope*0.15),Math.floor(x*0.3+r*5),0.92);}
-      // foam streaks riding on the flat flood behind the front
-      else if(F.flowZ&&h>30&&hash(Math.floor(x/70)*3.1+Math.floor(r-t*F.flowZ)*7.7)>0.9){const top=yg-h*s,ang=Math.atan2(top-F.src[1],x-F.src[0]);c.save();c.translate(x,top+4*s);c.rotate(ang);c.fillStyle='rgba(246,236,210,0.7)';c.beginPath();c.ellipse(0,0,(26+hash(x+r)*34)*s,4.5*s,0,0,TAU);c.fill();for(let k=0;k<3;k++){c.beginPath();c.arc((k-1)*14*s,-2*s,(4+hash(x+k)*4)*s,0,TAU);c.fill();}c.restore();}
-      else if(h>40&&hash(Math.floor((x-t*(F.flow??200)*0.8)/60)*3.1+r*7.7)>0.95){const top=yg-h*s;c.fillStyle="rgba(246,236,210,0.45)";c.beginPath();c.ellipse(x,top+3*s,(18+hash(x+r)*30)*s,2.4*s,0,0,TAU);c.fill();}}
+    // features anchored to the moving liquid (not to the sample grid) so foam and streaks ride with the flow instead of flickering
+    const hAt=x=>{const u=(x-xa)/F.step2,i=Math.floor(u);if(i<0||i>=S.length-1)return 0;const f=u-i;return S[i][1]*(1-f)+S[i+1][1]*f;};
+    const fl=F.foamV??(F.flow??200),cell=34;for(let k=Math.floor((xa-t*fl)/cell)-1;k<=Math.ceil((xb-t*fl)/cell)+1;k++){const sd=hash(k*1.37+r*5.13),x=k*cell+t*fl+(sd-0.5)*cell*0.8;if(x<xa||x>xb)continue;
+      const h=hAt(x);if(h<30)continue;const slope=Math.abs(hAt(x+12)-hAt(x-12))/24;const top=yg-h*s;
+      if(slope>0.7){const w=clamp((slope-0.7)/1.2);// surge face: streaks + whitewater, size eased by steepness
+        if(r%2===0&&sd>0.4){const ph=(t*1.8+sd)%1;c.strokeStyle=LQ.hi+(0.3*(1-ph)*w)+')';c.lineWidth=(3+sd*5)*s;seg(c,x,top+ph*h*s*0.3,x+(sd-0.5)*10*s,top+h*s*(0.5+0.4*hash(k+r)));}
+        if((r%3===0&&sd>0.45)||(slope>2.5&&r%2===0&&sd>0.3))whitewater(c,t,x,top+6*s,(14+hash(k*2.1+r)*22)*s*(0.4+0.8*w),k*7+r,0.92*Math.min(1,0.3+w));}
+      else if(F.flowZ&&hash(k*3.1+Math.floor(r-t*F.flowZ)*7.7)>0.9){const ang=Math.atan2(top-F.src[1],x-F.src[0]);c.save();c.translate(x,top+4*s);c.rotate(ang);c.fillStyle='rgba(246,236,210,0.7)';c.beginPath();c.ellipse(0,0,(26+sd*34)*s,4.5*s,0,0,TAU);c.fill();c.restore();}
+      else if(h>40&&sd>0.9){c.fillStyle='rgba(246,236,210,0.45)';c.beginPath();c.ellipse(x,top+3*s,(18+sd*30)*s,2.4*s,0,0,TAU);c.fill();}}
     // crest spray thrown forward off the front
     if(F.spray&&r%5===0){for(let i=1;i<S.length-1;i++){const [x,h]=S[i];if(h>Hm*0.75&&S[i+1][1]<h*0.8){spray(c,t,x,yg-h*s,10,140*s,180*s,F.dir??1,r+i);break;}}}
     if(F._next){for(let i=0;i<S.length;i+=2){const [x,h]=S[i];if(h<120)continue;const j=Math.round((x-(F.x0??-300))/F.step2);const hn=F._next[j]?F._next[j][1]:0;if(hn>h*0.55)continue;
