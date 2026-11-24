@@ -36,3 +36,36 @@ XD.noshot=(c,t,u,d)=>{camAt(c,'t2_rev2',[0.3,1.7,-0.4],1.0+u*0.03,{});cast(c,[['
   vshadow(c,[lerp(-12,12,u/d),0,-1],0.2,11,3,0.3,16);c.restore();cgrade(c,t);fgGrass(c,t);dzCounter(c,540,440,clamp(u/0.3),'0','SHOTS FIRED',GOLD_C);};
 // foreground depth on the ground-level crew scenes
 for(const k of ['crew','stop','kept','sf','engineers','cut']){const f=XD[k];XD[k]=(c,t,u,d)=>{f(c,t,u,d);fgGrass(c,t,1900,22,16);};}
+// detailed chainsaw (side view). origin = front-handle grip; bar points +x. on: chain runs, engine shakes
+function chainsaw(c,x,y,s,ang,t,on=true){c.save();c.translate(x,y);c.rotate(ang);c.scale(s*0.62,s*0.62);const v=on?Math.sin(t*95)*1.6:0;c.translate(v,Math.cos(t*83)*v*0.5);c.lineJoin='round';c.lineCap='round';const OLc=OL;
+  // guide bar
+  const bg=c.createLinearGradient(0,30,0,66);bg.addColorStop(0,'#e4e8ea');bg.addColorStop(0.5,'#a8aeb2');bg.addColorStop(1,'#6c7276');c.fillStyle=bg;c.strokeStyle=OLc;c.lineWidth=5;
+  c.beginPath();c.moveTo(10,32);c.lineTo(250,36);c.arc(250,50,14,-Math.PI/2,Math.PI/2);c.lineTo(10,66);c.closePath();c.fill();c.stroke();
+  c.strokeStyle='rgba(40,44,48,0.5)';c.lineWidth=2;seg(c,30,49,232,50);c.fillStyle='#5a5e62';for(const rx of [40,70])c.beginPath(),c.arc(rx,49,4,0,TAU),c.fill();
+  // chain: running teeth around the bar edge
+  const off=on?(t*900)%18:0;c.fillStyle='#2a2c2e';const tooth=(px,py,up)=>{c.beginPath();c.moveTo(px-5,py);c.lineTo(px+5,py);c.lineTo(px+2,py+(up?-7:7));c.closePath();c.fill();};
+  for(let k=0;k<14;k++){const px=12+((k*18+off)%250);tooth(px,32+(px/250)*4,true);const qx=262-((k*18+off)%250);tooth(qx,66-(qx/250)*0,false);}
+  c.strokeStyle='#2a2c2e';c.lineWidth=3;c.setLineDash([7,4]);c.lineDashOffset=on?-t*900:0;c.beginPath();c.moveTo(10,31);c.lineTo(250,35);c.arc(250,50,15,-Math.PI/2,Math.PI/2);c.lineTo(10,67);c.stroke();c.setLineDash([]);
+  // engine housing: grey crankcase + orange cover
+  c.strokeStyle=OLc;c.lineWidth=5;c.fillStyle='#3c3e40';c.beginPath();c.roundRect(-120,28,150,52,14);c.fill();c.stroke();
+  const og=c.createLinearGradient(0,-20,0,60);og.addColorStop(0,'#ff9a3a');og.addColorStop(1,'#d2560c');c.fillStyle=og;c.beginPath();c.moveTo(-110,60);c.lineTo(-118,10);c.quadraticCurveTo(-110,-14,-80,-14);c.lineTo(-10,-10);c.quadraticCurveTo(20,-6,22,22);c.lineTo(22,58);c.closePath();c.fill();c.stroke();
+  c.fillStyle='#2a2c2e';for(let k=0;k<5;k++){c.beginPath();c.roundRect(-96+k*14,8,7,30,3);c.fill();}c.fillStyle='#f4f0e8';c.fillRect(-40,4,46,10);c.fillStyle='#2a2c2e';c.beginPath();c.arc(-60,48,9,0,TAU);c.fill();
+  // rear handle loop + trigger
+  c.strokeStyle=OLc;c.lineWidth=16;c.beginPath();c.moveTo(-110,6);c.quadraticCurveTo(-130,-30,-170,-28);c.lineTo(-215,-22);c.quadraticCurveTo(-232,-8,-212,6);c.lineTo(-150,18);c.stroke();c.strokeStyle='#4a4c4e';c.lineWidth=9;c.stroke();
+  // front handle hoop (the grip at the origin) + chain-brake guard
+  c.strokeStyle=OLc;c.lineWidth=15;c.beginPath();c.moveTo(-34,62);c.lineTo(-34,8);c.quadraticCurveTo(-34,-4,-20,-4);c.lineTo(4,-4);c.quadraticCurveTo(16,-4,16,8);c.lineTo(16,22);c.stroke();c.strokeStyle='#26282a';c.lineWidth=8;c.stroke();
+  c.fillStyle='#1e2022';c.strokeStyle=OLc;c.lineWidth=4;c.beginPath();c.moveTo(24,-12);c.lineTo(36,-8);c.lineTo(34,30);c.lineTo(24,30);c.closePath();c.fill();c.stroke();
+  // muffler
+  c.fillStyle='#7a7e82';c.beginPath();c.roundRect(4,40,22,22,5);c.fill();c.stroke();
+  if(on){for(let i=0;i<6;i++){const ph=(t*1.8+i/6)%1;c.fillStyle=`rgba(210,210,210,${0.35*(1-ph)})`;c.beginPath();c.arc(14+ph*-60,40-ph*140,10+ph*34,0,TAU);c.fill();}}
+  c.restore();}
+// ---- 24/31 · engineers + chainsaws: close, low, at the trunk (real-size saws, two-hand grip)
+function sawCrew(c,t,u,on,bite){const T0=tree3(c,t,T0P,{state:'trim'});const out=[];const xl=pp([-0.5,1.05,0.1]).x,xr=pp([0.5,1.05,0.1]).x;
+  if(bite){const k=clamp(u/3);for(const sx of [-1,1]){const e=pp([sx*0.66,1.05,0.1]),q=pp([sx*lerp(0.6,0.25,k),1.05,0.1]);c.save();c.fillStyle='#2a1c10';c.beginPath();c.moveTo(e.x,e.y-26);c.lineTo(q.x,q.y-4);c.lineTo(q.x,q.y+4);c.lineTo(e.x,e.y+8);c.closePath();c.fill();c.fillStyle='#e8d0a0';c.fillRect(Math.min(e.x,q.x),e.y+8,Math.abs(q.x-e.x),5);c.restore();}}
+  for(const [pos,f,sd,aim] of [[[-1.2,0,0.15],1,3,[-0.62,1.05,0.1]],[[1.2,0,0.15],-1,5,[0.62,1.05,0.1]]]){const rc=reach(pos,bite?aim:[aim[0]*1.25,0.85,aim[2]]);
+    const r=who(c,'eng',pos,F('focus','angry','grit',{seed:sd,f,view:'3q',crouch:bite?6:0,hf:[rc[0],rc[1]],hb:[rc[0]-f*55,rc[1]+(bite?-14:6)]}));
+    if(r){c.save();if(bite){c.beginPath();c.rect(-50,-50,W+100,H+100);c.rect(xl,0,xr-xl,H);c.clip('evenodd');}c.translate(r.hf.x,r.hf.y);if(f<0)c.scale(-1,1);chainsaw(c,0,0,0.8*r.s,bite?0.0:0.55,t,on);c.restore();out.push({r,f});
+      if(on&&bite){const a=pp(aim);sawdust(c,t,a.x,a.y,r.s*1.6,-f*0.6);sawdust(c,t*1.3+0.5,a.x,a.y,r.s*1.2,-f);}}}return out;}
+XD.engineers=(c,t,u,d)=>{camAt(c,'t2_saw',[0,1.0,0],1.0+u*0.03,hh(t,2));sawCrew(c,t,u,u>0.5,false);c.restore();cgrade(c,t);fgGrass(c,t,1900,22,16);tagC(c,540,420,'ENGINEERS',clamp(u/0.3));};
+XD.cut=(c,t,u,d)=>{const on=t>TW('chainsaws')-0.1;camAt(c,'t2_saw',[0,1.0,0],1.0+u*0.02,on?dzSh(t,3):{});sawCrew(c,t,u,on,on);
+  heli(c,'huey',[lerp(-40,40,(u*0.1)%1),20,-30],0,t,{});c.restore();cgrade(c,t);fgGrass(c,t,1900,22,16);};

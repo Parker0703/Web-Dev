@@ -27,7 +27,7 @@ XD.b52=(c,t,u,d)=>{camAt(c,'t2_sky',[0,22,-30],1.0,hh(t,6));const k=clamp(u/(d+0
 XD.gunships=(c,t,u,d)=>{camAt(c,'t2_hill',[2,6,0],1.0,hh(t,8));const k=u/d;depth([A_([lerp(-22,16,k),11,10],()=>heli(c,'cobra',[lerp(-22,16,k),11,10],Math.PI,t,{blur:[60,0]})),A_([lerp(-36,4,k),15,2],()=>heli(c,'cobra',[lerp(-36,4,k),15,2],Math.PI+0.2,t+0.3,{blur:[40,0]})),A_([lerp(30,-30,k),18,-30],()=>heli(c,'huey',[lerp(30,-30,k),18,-30],Math.PI,t+0.6,{}))]);
   c.restore();cgrade(c,t);tagC(c,540,420,'AH-1 COBRA GUNSHIPS',clamp(u/0.25));};
 // ---- 4 · "and hundreds of troops" a convoy rolls up the road at dawn, dust trailing
-XD.troops=(c,t,u,d)=>{camAt(c,'t2_road2',[12.5,1.8,40],1.0,hh(t,3));const L=[];for(let i=0;i<4;i++){const z=lerp(70,22,clamp(u/1.5))+i*12,x=Math.sin(z*0.03)*6+8;const yaw=-Math.PI/2+Math.cos(z*0.03)*0.18;
+XD.troops=(c,t,u,d)=>{camAt(c,'t2_road2',[12.5,1.8,40],1.0,hh(t,3));const L=[];for(let i=0;i<4;i++){const z=lerp(70,22,clamp(u/1.5))+i*12,x=Math.sin(z*0.03)*6+8;const yaw=Math.PI/2+Math.cos(z*0.03)*0.18;
     L.push(A_([x,0,z],()=>{truck(c,[x,0,z],yaw,t,{});const q=pp([x,0.3,z+4]);for(let j=0;j<4;j++){c.fillStyle='rgba(200,170,120,0.08)';c.beginPath();c.arc(q.x+(hash(j+i)-0.5)*80*q.s*40,q.y-j*10,(60+j*30)*q.s*30,0,TAU);c.fill();}}));}depth(L);
   c.restore();cgrade(c,t,{});dzCounter(c,540,440,clamp((u-0.1)/0.3),'800+','TROOPS',GOLD_C);};
 // ---- 5 · "to the most dangerous border on Earth…" the war-room table map; the DMZ line burns
@@ -116,7 +116,7 @@ XD.garden=(c,t,u,d)=>{camAt(c,'wr_map',[0,1,0],1.0,{});c.restore();c.save();c.gl
   txt(c,'OPERATION: CUT 1 TREE',540,300,62,'#ffd23f',{sw:10,ls:4});const items=['CHAINSAWS','SPECIAL FORCES','27 HELICOPTERS','B-52 BOMBERS','AIRCRAFT CARRIER'];
   items.forEach((s,i)=>{const k=clamp((u-0.3-i*0.4)/0.25);if(k<=0)return;c.save();c.globalAlpha=k;c.font='800 46px "Inter Display"';c.fillStyle='#e8f2ff';c.textAlign='left';c.fillText('☑  '+s,250,1340+i*90);c.restore();});cgrade(c,t,{tint:'rgba(20,60,110,0.3)'});};
 // ---- 23 · "On August 21st, a convoy rolled in." first light; headlights; the convoy comes up the road
-XD.convoy=(c,t,u,d)=>{camAt(c,'t2_dawn',[0,6,4],1.0,hh(t,2));const L=[A_([0,0,0],()=>tree3(c,t,T0P,{state:'trim'}))];for(let i=0;i<4;i++){const z=lerp(46,14,clamp(u/2.6))+i*9;const x=Math.sin(z*0.03)*6+8;const yaw=-Math.PI/2+Math.cos(z*0.03)*0.18;
+XD.convoy=(c,t,u,d)=>{camAt(c,'t2_dawn',[0,6,4],1.0,hh(t,2));const L=[A_([0,0,0],()=>tree3(c,t,T0P,{state:'trim'}))];for(let i=0;i<4;i++){const z=lerp(46,14,clamp(u/2.6))+i*9;const x=Math.sin(z*0.03)*6+8;const yaw=Math.PI/2+Math.cos(z*0.03)*0.18;
     L.push(A_([x,0,z],()=>{const P={p:[x,0,z],yaw:yaw,cy:1.2};headBeam(c,P,14,0.3);truck(c,[x,0,z],yaw,t,{});}));}depth(L);
   c.restore();cgrade(c,t,{flare:[860,700],top:'rgba(255,160,80,0.25)'});tagC(c,540,420,'AUGUST 21 · 7:00 AM',clamp((t-TW('21st')+0.2)/0.3));};
 // ---- 24 · "Engineers with chainsaws." they pull the cords; the saws cough smoke and roar
