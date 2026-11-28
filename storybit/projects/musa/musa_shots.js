@@ -112,19 +112,25 @@ XM.camels=(c,t,u,d)=>{camAt(c,'de_low',[-6,1.8,0],1.08,hh(t,3));const L=[];for(l
   depth(L);c.restore();c.save();c.globalCompositeOperation='screen';for(let i=0;i<30;i++){const x=hash(i)*W,y=700+hash(i*3)*700,r=(3+hash(i*5)*7)*(0.5+0.5*Math.sin(t*7+i*2));const gg=c.createRadialGradient(x,y,0,x,y,r*5);gg.addColorStop(0,'rgba(255,240,180,0.9)');gg.addColorStop(1,'rgba(255,200,80,0)');c.fillStyle=gg;c.fillRect(x-r*5,y-r*5,r*10,r*10);}c.restore();
   sandDrift(c,t,0.7);cgrade(c,t,{flare:[900,520],top:'rgba(255,150,70,0.25)',v:0.5});tagC(c,540,420,'LOADED WITH GOLD',clamp((t-TW('gold',1)+0.4)/0.3));};
 // 9 · "And when he arrived in Cairo," under the great gate; the city stares
-XM.arrive=(c,t,u,d)=>{camAt(c,'ca_gate',[0,3.2,-24],1.0+u*0.04,{});const L=[];const mp=gp(lerp(560,520,u/d),lerp(1520,1460,u/d));
-  L.push(A_(mp,()=>who(c,'musa',mp,F('focus','flat','smirk',{seed:2,walk:1,ph:t*6}))));crowdAt(L,c,t,[gp(200,1380),gp(330,1330),gp(860,1360),gp(960,1420),gp(720,1300),gp(420,1280)],{off:0});
+XM.arrive=(c,t,u,d)=>{camAt(c,'ca_gate',[0,3.2,-24],1.0+u*0.04,{});const L=[];const mp=gp(lerp(560,535,u/d),lerp(1640,1500,u/d));
+  L.push(A_(mp,()=>who(c,'musa',mp,F('dot','flat','flat',{seed:2,back:1,walk:1,ph:t*6}))));crowdAt(L,c,t,[gp(200,1380),gp(330,1330),gp(860,1360),gp(960,1420),gp(760,1300),gp(330,1270)],{off:0,face:p=>p[0]>mp[0]?-1:1});
     depth(L);c.restore();cgrade(c,t,{v:0.5});};
 // 10 · "he started giving gold away." coins arc from his hand into the crowd
-XM.giving=(c,t,u,d)=>{camAt(c,'sk_st',[0,0.95,0],1.06,hh(t,2));const L=[];const mp=gp(330,1580);
-  crowdAt(L,c,t,[gp(820,1440),gp(980,1400),gp(760,1290),gp(900,1260),gp(1000,1300),gp(700,1230)],{off:3,eyes:i=>i%2?'happy':'wide',mouth:i=>i%2?'grin':'o',face:()=>-1,arm:i=>i<4?{hf:[-130,-80]}:{}});
-  let hand=null;L.push(A_(mp,()=>{const r=who(c,'musa',mp,F('happy','up','smile',{seed:2,f:1,view:'3q',hf:[150,-50]}));if(r)hand=r.hf;}));depth(L);c.restore();
-  if(hand)for(let i=0;i<14;i++){const k=((t*1.1+i/14)%1);const tx=hand.x+40+k*560+hash(i)*120,ty=hand.y-300*Math.sin(k*Math.PI)+k*60+hash(i*3)*80;coin(c,tx,ty,16,t*5+i,Math.cos(t*8+i));}
+XM.giving=(c,t,u,d)=>{camAt(c,'sk_st',[0,0.95,0],1.06,hh(t,2));const L=[];const tg=[[700,1300],[830,1270],[960,1320],[760,1220],[900,1210]];const HN=[];
+  crowdAt(L,c,t,tg.map(([x,y])=>gp(x,y)),{off:3,eyes:i=>i%2?'happy':'wide',mouth:i=>i%2?'grin':'o',face:()=>-1,arm:i=>({hf:[-70,-170]}),after:(r,i)=>{HN[i]=r.hf;}});depth(L);c.restore();
+  // throw cycle: wind down, sweep up-forward, release at the top
+  const cyc=0.9,ph=(t%cyc)/cyc,sw=ph<0.55?eio(ph/0.55):1-eio((ph-0.55)/0.45);const r=who(c,'musa',[0,0,0],F('happy','up','grin',{seed:2,f:1,view:'3q',abs:{x:330,y:1640,s:2.4},hf:[lerp(70,180,sw),lerp(30,-150,sw)]}));
+  if(r&&ph<0.5)goldPile(c,r.hf.x,r.hf.y+6,60,22,2);
+  if(r)for(let n=0;n<3;n++){const age=((t%cyc)+n*cyc)-0.5*cyc;if(age<0||age>1.4)continue;const rel=Math.floor(t/cyc)-n;for(let i=0;i<14;i++){const tgt=HN[(i+rel)%HN.length];if(!tgt)continue;const k=clamp(age/1.0),sx=330+180*2.4*0.62,sy=1640-150*2.4*0.6-280;
+      const x=lerp(sx,tgt.x+(hash(i+rel)-0.5)*60,k),y=lerp(sy,tgt.y-10,k)-Math.sin(k*Math.PI)*(220+hash(i*3+rel)*120);if(k<1)coin(c,x,y,19,t*6+i,Math.cos(t*9+i));}}
   motes(c,t,100,300,1000,1400,30,0.45);cgrade(c,t,{v:0.55});};
 // 11–13 · officials / merchants / religious leaders: three quick two-shots, each receiving a bag of gold
 function giftShot(c,t,u,kind,tag,plate,tgt){camAt(c,plate,tgt,1.08+u*0.06,hh(t,2));const L=[];crowdAt(L,c,t,[gp(240,1240),gp(860,1220)],{off:5});depth(L);c.restore();
-  const s=2.2;const k=eo(clamp(u/0.5));const rm=who(c,'musa',[0,0,0],F('happy','up','smile',{seed:2,f:1,view:'3q',abs:{x:300,y:1500,s},hf:[lerp(110,190,k),-40]}));
-  const rr=who(c,kind,[0,0,0],F(u>0.35?'wide':'focus','up',u>0.35?'o':'flat',{seed:5,f:-1,view:'3q',abs:{x:790,y:1500,s},hf:[lerp(-60,-150,k),-30]}));if(rm)goldBag(c,lerp(rm.hf.x+30,rr?rr.hf.x-20:700,k),rm.hf.y+60,0.9,true);
+  const s=2.2;const k=eo(clamp(u/0.45)),k2=eo(clamp((u-0.5)/0.35));const mid=545;// Musa reaches out holding the bag; the receiver takes it and pulls it in
+  const mx=lerp(220,mid-20,k)-k2*60,rx=lerp(900,mid+30,k)+k2*40;
+  const rm=who(c,'musa',[0,0,0],F('happy','up','smile',{seed:2,f:1,view:'3q',abs:{x:300,y:1500,s},hf:[lerp(110,(mid-20-300)/s*1.6,k)*(1-k2)+k2*60,-30+k2*60]}));
+  const rr=who(c,kind,[0,0,0],F(u>0.35?'wide':'focus','up',u>0.35?'o':'flat',{seed:5,f:-1,view:'3q',abs:{x:790,y:1500,s},hf:[lerp(-40,(mid+30-790)/s*1.6,k)+k2*40,-30+k2*10]}));
+  const hx=k2>0&&rr?rr.hf.x:(rm?rm.hf.x:mid),hy=k2>0&&rr?rr.hf.y:(rm?rm.hf.y:1100);goldBag(c,hx+(k2>0?-10:12),hy+110*1.15,1.15,true);
   cgrade(c,t,{v:0.55});tagC(c,540,420,tag,clamp(u/0.25));}
 XM.officials=(c,t,u,d)=>giftShot(c,t,u,'emir','OFFICIALS','ca_gate',[0,3.2,-24]);
 XM.merchants=(c,t,u,d)=>giftShot(c,t,u,'merch','MERCHANTS','sk_st',[0,0.95,0]);
@@ -170,8 +176,8 @@ XM.kings=(c,t,u,d)=>{camAt(c,'ca_dusk',[0,9,-40],1.06+u*0.03,dzSh(t,3));c.restor
   const r=who(c,'king',[0,0,0],F('rage','furious','yell',{seed:66,f:1,view:'3q',abs:{x:400,y:1760,s:2.5},hf:[190,-250]}));if(r){c.save();c.translate(r.hf.x,r.hf.y);c.rotate(0.35);const g=c.createLinearGradient(-8,0,8,0);g.addColorStop(0,'#8a8a92');g.addColorStop(0.5,'#f4f4f8');g.addColorStop(1,'#6a6a72');c.fillStyle=g;c.strokeStyle=OL;c.lineWidth=4;c.beginPath();c.moveTo(-9,-20);c.lineTo(-9,-250);c.lineTo(0,-280);c.lineTo(9,-250);c.lineTo(9,-20);c.closePath();c.fill();c.stroke();c.fillStyle='#c8a040';c.fillRect(-36,-24,72,14);c.strokeRect(-36,-24,72,14);c.fillStyle='#4a2a18';c.fillRect(-7,-10,14,44);c.restore();}
   cgrade(c,t,{tint:'rgba(120,30,20,0.35)',v:0.75});tagC(c,540,420,'CONQUEST',clamp((t-TW('conquer')+0.1)/0.3),'#ff6a5a');};
 // 22 · "Mansa Musa simply walked into one of the richest cities in the world..." calm, through the gate, the crowd bowing
-XM.walked=(c,t,u,d)=>{camAt(c,'ca_gate',[0,3.2,-24],lerp(1.12,1.0,eo(clamp(u/d))),{});const L=[];const mp=gp(540,lerp(1620,1480,u/d));
-  L.push(A_(mp,()=>who(c,'musa',mp,F('happy','up','smile',{seed:2,walk:1,ph:t*5}))));crowdAt(L,c,t,[gp(160,1400),gp(300,1350),gp(880,1360),gp(980,1440),gp(760,1300),gp(400,1270)],{eyes:()=>'closed',mouth:()=>'smile',arm:()=>({crouch:22})});
+XM.walked=(c,t,u,d)=>{camAt(c,'ca_gate',[0,3.2,-24],lerp(1.0,1.1,eo(clamp(u/d))),{});const L=[];const mp=gp(540,lerp(1440,1620,u/d));
+  L.push(A_(mp,()=>who(c,'musa',mp,F('happy','up','smile',{seed:2,walk:1,ph:t*5}))));crowdAt(L,c,t,[gp(160,1400),gp(300,1350),gp(880,1360),gp(980,1440),gp(760,1300),gp(330,1270)],{eyes:()=>'closed',mouth:()=>'smile',arm:()=>({crouch:22}),face:p=>p[0]>mp[0]?-1:1});
   depth(L);c.restore();cgrade(c,t,{flare:[540,380],v:0.5});tagC(c,540,420,'ONE OF THE RICHEST CITIES',clamp((t-TW('richest')+0.1)/0.3));};
 // 23 · "…and gave away so much gold that its value dropped." gold rain + the value counter collapsing
 XM.dropped=(c,t,u,d)=>{camAt(c,'sk_st',[0,0.95,0],1.04,hh(t,2));const L=[];crowdAt(L,c,t,[gp(250,1480),gp(820,1460),gp(450,1340),gp(680,1320)],{eyes:()=>'shock',mouth:()=>'o'});depth(L);c.restore();
