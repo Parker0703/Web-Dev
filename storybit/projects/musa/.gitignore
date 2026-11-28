@@ -1,0 +1,8 @@
+vh/raw_*
+vh/cam_*
+*.log
+plates/s2_top.jpg
+ch_*
+lk_*
+vid.mp4
+out/*.mp4
