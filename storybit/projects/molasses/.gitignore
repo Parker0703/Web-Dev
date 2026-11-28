@@ -1,0 +1,7 @@
+ch_*
+lk_*
+*.wav
+w*.log
+st/
+vid.mp4
+out/*.mp4

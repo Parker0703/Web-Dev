@@ -1,0 +1,1 @@
+SH={};SH.a=function(c,t){window.NOCAP=1;c.fillStyle='#ffffff';c.fillRect(0,0,W,H);L2={dx:-1,rim:'#ffb070',amb:'#2a2a48'};fig2(c,{x:540,y:1500,s:2,f:1,t:0,kind:'worker',view:'side',eyes:'open',mouth:'flat'});c.fillStyle='red';c.fillRect(0,1500,W,2);};SHOTS=[[0,'a']];IMPACTS=[];

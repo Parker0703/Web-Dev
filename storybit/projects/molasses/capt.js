@@ -1,0 +1,4 @@
+const {chromium}=require('playwright');(async()=>{const b=await chromium.launch({args:['--allow-file-access-from-files']});const p=await b.newPage({viewport:{width:1080,height:1920}});const errs=[];p.on('pageerror',e=>errs.push(e.message));
+await p.goto('file://'+__dirname+'/index.html');await p.waitForFunction('window.READY===true');await p.evaluate(()=>document.fonts.ready);
+const r=await p.evaluate(()=>{renderFrame(113.0);window._act=CAP.filter(g=>!(113<g.t0-0.02||113>=g.t1)).map(g=>g.map(w=>w.x).join(' ')+'|'+g.t0+'|'+g.t1);return {act:window._act,cf:captions.toString().slice(0,200),n:CAP.length,last:CAP[CAP.length-1].map(w=>w.x).join(' '),t0:CAP[CAP.length-1].t0,t1:CAP[CAP.length-1].t1,nocap:window.NOCAP};});console.log(JSON.stringify(r),errs);
+const d=await p.evaluate(()=>grab(0.9));require('fs').writeFileSync('cap113.jpg',Buffer.from(d.split(',')[1],'base64'));await b.close();})();

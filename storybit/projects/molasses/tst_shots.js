@@ -1,0 +1,4 @@
+SH={};SH.a=function(c,t){window.NOCAP=1;const g=c.createLinearGradient(0,0,0,H);g.addColorStop(0,'#252a38');g.addColorStop(1,'#12141c');c.fillStyle=g;c.fillRect(0,0,W,H);L2={dx:-1,rim:'#ffb070',amb:'#2a2a48'};
+ const S=(window.SET2?[['sidepart','#1c1612'],['slick','#6a6a72'],['spiky','#c89048'],['wavy','#d8b060'],['bob','#1a1a24']]:window.SET3?[['buzz','#2a2420'],['messy','#8a4a24'],['bun','#3a2416'],['afro','#1e140e'],['long','#c87a3a']]:window.SET||[['fringe','#4a3020'],['quiff','#7a4a22'],['curly','#2a1810'],['long','#5a2a18'],['ponytail','#3a2418']]);const views=['front','3q','side','back'];
+ S.forEach(([st,col],r)=>{KIND2['h'+r]={coat:'#3a5a8a',limb:'#ecebe6',hat:'none',hair:col,hairStyle:st};views.forEach((v,k)=>{fig2(c,{x:150+k*260,y:220+r*365,s:2.3,f:1,t,kind:'h'+r,headOnly:1,view:v==='3q'||v==='back'?undefined:v,back:v==='back',eyes:'open',mouth:'smile'});});txt(c,st,540,350+r*365,26,'#fff',{sw:5});});};
+SHOTS=[[0,'a']];IMPACTS=[];
