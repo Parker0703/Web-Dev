@@ -60,8 +60,8 @@ function buildCairo(o={}){texInit();const D=[],g=new Geo(),st=new Geo(),sd=new G
   for(const [x,z,s] of [[-190,-200,40],[-150,-215,36],[-122,-226,20]]){G.lathe(g,M4.chain(M4.T(x,0,z),M4.RY(0.3)),'#d4b484',[[0.001,s],[s*0.98,0]],{seg:4});}
   ridges(g,300,18,5,['#c09a6a','#b48c5c','#a88050']);
   // outside the walls: date palms along the road, a well, a few tents
-  for(let i=0;i<26;i++){const x=(i%2?1:-1)*(7+hash(i*3)*14)+(hash(i)-0.5)*4,z=WZ+8+i*3.4+hash(i*7)*2;palm(g,x,0,z,6+hash(i*5)*4,i);}
-  for(let i=0;i<14;i++){const x=-80+hash(i*9.3)*60*(i%2?1:-1)+(i%2?60:0),z=WZ+14+hash(i*6.1)*40;if(Math.abs(x)<14)continue;palm(g,x,0,z,7+hash(i*2)*4,i+40);}
+  if(!o.noPalms)for(let i=0;i<26;i++){const x=(i%2?1:-1)*(7+hash(i*3)*14)+(hash(i)-0.5)*4,z=WZ+8+i*3.4+hash(i*7)*2;palm(g,x,0,z,6+hash(i*5)*4,i);}
+  if(!o.noPalms)for(let i=0;i<14;i++){const x=-80+hash(i*9.3)*60*(i%2?1:-1)+(i%2?60:0),z=WZ+14+hash(i*6.1)*40;if(Math.abs(x)<14)continue;palm(g,x,0,z,7+hash(i*2)*4,i+40);}
   G.cyl(g,M4.chain(M4.T(14,0,0),M4.S(1.4,0.9,1.4)),'#b8a078',{seg:16});
   for(let i=0;i<5;i++){const x=-40-i*9,z=10+hash(i)*10;G.lathe(g,M4.chain(M4.T(x,0,z)),i%2?'#e8e0d0':'#8a5a3a',[[0.001,2.6],[2.4,0.4],[2.6,0]],{seg:6});}
   D.push({mesh:mesh(g),M:M4.id(),col:[1,1,1],rim:0.3,spec:0.35});return {D,pts:[]};}
@@ -143,10 +143,10 @@ LIGHT5.maliDay={sunDir:[-0.45,0.55,0.6],sunCol:[1.45,1.15,0.82],sky:[0.6,0.56,0.
   post:{bloom:0.25,thr:1.1,sat:1.3,expo:0.82,lift:[0.01,0.0,0.0],gain:[1.06,0.98,0.9],vig:1.1,ink:1}};
 LIGHT5.study={sunDir:[1,0.35,-0.1],sunCol:[1.2,1.05,0.85],sky:[0.22,0.18,0.15],gnd:[0.12,0.09,0.07],fog:[0.1,0.08,0.06],fogD:0.01,fogH:0,skyTop:[0.1,0.08,0.06],skyHor:[0.1,0.08,0.06],skyBot:[0.06,0.05,0.04],cloud:0,stars:0,sunSize:3000,sunGlow:[0,0,0],
   post:{bloom:0.6,thr:0.8,sat:1.1,expo:1.5,lift:[0.03,0.02,0.01],gain:[1.1,0.98,0.85],vig:1.3,ink:1}};
-{const _gm=getSet;getSet=function(k){const B={desert:buildDesert,cairo:buildCairo,souk:buildSouk,mali:buildMali,study:buildStudy};if(B[k])return SETS[k]||(SETS[k]=B[k]());return _gm(k);};}
+{const _gm=getSet;getSet=function(k){const B={desert:buildDesert,cairo:buildCairo,cairo2:()=>buildCairo({noPalms:1}),souk:buildSouk,mali:buildMali,study:buildStudy};if(B[k])return SETS[k]||(SETS[k]=B[k]());return _gm(k);};}
 PL.push(
  ['de_wide','desert','desertGold',[20,3.2,26],[-10,2.2,0],46],['de_low','desert','desertGold',[8,0.9,9],[-6,1.8,0],44],['de_air','desert','desertGold',[40,30,50],[-20,0,0],46],
- ['ca_wide','cairo','cairoDay',[2.5,2.6,44],[0,6.5,-24],50],['ca_siege','cairo','cairoDusk',[-13,1.6,12],[0,6.5,-24],50],['ca_gate','cairo','cairoDay',[3,1.5,6],[0,3.2,-24],50],['ca_dusk','cairo','cairoDusk',[-26,8,36],[0,9,-40],46],
+ ['ca_wide','cairo','cairoDay',[2.5,2.6,44],[0,6.5,-24],50],['ca_siege','cairo','cairoDusk',[-13,1.6,12],[0,6.5,-24],50],['ca_gate','cairo','cairoDay',[3,1.5,6],[0,3.2,-24],50],['ca_dusk','cairo','cairoDusk',[-26,8,36],[0,9,-40],46],['ca_think','cairo2','cairoDusk',[-22,5,30],[0,11,-40],44],
  ['sk_st','souk','soukDay',[0.6,1.45,14.5],[0,0.95,0],48],['sk_rev','souk','soukDay',[-0.5,1.6,-8],[0,1.9,8],46],
  ['ml_wide','mali','maliDay',[8,1.6,22],[-4,4.2,-6],48],
  ['su_wide','study','study',[2.6,1.5,4.4],[0,0.6,0],46],['su_close','study','study',[0.9,1.1,1.8],[0,0.5,0.2],38],
